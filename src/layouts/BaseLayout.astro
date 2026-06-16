@@ -197,6 +197,7 @@ const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `https://alexispa
       import { initReveals } from '../lib/dom/reveals';
       import { initCountUp } from '../lib/dom/countUp';
       import { initActiveNav } from '../lib/dom/activeNav';
+      import { initSectionSnap } from '../lib/dom/sectionSnap';
 
       // Note: initI18n() is called by LangToggle.astro which loads on every page.
       // Calling it here again would create a duplicate $lang subscriber and double
@@ -206,6 +207,7 @@ const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `https://alexispa
       initReveals();
       initCountUp();
       initActiveNav();
+      initSectionSnap();
     </script>
   </body>
 </html>

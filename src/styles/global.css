@@ -35,17 +35,15 @@
   box-shadow: 6px 6px 0 var(--color-lime);
 }
 
-/* ─── Scroll-snap base ───────────────────────────────────────────────────── */
-/* `mandatory` gives the "glide to the next section like butter" feel: a small
-   scroll commits to the next/previous section. scroll-padding-top offsets the
-   snap (and anchor jumps) by the fixed nav height so a section's title lands
-   just below the nav. Tall sections (e.g. #projects) stay readable because we
-   DON'T force scroll-snap-stop, so the browser lets you scroll through them
-   and only re-aligns at the boundaries. */
+/* ─── Scroll behaviour ───────────────────────────────────────────────────── */
+/* Section snapping is handled in JS (sectionSnap.ts) so we control the easing
+   and speed — native CSS snap was too abrupt. We deliberately leave
+   scroll-snap-type OFF here so the JS eased tween isn't interrupted by the
+   browser's instant snap. scroll-behavior:smooth + scroll-padding-top still
+   apply to nav anchor clicks (which use the hash, not the wheel controller). */
 html {
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
-  scroll-padding-top: 67px; /* fixed nav height — keeps snapped section titles visible */
+  scroll-padding-top: 67px; /* fixed nav height — keeps anchored section titles visible */
 }
 
 /* ─── Base body defaults ─────────────────────────────────────────────────── */

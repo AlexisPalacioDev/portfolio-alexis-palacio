@@ -46,7 +46,7 @@ const activeItem = work[ACTIVE];
     </p>
 
     <!-- Main two-column layout: detail panel (left) + deck (right) -->
-    <div style="display: grid; grid-template-columns: 1fr 540px; gap: 48px; align-items: center;">
+    <div style="display: grid; grid-template-columns: 1fr 600px; gap: 48px; align-items: center;">
 
       <!-- ── LEFT: Detail panel ── -->
       <div class="rev" id="work-detail">
@@ -171,10 +171,10 @@ const activeItem = work[ACTIVE];
       <!-- ── RIGHT: Card deck (SSR static fan) ── -->
       <div class="rev" id="work-deck-root">
 
-        <!-- Deck container — 384×480 cards, overflow visible for fan peek -->
+        <!-- Deck container — landscape 460×276 cards (5:3, matches the cover art) -->
         <div
           id="work-deck"
-          style="position: relative; height: 532px; width: 384px; margin: 0 auto;"
+          style="position: relative; height: 372px; width: 460px; margin: 0 auto;"
           data-active="0"
           data-count={N}
         >
@@ -189,7 +189,7 @@ const activeItem = work[ACTIVE];
                 style={[
                   'position: absolute;',
                   'top: 50%; left: 50%;',
-                  'width: 384px; height: 480px;',
+                  'width: 460px; height: 276px;',
                   `transform: translate(-50%, -50%) ${transform};`,
                   `z-index: ${geo.zIndex};`,
                   `transition: transform .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease, box-shadow .35s ease, border-color .3s ease;`,
@@ -202,30 +202,19 @@ const activeItem = work[ACTIVE];
                   'overflow: hidden;',
                   'backface-visibility: hidden;',
                 ].join(' ')}
-                aria-label={`Project: ${item.name}`}
+                aria-label={`Project: ${item.name} — ${pick(item.kind, LANG)}`}
                 tabindex={isVisible ? '0' : '-1'}
               >
-                <!-- Full-bleed project preview (the cover IS the preview) -->
+                <!-- Full project preview — 5:3 frame matches the cover art exactly, no crop -->
                 <Image
                   src={item.cover}
                   alt={`${item.name} — ${pick(item.kind, LANG)}`}
-                  width={384}
-                  height={480}
+                  width={460}
+                  height={276}
                   loading={i === 0 ? 'eager' : 'lazy'}
                   style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;"
                 />
-                <!-- Bottom legibility gradient -->
-                <div
-                  style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,13,16,0.82) 0%, rgba(12,13,16,0.05) 42%, rgba(12,13,16,0) 70%); pointer-events: none;"
-                ></div>
-                <!-- Status badge (top-left) -->
-                <span
-                  class="font-mono text-lime"
-                  style="position: absolute; top: 14px; left: 14px; padding: 5px 11px; background: rgba(12,13,16,0.78); font-size: 10px; font-weight: 700; border: 1px solid #34373F; letter-spacing: 0.5px;"
-                >
-                  {pick(item.status, LANG)}
-                </span>
-                <!-- Single minimal accent bar (bottom) — visual direction, no redundant copy -->
+                <!-- Thin accent bar (bottom) — the only chrome; everything else lives in the panel -->
                 <div
                   style={`position: absolute; left: 0; bottom: 0; width: 100%; height: 4px; background: ${item.accent};`}
                 ></div>

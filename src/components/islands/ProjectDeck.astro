@@ -91,7 +91,7 @@
     const geo = computeSlot(i, active, N);
     const isVisible = !geo.hidden;
     const lifted = hovered && isVisible;
-    const lift = lifted ? 'translateY(-22px) scale(1.04) ' : '';
+    const lift = lifted ? 'translateY(-64px) scale(1.07) ' : '';
 
     card.style.transform = `translate(-50%, -50%) ${lift}${buildCardTransform(geo)}`;
     // Hover only PEEKS the card up — it must NOT jump to the front. Keep the
