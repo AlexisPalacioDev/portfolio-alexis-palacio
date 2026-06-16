@@ -60,6 +60,8 @@
   const dots = dotsContainer
     ? Array.from(dotsContainer.querySelectorAll<HTMLElement>('.work-dot'))
     : [];
+  const prevBtn = document.getElementById('work-prev');
+  const nextBtn = document.getElementById('work-next');
 
   // Detail panel sub-elements
   const detailCompany = document.getElementById('detail-company');
@@ -81,22 +83,32 @@
     return lang === 'es' ? loc.es : loc.en;
   }
 
-  // ── Re-layout cards (CSS transitions handle the animation) ────────────────
-  function layoutCards(): void {
-    cards.forEach((card, i) => {
-      const geo = computeSlot(i, active, N);
-      const transform = buildCardTransform(geo);
-      const isVisible = !geo.hidden;
+  // ── Style a single card for the current state (optionally hover-lifted) ───
+  // SSR already centered the card with translate(-50%,-50%); we compose the
+  // slot transform on top. A hovered visible card lifts straight up in screen
+  // space (lift prepended BEFORE the slot transform so skew doesn't tilt it).
+  function styleCard(card: HTMLElement, i: number, hovered: boolean): void {
+    const geo = computeSlot(i, active, N);
+    const isVisible = !geo.hidden;
+    const lifted = hovered && isVisible;
+    const lift = lifted ? 'translateY(-22px) scale(1.04) ' : '';
 
-      // Base transform — note: SSR already set translate(-50%,-50%) as the centering
-      // offset. We must compose our slot transform ON TOP of the centering.
-      card.style.transform = `translate(-50%, -50%) ${transform}`;
-      card.style.zIndex = String(geo.zIndex);
-      card.style.opacity = isVisible ? '1' : '0';
-      card.style.pointerEvents = isVisible ? 'auto' : 'none';
-      card.style.borderColor = geo.isFront ? '#C6F24E' : '#2C2F38';
-      card.setAttribute('tabindex', isVisible ? '0' : '-1');
-    });
+    card.style.transform = `translate(-50%, -50%) ${lift}${buildCardTransform(geo)}`;
+    card.style.zIndex = lifted ? String(N + 1) : String(geo.zIndex);
+    card.style.opacity = isVisible ? '1' : '0';
+    card.style.pointerEvents = isVisible ? 'auto' : 'none';
+    card.style.borderColor = geo.isFront || lifted ? '#C6F24E' : '#2C2F38';
+    card.style.boxShadow = lifted
+      ? '0 34px 80px rgba(0,0,0,0.6)'
+      : geo.isFront
+        ? '0 24px 60px rgba(0,0,0,0.55)'
+        : '0 12px 30px rgba(0,0,0,0.4)';
+    card.setAttribute('tabindex', isVisible ? '0' : '-1');
+  }
+
+  // ── Re-layout all cards (CSS transitions handle the animation) ────────────
+  function layoutCards(): void {
+    cards.forEach((card, i) => styleCard(card, i, false));
   }
 
   // ── Re-render detail panel ─────────────────────────────────────────────────
@@ -186,7 +198,7 @@
     return s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  // ── Attach card click handlers ────────────────────────────────────────────
+  // ── Attach card click + hover-lift handlers ───────────────────────────────
   cards.forEach((card, i) => {
     card.addEventListener('click', () => activate(i));
     // Keyboard: Enter/Space should also activate
@@ -196,12 +208,19 @@
         activate(i);
       }
     });
+    // Hover: lift the card straight up (only while it's a visible slot)
+    card.addEventListener('pointerenter', () => styleCard(card, i, true));
+    card.addEventListener('pointerleave', () => styleCard(card, i, false));
   });
 
   // ── Attach dot click handlers ─────────────────────────────────────────────
   dots.forEach((dot, i) => {
     dot.addEventListener('click', () => activate(i));
   });
+
+  // ── Prev / next arrow navigation (wraps around) ───────────────────────────
+  prevBtn?.addEventListener('click', () => activate(active - 1));
+  nextBtn?.addEventListener('click', () => activate(active + 1));
 
   // ── Lang reactivity: re-render panel when language changes ────────────────
   // This is the key WU-2/WU-4 integration. Toggling lang while a non-default

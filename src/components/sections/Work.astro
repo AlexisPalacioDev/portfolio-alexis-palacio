@@ -46,7 +46,7 @@ const activeItem = work[ACTIVE];
     </p>
 
     <!-- Main two-column layout: detail panel (left) + deck (right) -->
-    <div style="display: grid; grid-template-columns: 1fr 480px; gap: 48px; align-items: center;">
+    <div style="display: grid; grid-template-columns: 1fr 540px; gap: 48px; align-items: center;">
 
       <!-- ── LEFT: Detail panel ── -->
       <div class="rev" id="work-detail">
@@ -171,10 +171,10 @@ const activeItem = work[ACTIVE];
       <!-- ── RIGHT: Card deck (SSR static fan) ── -->
       <div class="rev" id="work-deck-root">
 
-        <!-- Deck container — 340×438 viewport, overflow visible for fan peek -->
+        <!-- Deck container — 384×480 cards, overflow visible for fan peek -->
         <div
           id="work-deck"
-          style="position: relative; height: 496px; width: 340px; margin: 0 auto;"
+          style="position: relative; height: 532px; width: 384px; margin: 0 auto;"
           data-active="0"
           data-count={N}
         >
@@ -189,98 +189,92 @@ const activeItem = work[ACTIVE];
                 style={[
                   'position: absolute;',
                   'top: 50%; left: 50%;',
-                  'width: 340px; height: 438px;',
+                  'width: 384px; height: 480px;',
                   `transform: translate(-50%, -50%) ${transform};`,
                   `z-index: ${geo.zIndex};`,
                   `transition: transform .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease, box-shadow .35s ease, border-color .3s ease;`,
                   `will-change: transform;`,
                   isVisible ? 'opacity: 1; pointer-events: auto;' : 'opacity: 0; pointer-events: none;',
                   `border: 1px solid ${geo.isFront ? '#C6F24E' : '#2C2F38'};`,
+                  `box-shadow: ${geo.isFront ? '0 24px 60px rgba(0,0,0,0.55)' : '0 12px 30px rgba(0,0,0,0.4)'};`,
                   'background: #14151A;',
                   'cursor: pointer;',
+                  'overflow: hidden;',
                   'backface-visibility: hidden;',
                 ].join(' ')}
                 aria-label={`Project: ${item.name}`}
                 tabindex={isVisible ? '0' : '-1'}
               >
-                <!-- Cover area -->
+                <!-- Full-bleed project preview (the cover IS the preview) -->
+                <Image
+                  src={item.cover}
+                  alt={`${item.name} — ${pick(item.kind, LANG)}`}
+                  width={384}
+                  height={480}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;"
+                />
+                <!-- Bottom legibility gradient -->
                 <div
-                  style={`position: relative; height: 262px; overflow: hidden; border-bottom: 1px solid #2C2F38; background: ${item.accent};`}
+                  style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,13,16,0.82) 0%, rgba(12,13,16,0.05) 42%, rgba(12,13,16,0) 70%); pointer-events: none;"
+                ></div>
+                <!-- Status badge (top-left) -->
+                <span
+                  class="font-mono text-lime"
+                  style="position: absolute; top: 14px; left: 14px; padding: 5px 11px; background: rgba(12,13,16,0.78); font-size: 10px; font-weight: 700; border: 1px solid #34373F; letter-spacing: 0.5px;"
                 >
-                  <!-- Cover image -->
-                  <Image
-                    src={item.cover}
-                    alt={`${item.name} project cover`}
-                    width={340}
-                    height={262}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.8;"
-                  />
-                  <!-- Project name overlay -->
-                  <div
-                    style="position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,0.9); font-weight: 700; font-size: 30px; letter-spacing: -1px; text-align: center; padding: 0 14px;"
-                  >
-                    {item.name}
-                  </div>
-                  <!-- Status badge -->
-                  <span
-                    class="font-mono text-lime"
-                    style="position: absolute; top: 12px; left: 12px; padding: 5px 11px; background: rgba(12,13,16,0.8); font-size: 10px; font-weight: 700; border: 1px solid #34373F;"
-                  >
-                    {pick(item.status, LANG)}
-                  </span>
-                </div>
-
-                <!-- Card body -->
-                <div style="padding: 18px 20px;">
-                  <h3
-                    class="font-display font-bold text-ink"
-                    style="font-size: 21px; letter-spacing: -0.6px; margin: 0 0 4px;"
-                  >
-                    {item.name}
-                  </h3>
-                  <div
-                    class="font-mono"
-                    style="font-size: 11px; color: #8F8F87;"
-                  >
-                    {item.company} · {pick(item.kind, LANG)}
-                  </div>
-                </div>
+                  {pick(item.status, LANG)}
+                </span>
+                <!-- Single minimal accent bar (bottom) — visual direction, no redundant copy -->
+                <div
+                  style={`position: absolute; left: 0; bottom: 0; width: 100%; height: 4px; background: ${item.accent};`}
+                ></div>
               </div>
             );
           })}
         </div>
 
-        <!-- Indicator dots -->
-        <div
-          id="work-dots"
-          style="display: flex; gap: 8px; justify-content: center; margin-top: 28px;"
-          role="tablist"
-          aria-label="Project selector"
-        >
-          {work.map((item, i) => {
-            const isActive = i === ACTIVE;
-            return (
-              <button
-                class="work-dot"
-                data-index={i}
-                role="tab"
-                aria-selected={isActive ? 'true' : 'false'}
-                aria-label={`Select project: ${item.name}`}
-                style={[
-                  'width: 8px; height: 8px; border-radius: 50%; border: none; cursor: pointer; padding: 0;',
-                  `background: ${isActive ? '#C6F24E' : '#2C2F38'};`,
-                  `transform: ${isActive ? 'scale(1.25)' : 'scale(1)'};`,
-                  'transition: background .3s ease, transform .3s ease;',
-                ].join(' ')}
-              />
-            );
-          })}
-        </div>
+        <!-- Navigation: prev arrow · indicator dots · next arrow -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 30px;">
+          <button
+            id="work-prev"
+            class="work-arrow font-mono"
+            aria-label="Previous project"
+            style="width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid #34373F; background: #14151A; color: #F2F2EE; font-size: 18px; cursor: pointer; transition: border-color .25s ease, background .25s ease, color .25s ease;"
+          >‹</button>
 
-        <!-- Footer note -->
-        <div class="font-mono text-faint" style="font-size: 11px; text-align: center; margin-top: 14px;">
-          // {t('en', 'projects_view')} · {N} projects
+          <div
+            id="work-dots"
+            style="display: flex; gap: 8px; justify-content: center;"
+            role="tablist"
+            aria-label="Project selector"
+          >
+            {work.map((item, i) => {
+              const isActive = i === ACTIVE;
+              return (
+                <button
+                  class="work-dot"
+                  data-index={i}
+                  role="tab"
+                  aria-selected={isActive ? 'true' : 'false'}
+                  aria-label={`Select project: ${item.name}`}
+                  style={[
+                    'width: 8px; height: 8px; border-radius: 50%; border: none; cursor: pointer; padding: 0;',
+                    `background: ${isActive ? '#C6F24E' : '#2C2F38'};`,
+                    `transform: ${isActive ? 'scale(1.25)' : 'scale(1)'};`,
+                    'transition: background .3s ease, transform .3s ease;',
+                  ].join(' ')}
+                />
+              );
+            })}
+          </div>
+
+          <button
+            id="work-next"
+            class="work-arrow font-mono"
+            aria-label="Next project"
+            style="width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid #34373F; background: #14151A; color: #F2F2EE; font-size: 18px; cursor: pointer; transition: border-color .25s ease, background .25s ease, color .25s ease;"
+          >›</button>
         </div>
 
       </div>

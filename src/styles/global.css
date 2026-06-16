@@ -36,9 +36,15 @@
 }
 
 /* ─── Scroll-snap base ───────────────────────────────────────────────────── */
+/* `proximity` (not `mandatory`) is deliberate: several sections are taller
+   than the viewport, and `mandatory` would trap the scroll mid-section. The
+   key fix for the "slide to next section" feel is scroll-padding-top — it
+   offsets the snap (and anchor jumps) by the fixed nav height so a section's
+   top lands just below the nav instead of being hidden under it. */
 html {
   scroll-snap-type: y proximity;
   scroll-behavior: smooth;
+  scroll-padding-top: 67px; /* fixed nav height — keeps snapped section titles visible */
 }
 
 /* ─── Base body defaults ─────────────────────────────────────────────────── */
@@ -51,6 +57,13 @@ body {
 /* ─── Scroll-snap sections ───────────────────────────────────────────────── */
 section {
   scroll-snap-align: start;
+}
+
+/* ─── Project deck navigation arrows ─────────────────────────────────────── */
+.work-arrow:hover {
+  border-color: var(--color-lime);
+  background: var(--color-lime);
+  color: var(--color-bg);
 }
 
 /* ─── Marquee animation — tech band between Hero and About ──────────────── */

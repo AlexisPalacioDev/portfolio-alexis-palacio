@@ -73,34 +73,32 @@ export const work: readonly WorkItem[] = [
     name: 'anai',
     accent: '#5B8DEF',
     cover: coverAnai,
-    links: { link: null, code: null },
+    links: { link: 'https://anaiapp.ai', code: null },
     period: { en: '2024 — Present', es: '2024 — Hoy' },
     role: {
-      en: 'AI Engineer & Full-Stack Developer',
-      es: 'Ingeniero IA & Desarrollador Full-Stack',
+      en: 'Lead Fullstack Developer · Frontend',
+      es: 'Líder de Desarrollo Fullstack · Frontend',
     },
-    kind: { en: 'AI Content Platform', es: 'Plataforma de Contenido IA' },
+    kind: { en: 'AI Video Creation SaaS', es: 'SaaS de Creación de Video con IA' },
     status: { en: 'Current', es: 'Actual' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'Building the AI content generation engine at anai — a platform that automates brand-aligned content at scale using LLM orchestration, custom agent loops and structured output pipelines.',
-      es: 'Construyendo el motor de generación de contenido con IA en anai — una plataforma que automatiza contenido alineado con la marca a escala, usando orquestación de LLMs, loops de agentes a medida y pipelines de salida estructurada.',
+      en: 'I lead the Next.js 16 / React 19 platform at anai (anaiapp.ai) — an AI SaaS that turns social content into viral short-form videos through AI scripting, voice synthesis and a browser-native video editor.',
+      es: 'Lidero la plataforma Next.js 16 / React 19 de anai (anaiapp.ai) — un SaaS de IA que convierte contenido social en videos cortos virales mediante scripting con IA, síntesis de voz y un editor de video nativo en el browser.',
     },
     bullets: {
       en: [
-        'Designed multi-agent orchestration architecture (planner → writer → validator loops)',
-        'Integrated OpenAI, Anthropic and local models via OpenRouter with fallback chains',
-        'Built MCP servers to connect agents to external data sources and brand assets',
-        'Implemented structured output validation and retry strategies for production reliability',
+        'Lead the Next.js 16 / React 19 frontend and the BFF architecture (Route Handlers → NestJS, Google OAuth, HttpOnly cookies)',
+        'Built a browser-native video editor with WebCodecs, WebGL and WASM subtitle rendering',
+        'Integrated Claude, GPT, Gemini, Veo 3.1 and ElevenLabs into an AI-assisted creation studio',
       ],
       es: [
-        'Diseñé arquitectura de orquestación multi-agente (loops planificador → escritor → validador)',
-        'Integré OpenAI, Anthropic y modelos locales vía OpenRouter con cadenas de fallback',
-        'Construí servidores MCP para conectar agentes a fuentes de datos externas y assets de marca',
-        'Implementé validación de salida estructurada y estrategias de reintento para confiabilidad en producción',
+        'Lidero el frontend Next.js 16 / React 19 y la arquitectura BFF (Route Handlers → NestJS, Google OAuth, cookies HttpOnly)',
+        'Construí un editor de video nativo en el browser con WebCodecs, WebGL y renderizado de subtítulos por WASM',
+        'Integré Claude, GPT, Gemini, Veo 3.1 y ElevenLabs en un estudio de creación asistido por IA',
       ],
     },
-    tags: ['AI Agents', 'LLM Orchestration', 'MCP', 'OpenAI', 'Anthropic', 'Next.js', 'Supabase', 'TypeScript'],
+    tags: ['Next.js 16', 'React 19', 'TypeScript', 'NestJS', 'Google Cloud', 'Claude / Veo 3.1'],
   },
 
   // 1 — iMometrics
@@ -137,7 +135,7 @@ export const work: readonly WorkItem[] = [
         'Entregué documentación de API completa y guías de integración para partners enterprise',
       ],
     },
-    tags: ['Node.js', 'PHP', 'MySQL', 'REST API', 'Redis', 'AWS', 'Docker'],
+    tags: ['Node.js', 'PHP', 'MySQL', 'Redis', 'AWS'],
   },
 
   // 2 — Sticker Drops
@@ -172,7 +170,7 @@ export const work: readonly WorkItem[] = [
         'Integración de procesamiento de pagos',
       ],
     },
-    tags: ['Next.js', 'React', 'TypeScript', 'Stripe', 'Supabase'],
+    tags: ['Next.js', 'TypeScript', 'Stripe', 'Supabase'],
   },
 
   // 3 — Tripi
@@ -209,7 +207,7 @@ export const work: readonly WorkItem[] = [
         'Entregué app web responsive con integración a proveedor de pagos para el mercado colombiano',
       ],
     },
-    tags: ['Next.js', 'React', 'Node.js', 'PostgreSQL', 'Stripe', 'Tailwind', 'TypeScript'],
+    tags: ['Next.js', 'Node.js', 'PostgreSQL', 'Stripe', 'TypeScript'],
   },
 
   // 4 — Carl Jung AI
@@ -246,7 +244,7 @@ export const work: readonly WorkItem[] = [
         'Desplegué interfaz conversacional accesible vía web con persistencia de sesión',
       ],
     },
-    tags: ['OpenAI', 'RAG', 'LangChain', 'Python', 'Next.js', 'Supabase', 'pgvector'],
+    tags: ['OpenAI', 'RAG', 'LangChain', 'Python', 'pgvector'],
   },
 
   // 5 — BunnyGymWear
@@ -283,7 +281,7 @@ export const work: readonly WorkItem[] = [
         'Diseñé UI coherente con la marca, acorde a la estética fitness energética',
       ],
     },
-    tags: ['Next.js', 'React', 'Node.js', 'MongoDB', 'Stripe', 'Tailwind', 'TypeScript'],
+    tags: ['Next.js', 'Node.js', 'MongoDB', 'Stripe', 'TypeScript'],
   },
 
   // 6 — To-Do Automation
@@ -320,6 +318,6 @@ export const work: readonly WorkItem[] = [
         'Agregué puntuación de prioridad basada en LLM y detección de plazos desde lenguaje natural',
       ],
     },
-    tags: ['n8n', 'OpenAI', 'Notion API', 'Google Calendar', 'Slack', 'Node.js', 'TypeScript'],
+    tags: ['n8n', 'OpenAI', 'Notion API', 'Slack', 'Node.js'],
   },
 ] as const;
