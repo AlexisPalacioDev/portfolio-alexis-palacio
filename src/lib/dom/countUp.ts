@@ -58,6 +58,14 @@ export function initCountUp(): void {
     requestAnimationFrame(step);
   }
 
+  // ── Respect prefers-reduced-motion ────────────────────────────────────────
+  // When the user has requested reduced motion, show the final values immediately
+  // without animating. The tile's textContent already holds the correct SSR value
+  // (e.g. "5+"), so we simply return early — no rAF loop runs.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
   // ── IntersectionObserver: trigger once when About enters view ─────────────
   let triggered = false;
 

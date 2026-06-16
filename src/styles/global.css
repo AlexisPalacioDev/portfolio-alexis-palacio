@@ -104,3 +104,37 @@ section {
     animation: none;
   }
 }
+
+/* ─── Focus-visible: keyboard navigation ring ────────────────────────────── */
+/* Remove default browser outline, replace with a consistent lime focus ring
+   visible only for keyboard users (:focus-visible, not :focus). */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+}
+
+/* ─── Skip-to-content link (a11y) ────────────────────────────────────────── */
+/* Visually hidden until focused via keyboard — allows screen-reader and
+   keyboard users to skip the nav and jump straight to main content. */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 10px 20px;
+  background: var(--color-lime);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus-visible {
+  top: 16px;
+}

@@ -19,6 +19,18 @@ export function initReveals(): void {
   const revEls = Array.from(document.querySelectorAll<HTMLElement>('.rev'));
   if (revEls.length === 0) return;
 
+  // ── Respect prefers-reduced-motion ────────────────────────────────────────
+  // When the user has requested reduced motion, skip all animations and reveal
+  // elements immediately without any translateY or transition.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    revEls.forEach((el) => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.dataset.revRevealed = 'true';
+    });
+    return;
+  }
+
   // ── Set initial hidden state ──────────────────────────────────────────────
   revEls.forEach((el) => {
     el.style.opacity = '0';
