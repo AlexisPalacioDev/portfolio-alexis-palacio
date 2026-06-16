@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #0C0D10; color: #F2F2EE; font-family: "Space Grotesk", system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #C6F24E; color: #0C0D10; }
+  html { scroll-snap-type: y proximity; }
+  section { scroll-snap-align: start; scroll-margin-top: 0; }
+  #home, #about, #skills, #experience, #services, #testimonials, #contact { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+  a, button, image-slot, .tilt { transition: box-shadow .22s cubic-bezier(.2,.7,.2,1), transform .22s cubic-bezier(.2,.7,.2,1), background .2s ease, color .2s ease, opacity .25s ease; }
+  .nav-links a:hover { color: #C6F24E !important; opacity: 1 !important; }
+  button:active { transform: translateY(2px) scale(0.98) !important; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.18; } }
+  @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @keyframes spinSlow { to { transform: rotate(360deg); } }
+  .rev { opacity: 1; }
+  .card-swap-container { position: relative; perspective: 1100px; overflow: visible; }
+  .swap-card { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d; will-change: transform; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  @media (max-width: 760px) { #proj-swap { transform: scale(0.66); } }
+  @media (max-width: 980px) {
+    .nav-links { display: none !important; }
+    .g2, .g3, .g4, .pgrid { grid-template-columns: 1fr !important; }
+    .hero-h1 { font-size: 17vw !important; line-height: 0.9 !important; }
+    .about-grid { grid-template-columns: 1fr !important; }
+    .exp-row { grid-template-columns: 1fr !important; }
+    .pad-x { padding-left: 22px !important; padding-right: 22px !important; }
+  }
+</style>
+</helmet>
+
+<div style="position: relative; width: 100%; overflow: hidden;">
+
+<div ref="{{ progressRef }}" style="position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: #C6F24E; z-index: 60; box-shadow: 0 0 10px rgba(198,242,78,0.7);"></div>
+
+
+<nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px 34px; background: rgba(12,13,16,0.78); backdrop-filter: blur(12px); border-bottom: 1px solid #23252D;" class="pad-x">
+  <a href="#home" style="display: flex; align-items: center; gap: 12px;">
+    <span style="display: grid; place-items: center; width: 38px; height: 38px; background: #C6F24E; color: #0C0D10; font-weight: 700; font-size: 17px; box-shadow: 3px 3px 0 #3D5BFF; letter-spacing: -0.5px;">AP</span>
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 1px; color: #93938B;">ALEXIS<br>PALACIO</span>
+  </a>
+  <div class="nav-links" style="display: flex; align-items: center; gap: 26px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; letter-spacing: 0.4px; color: #93938B;">
+    <a href="#about" style="opacity: 0.7;">{{ t.nav_about }}</a>
+    <a href="#skills" style="opacity: 0.7;">{{ t.nav_skills }}</a>
+    <a href="#projects" style="opacity: 0.7;">{{ t.nav_projects }}</a>
+    <a href="#contact" style="opacity: 0.7;">{{ t.nav_contact }}</a>
+  </div>
+  <div style="display: flex; align-items: center; gap: 14px;">
+    <div style="display: flex; align-items: center; border: 1.5px solid #34373F; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; overflow: hidden;">
+      <span onClick="{{ setEN }}" style="{{ enStyle }}">EN</span>
+      <span onClick="{{ setES }}" style="{{ esStyle }}">ES</span>
+    </div>
+  </div>
+</nav>
+
+<section id="home" style="position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 130px 40px 72px; overflow: hidden;" class="pad-x">
+  <canvas id="hero-canvas" ref="{{ heroCanvasRef }}" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+  <div aria-hidden="true" style="position: absolute; right: -3%; bottom: -11%; z-index: 1; font-weight: 700; font-size: 38vw; line-height: 0.7; color: rgba(198,242,78,0.045); letter-spacing: -2vw; pointer-events: none; user-select: none;">AI</div>
+  <div style="position: relative; z-index: 3; max-width: 1340px; margin: 0 auto; width: 100%;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 34px;">
+      <div style="display: inline-flex; align-items: center; gap: 10px; padding: 9px 15px; border: 1px solid #34373F; background: rgba(20,21,26,0.55); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #C6F24E;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #C6F24E; box-shadow: 0 0 10px #C6F24E; animation: blink 1.6s infinite;"></span>
+        {{ t.hero_eyebrow }}
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6E6E66; text-align: right; line-height: 1.8;">EST. 2020<br>{{ t.hero_loc }}</div>
+    </div>
+    <h1 class="hero-h1" style="font-size: clamp(54px, 12vw, 188px); line-height: 0.85; font-weight: 700; letter-spacing: -0.045em; margin: 0;">
+      <span style="display: block;">{{ t.hero_h1a }}</span>
+      <span style="display: block; color: #C6F24E;">{{ t.hero_h1b }}</span>
+    </h1>
+    <div class="about-grid" style="display: grid; grid-template-columns: 1fr 0.82fr; gap: 44px; margin-top: 46px; align-items: end;">
+      <p style="font-size: clamp(16px, 1.5vw, 20px); line-height: 1.6; color: #B6B6AE; margin: 0; max-width: 600px;">{{ t.hero_sub }}</p>
+      <div>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px;">
+          <a href="#contact" style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; background: #C6F24E; color: #0C0D10; font-weight: 700; font-size: 16px; box-shadow: 6px 6px 0 #3D5BFF;">{{ t.hero_cta1 }} <span style="font-family: 'JetBrains Mono', monospace;">→</span></a>
+          <a href="assets/Alexis-Palacio-CV.pdf" download style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; background: transparent; color: #F2F2EE; font-weight: 700; font-size: 16px; border: 2px solid #34373F;">{{ t.hero_cta2 }} <span style="font-family: 'JetBrains Mono', monospace;">↓</span></a>
+        </div>
+        <div style="margin-top: 22px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #5E5E58;">— ALEXIS PALACIO / Full-stack · AI Engineer</div>
+      </div>
+    </div>
+  </div>
+  <div style="position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 3; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; color: #5E5E58; display: flex; flex-direction: column; align-items: center; gap: 6px; animation: floaty 2.4s ease-in-out infinite;">
+    {{ t.hero_scroll }}<span>↓</span>
+  </div>
+</section>
+
+<div style="background: #C6F24E; color: #0C0D10; border-top: 1px solid #0C0D10; border-bottom: 1px solid #0C0D10; overflow: hidden; padding: 15px 0;">
+  <div style="display: flex; width: max-content; animation: marquee 26s linear infinite; white-space: nowrap; font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; letter-spacing: 1px;">
+    <span style="display: inline-flex; gap: 34px; padding-right: 34px;"><span>AI Agents</span><span style="opacity:0.45;">✳</span><span>LLM Orchestration</span><span style="opacity:0.45;">✳</span><span>MCP</span><span style="opacity:0.45;">✳</span><span>n8n</span><span style="opacity:0.45;">✳</span><span>Next.js</span><span style="opacity:0.45;">✳</span><span>Supabase</span><span style="opacity:0.45;">✳</span><span>Python</span><span style="opacity:0.45;">✳</span><span>Node.js</span><span style="opacity:0.45;">✳</span><span>PHP</span><span style="opacity:0.45;">✳</span><span>AWS</span><span style="opacity:0.45;">✳</span></span>
+    <span style="display: inline-flex; gap: 34px; padding-right: 34px;" aria-hidden="true"><span>AI Agents</span><span style="opacity:0.45;">✳</span><span>LLM Orchestration</span><span style="opacity:0.45;">✳</span><span>MCP</span><span style="opacity:0.45;">✳</span><span>n8n</span><span style="opacity:0.45;">✳</span><span>Next.js</span><span style="opacity:0.45;">✳</span><span>Supabase</span><span style="opacity:0.45;">✳</span><span>Python</span><span style="opacity:0.45;">✳</span><span>Node.js</span><span style="opacity:0.45;">✳</span><span>PHP</span><span style="opacity:0.45;">✳</span><span>AWS</span><span style="opacity:0.45;">✳</span></span>
+  </div>
+</div>
+
+<section id="about" style="padding: 110px 40px; border-top: 1px solid #23252D;" class="pad-x">
+  <div style="max-width: 1280px; margin: 0 auto;">
+    <div class="rev" style="display: flex; align-items: baseline; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #C6F24E; margin-bottom: 30px;"><span style="font-size: 13px; color: #5E5E58;">01</span><span style="height: 1px; width: 40px; background: #34373F;"></span>{{ t.about_label }}</div>
+    <div class="about-grid" style="display: grid; grid-template-columns: 1.45fr 0.9fr; gap: 60px; align-items: start;">
+      <div>
+        <h2 class="rev" style="font-size: clamp(32px, 4.6vw, 64px); line-height: 1.0; letter-spacing: -2px; font-weight: 700; margin: 0 0 30px;">{{ t.about_h2 }}</h2>
+        <p class="rev" style="font-size: 17px; line-height: 1.75; color: #9D9D95; margin: 0 0 18px; max-width: 620px;">{{ t.about_p1 }}</p>
+        <p class="rev" style="font-size: 17px; line-height: 1.75; color: #9D9D95; margin: 0 0 18px; max-width: 620px;">{{ t.about_p2 }}</p>
+        <p class="rev" style="font-size: 17px; line-height: 1.75; color: #9D9D95; margin: 0; max-width: 620px;">{{ t.about_p3 }}</p>
+        <div class="g3 rev" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 44px;">
+          <div style="border: 1px solid #23252D; background: #14151A; padding: 22px 18px;">
+            <div style="font-size: 46px; font-weight: 700; letter-spacing: -2px; line-height: 1; color: #C6F24E;">{{ counts.years }}+</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6E6E66; margin-top: 10px; letter-spacing: 0.5px;">{{ t.stat_years }}</div>
+          </div>
+          <div style="border: 1px solid #23252D; background: #14151A; padding: 22px 18px;">
+            <div style="font-size: 46px; font-weight: 700; letter-spacing: -2px; line-height: 1; color: #F2F2EE;">{{ counts.projects }}+</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6E6E66; margin-top: 10px; letter-spacing: 0.5px;">{{ t.stat_projects }}</div>
+          </div>
+          <div style="border: 1px solid #23252D; background: #14151A; padding: 22px 18px;">
+            <div style="font-size: 46px; font-weight: 700; letter-spacing: -2px; line-height: 1; color: #3D5BFF;">{{ counts.techs }}+</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6E6E66; margin-top: 10px; letter-spacing: 0.5px;">{{ t.stat_tech }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="rev" style="position: relative;">
+        <div style="border: 1px solid #2C2F38; box-shadow: 12px 12px 0 #C6F24E; background: #14151A; position: relative;">
+          <div style="position: relative; width: 100%; aspect-ratio: 4/5; overflow: hidden;">
+            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: repeating-linear-gradient(135deg, #14151A, #14151A 14px, #17181E 14px, #17181E 28px);">
+              <div style="font-size: 38px; opacity: 0.45;">◫</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1px; color: #6E6E66;">[ TU FOTO ]</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4E4E48; max-width: 190px; text-align: center; line-height: 1.5;">Alexis: mándame tu headshot y lo dejo fijo aquí</div>
+            </div>
+            <img src="assets/alexis-photo.jpg" alt="Alexis Palacio" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; display: block;">
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 14px 16px; background: rgba(12,13,16,0.85); backdrop-filter: blur(6px); color: #F2F2EE; font-family: 'JetBrains Mono', monospace; font-size: 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #2C2F38;">
+            <span>@AlexisPalacioDev</span><span style="color: #C6F24E;">● online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" style="padding: 110px 40px; background: #101218;" class="pad-x">
+  <div style="max-width: 1280px; margin: 0 auto;">
+    <div class="rev" style="display: flex; align-items: baseline; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #C6F24E; margin-bottom: 22px;"><span style="font-size: 13px; color: #5E5E58;">02</span><span style="height: 1px; width: 40px; background: #34373F;"></span>{{ t.skills_label }}</div>
+    <h2 class="rev" style="font-size: clamp(32px, 4.8vw, 64px); line-height: 1.0; letter-spacing: -2px; font-weight: 700; margin: 0 0 16px; max-width: 820px;">{{ t.skills_h2 }}</h2>
+    <p class="rev" style="font-size: 17px; line-height: 1.6; color: #93938B; max-width: 580px; margin: 0 0 46px;">{{ t.skills_sub }}</p>
+
+    <div class="rev" style="border: 2px solid #C6F24E; background: linear-gradient(160deg, rgba(198,242,78,0.10), rgba(198,242,78,0.02)); padding: 36px; margin-bottom: 18px; position: relative; box-shadow: 10px 10px 0 rgba(198,242,78,0.18);">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+        <div style="max-width: 600px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C6F24E; letter-spacing: 1px; margin-bottom: 12px;">★ {{ t.skills_core }}</div>
+          <h3 style="font-size: clamp(24px, 3vw, 34px); font-weight: 700; letter-spacing: -1px; margin: 0 0 14px;">{{ t.skills_ai_title }}</h3>
+          <p style="font-size: 16px; line-height: 1.65; color: #ADADA4; margin: 0;">{{ t.skills_ai_desc }}</p>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #C6F24E; line-height: 1.95; background: rgba(12,13,16,0.5); border: 1px solid #2C3326; padding: 14px 18px;"><div style="color:#6E6E66; font-size:10px; letter-spacing:1px; margin-bottom:8px;">// {{ t.skills_loop }}</div>user → agent<br>&nbsp;&nbsp;↳ tool · plan<br>&nbsp;&nbsp;↳ loop · verify<br><span style="color:#F2F2EE;">→ outcome ✓</span></div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px;">
+        <sc-for list="{{ skillsAI }}" as="s" hint-placeholder-count="6">
+          <span style="padding: 9px 15px; border: 1.5px solid #C6F24E; background: rgba(198,242,78,0.10); color: #DDF59A; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;">{{ s }}</span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div class="g3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
+      <div class="rev" style="border: 1px solid #23252D; background: #14151A; padding: 26px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1px; color: #C6F24E; margin-bottom: 18px;">{{ t.cat_backend }}</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <sc-for list="{{ skillsBackend }}" as="s" hint-placeholder-count="6">
+            <span style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;">{{ s }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div class="rev" style="border: 1px solid #23252D; background: #14151A; padding: 26px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1px; color: #C6F24E; margin-bottom: 18px;">{{ t.cat_frontend }}</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <sc-for list="{{ skillsFrontend }}" as="s" hint-placeholder-count="6">
+            <span style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;">{{ s }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div class="rev" style="border: 1px solid #23252D; background: #14151A; padding: 26px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1px; color: #C6F24E; margin-bottom: 18px;">{{ t.cat_infra }}</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <sc-for list="{{ skillsInfra }}" as="s" hint-placeholder-count="6">
+            <span style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;">{{ s }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" style="padding: 110px 40px; border-top: 1px solid #23252D; background: #101218;" class="pad-x">
+  <div style="max-width: 1280px; margin: 0 auto;">
+    <div class="rev" style="display: flex; align-items: baseline; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #C6F24E; margin-bottom: 22px;"><span style="font-size: 13px; color: #5E5E58;">03</span><span style="height: 1px; width: 40px; background: #34373F;"></span>{{ t.projects_label }}</div>
+    <h2 class="rev" style="font-size: clamp(34px, 5vw, 72px); line-height: 0.98; letter-spacing: -2px; font-weight: 700; margin: 0 0 16px; max-width: 880px;">{{ t.projects_h2 }}</h2>
+    <p class="rev" style="font-size: 17px; line-height: 1.6; color: #93938B; max-width: 600px; margin: 0 0 50px;">{{ t.projects_sub }}</p>
+
+    <div class="about-grid" style="display: grid; grid-template-columns: 1fr 480px; gap: 48px; align-items: center;">
+      <div class="rev">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C6F24E; letter-spacing: 1px; margin-bottom: 14px;">
+          <span>{{ activeWork.company }}</span><span style="color:#3A3D47;">·</span><span style="color:#93938B;">{{ activeWork.period }}</span>
+          <span style="padding: 3px 9px; background: #14151A; border: 1px solid #2C2F38; color: #93938B; font-size: 10px; font-weight: 700;">{{ activeWork.status }}</span>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6E6E66; margin-bottom: 6px;">{{ activeWork.role }}</div>
+        <h3 style="font-size: clamp(30px, 4vw, 50px); line-height: 1.0; letter-spacing: -1.5px; font-weight: 700; margin: 0 0 6px; color: #F2F2EE;">{{ activeWork.name }}</h3>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{ activeWork.accent }}; font-weight: 700; margin-bottom: 22px;">{{ activeWork.kind }}</div>
+        <p style="font-size: 16.5px; line-height: 1.7; color: #ADADA4; margin: 0 0 22px; max-width: 560px;">{{ activeWork.desc }}</p>
+        <ul style="margin: 0 0 24px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px;">
+          <sc-for list="{{ activeWork.bullets }}" as="b" hint-placeholder-count="3">
+            <li style="display: flex; gap: 12px; font-size: 15px; line-height: 1.55; color: #9D9D95;"><span style="color: #C6F24E; font-family: 'JetBrains Mono', monospace;">▹</span>{{ b }}</li>
+          </sc-for>
+        </ul>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px;">
+          <sc-for list="{{ activeWork.tags }}" as="tg" hint-placeholder-count="4">
+            <span style="padding: 5px 11px; border: 1px solid #34373F; color: #C8C8C0; font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">{{ tg }}</span>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+          <sc-if value="{{ activeWork.link }}">
+            <a href="{{ activeWork.link }}" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: #C6F24E; color: #0C0D10; font-weight: 700; font-size: 14px; box-shadow: 4px 4px 0 #3D5BFF;">{{ t.projects_view }} <span style="font-family:'JetBrains Mono',monospace;">↗</span></a>
+          </sc-if>
+          <sc-if value="{{ activeWork.code }}">
+            <a href="{{ activeWork.code }}" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border: 1px solid #34373F; color: #F2F2EE; font-weight: 700; font-size: 14px;" style-hover="border-color:#C6F24E;">{{ t.projects_code }} <span style="font-family:'JetBrains Mono',monospace;">↗</span></a>
+          </sc-if>
+        </div>
+      </div>
+
+      <div class="rev">
+        <div style="position: relative; height: 496px; width: 340px; margin: 0 auto;">
+          <sc-for list="{{ stackCards }}" as="card" hint-placeholder-count="4">
+            <div onClick="{{ card._onClick }}" style="{{ card._style }}" style-hover="transform: translate(var(--tx), calc(var(--ty) - 26px)) scale(calc(var(--sc) * 1.04)) skewY(-3deg); z-index: 99; box-shadow: 0 34px 62px rgba(0,0,0,0.65); border-color: #C6F24E;">
+              <div style="position: relative; height: 262px; overflow: hidden; border-bottom: 1px solid #2C2F38; background: {{ card.accent }};">
+                <div style="position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,0.9); font-weight: 700; font-size: 30px; letter-spacing: -1px; text-align: center; padding: 0 14px;">{{ card.name }}</div>
+                {{ card._imgs }}
+                <span style="position: absolute; top: 12px; left: 12px; padding: 5px 11px; background: rgba(12,13,16,0.8); color: #C6F24E; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; border: 1px solid #34373F;">{{ card.status }}</span>
+              </div>
+              <div style="padding: 18px 20px;">
+                <h3 style="font-size: 21px; font-weight: 700; letter-spacing: -0.6px; margin: 0 0 4px; color: #F2F2EE;">{{ card.name }}</h3>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8F8F87;">{{ card.company }} · {{ card.kind }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; gap: 8px; justify-content: center; margin-top: 28px;">
+          <sc-for list="{{ stackCards }}" as="card" hint-placeholder-count="4">
+            <span onClick="{{ card._onClick }}" style="{{ card._dot }}"></span>
+          </sc-for>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #5E5E58; text-align: center; margin-top: 14px;">// {{ t.projects_view }} · {{ projectsCount }}</div>
+      </div>
+    </div>
+
+    <div class="rev" style="margin-top: 44px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+      <a href="https://github.com/AlexisPalacioDev?tab=repositories" target="_blank" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border: 1px solid #34373F; color: #F2F2EE; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;" style-hover="background:#C6F24E;color:#0C0D10;border-color:#C6F24E;">GitHub → AlexisPalacioDev <span>↗</span></a>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6E6E66;">{{ t.work_earlier }}</span>
+    </div>
+  </div>
+</section>
+
+<section id="services" style="padding: 110px 40px; background: #C6F24E; color: #0C0D10;" class="pad-x">
+  <div style="max-width: 1280px; margin: 0 auto;">
+    <div class="rev" style="display: flex; align-items: baseline; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #0C0D10; margin-bottom: 22px;"><span style="opacity: 0.5;">04</span><span style="height: 1px; width: 40px; background: rgba(12,13,16,0.4);"></span>{{ t.services_label }}</div>
+    <h2 class="rev" style="font-size: clamp(34px, 5vw, 72px); line-height: 0.98; letter-spacing: -2px; font-weight: 700; margin: 0 0 16px; max-width: 760px;">{{ t.services_h2 }}</h2>
+    <p class="rev" style="font-size: 17px; line-height: 1.6; max-width: 540px; margin: 0 0 46px; color: #1E2410; font-weight: 500;">{{ t.services_sub }}</p>
+    <div class="g3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      <div class="rev" style="background: #101218; color: #F2F2EE; padding: 30px; box-shadow: 8px 8px 0 #0C0D10;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700; margin-bottom: 20px; color: #C6F24E;">01</div>
+        <h3 style="font-size: 21px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 12px;">{{ t.svc1_title }}</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #9D9D95; margin: 0;">{{ t.svc1_desc }}</p>
+      </div>
+      <div class="rev" style="background: #101218; color: #F2F2EE; padding: 30px; box-shadow: 8px 8px 0 #0C0D10;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700; margin-bottom: 20px; color: #C6F24E;">02</div>
+        <h3 style="font-size: 21px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 12px;">{{ t.svc2_title }}</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #9D9D95; margin: 0;">{{ t.svc2_desc }}</p>
+      </div>
+      <div class="rev" style="background: #101218; color: #F2F2EE; padding: 30px; box-shadow: 8px 8px 0 #0C0D10;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700; margin-bottom: 20px; color: #C6F24E;">03</div>
+        <h3 style="font-size: 21px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 12px;">{{ t.svc3_title }}</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #9D9D95; margin: 0;">{{ t.svc3_desc }}</p>
+      </div>
+    </div>
+    <div class="rev" style="margin-top: 34px;">
+      <a href="#contact" style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; background: #0C0D10; color: #C6F24E; font-weight: 700; font-size: 16px; box-shadow: 6px 6px 0 rgba(12,13,16,0.35);">{{ t.svc_cta }} <span style="font-family: 'JetBrains Mono', monospace;">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials" style="padding: 110px 40px; background: #101218;" class="pad-x">
+  <div style="max-width: 1280px; margin: 0 auto;">
+    <div class="rev" style="display: flex; align-items: baseline; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #C6F24E; margin-bottom: 22px;"><span style="font-size: 13px; color: #5E5E58;">05</span><span style="height: 1px; width: 40px; background: #34373F;"></span>{{ t.test_label }}</div>
+    <h2 class="rev" style="font-size: clamp(34px, 5vw, 72px); line-height: 0.98; letter-spacing: -2px; font-weight: 700; margin: 0 0 14px;">{{ t.test_h2 }}</h2>
+    <p class="rev" style="font-size: 14px; line-height: 1.6; color: #6E6E66; max-width: 540px; margin: 0 0 46px; font-family: 'JetBrains Mono', monospace;">↳ {{ t.test_sub }}</p>
+    <div class="g3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      <sc-for list="{{ testimonials }}" as="q" hint-placeholder-count="3">
+        <div class="rev" style="border: 1.5px dashed #34373F; padding: 28px; display: flex; flex-direction: column; gap: 18px;">
+          <div style="font-size: 34px; color: #C6F24E; line-height: 0.6; font-weight: 700;">&ldquo;</div>
+          <p style="font-size: 16px; line-height: 1.6; margin: 0; flex: 1; color: #D4D4CC;">{{ q.quote }}</p>
+          <div>
+            <div style="font-weight: 700; font-size: 14px; color: #F2F2EE;">{{ q.name }}</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6E6E66;">{{ q.role }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding: 120px 40px; border-top: 1px solid #23252D;" class="pad-x">
+  <div style="max-width: 1180px; margin: 0 auto;">
+    <div class="rev" style="display: flex; align-items: baseline; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #C6F24E; margin-bottom: 22px;"><span style="font-size: 13px; color: #5E5E58;">06</span><span style="height: 1px; width: 40px; background: #34373F;"></span>{{ t.contact_label }}</div>
+    <h2 class="rev" style="font-size: clamp(44px, 9vw, 132px); line-height: 0.9; letter-spacing: -0.04em; font-weight: 700; margin: 0 0 24px;">{{ t.contact_h2 }}</h2>
+    <p class="rev" style="font-size: 18px; line-height: 1.6; color: #9D9D95; max-width: 560px; margin: 0 0 46px;">{{ t.contact_sub }}</p>
+    <div class="g2" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px;">
+      <a href="mailto:alexis26-93@live.com" class="rev" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #2C2F38; background: #14151A; padding: 24px 26px;" style-hover="border-color:#C6F24E; transform: translateY(-3px);">
+        <div><div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6E6E66; letter-spacing: 1px;">{{ t.contact_email }}</div><div style="font-weight: 700; font-size: 18px; margin-top: 5px; color: #F2F2EE;">alexis26-93@live.com</div></div>
+        <span style="font-family: 'JetBrains Mono', monospace; color: #C6F24E;">↗</span>
+      </a>
+      <a href="https://wa.me/573216551350?text=Hola%20Alexis%2C%20vi%20tu%20portafolio." target="_blank" class="rev" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #2C2F38; background: #14151A; padding: 24px 26px;" style-hover="border-color:#46C97E; transform: translateY(-3px);">
+        <div><div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6E6E66; letter-spacing: 1px;">{{ t.contact_whats }}</div><div style="font-weight: 700; font-size: 18px; margin-top: 5px; color: #F2F2EE;">+57 321 655 1350</div></div>
+        <span style="font-family: 'JetBrains Mono', monospace; color: #46C97E;">↗</span>
+      </a>
+      <a href="https://www.linkedin.com/in/poisoneddog/" target="_blank" class="rev" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #2C2F38; background: #14151A; padding: 24px 26px;" style-hover="border-color:#5B8DEF; transform: translateY(-3px);">
+        <div><div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6E6E66; letter-spacing: 1px;">{{ t.contact_linkedin }}</div><div style="font-weight: 700; font-size: 18px; margin-top: 5px; color: #F2F2EE;">in/poisoneddog</div></div>
+        <span style="font-family: 'JetBrains Mono', monospace; color: #5B8DEF;">↗</span>
+      </a>
+      <a href="https://github.com/AlexisPalacioDev" target="_blank" class="rev" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #2C2F38; background: #14151A; padding: 24px 26px;" style-hover="border-color:#F2F2EE; transform: translateY(-3px);">
+        <div><div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6E6E66; letter-spacing: 1px;">{{ t.contact_github }}</div><div style="font-weight: 700; font-size: 18px; margin-top: 5px; color: #F2F2EE;">AlexisPalacioDev</div></div>
+        <span style="font-family: 'JetBrains Mono', monospace; color: #F2F2EE;">↗</span>
+      </a>
+    </div>
+    <div class="rev" style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 28px;">
+      <a href="mailto:alexis26-93@live.com" style="display: inline-flex; align-items: center; gap: 10px; padding: 17px 32px; background: #C6F24E; color: #0C0D10; font-weight: 700; font-size: 17px; box-shadow: 6px 6px 0 #3D5BFF;">{{ t.contact_cta }} <span style="font-family: 'JetBrains Mono', monospace;">→</span></a>
+      <a href="assets/Alexis-Palacio-CV.pdf" download style="display: inline-flex; align-items: center; gap: 10px; padding: 17px 32px; border: 2px solid #34373F; color: #F2F2EE; font-weight: 700; font-size: 17px;">{{ t.cv }} <span style="font-family: 'JetBrains Mono', monospace;">↓</span></a>
+      <span style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #C6F24E;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #C6F24E; box-shadow: 0 0 10px #C6F24E; animation: blink 1.6s infinite;"></span>{{ t.available }}</span>
+    </div>
+  </div>
+</section>
+
+<footer style="border-top: 1px solid #23252D; padding: 38px 40px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;" class="pad-x">
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <span style="display: grid; place-items: center; width: 34px; height: 34px; background: #C6F24E; color: #0C0D10; font-weight: 700; font-size: 15px;">AP</span>
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6E6E66;">© {{ year }} Alexis Palacio · {{ t.footer_rights }}</span>
+  </div>
+  <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6E6E66;">{{ t.footer_built }}</span>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: &quot;100%&quot;, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { lang: 'en', counts: { years: 0, projects: 0, techs: 0 },
+      gameState: 'idle', gameScore: 0, gameBest: 0, gameLives: 3,
+      cardOrder: [0, 1, 2, 3, 4, 5], activeWork: 0 };
+    this.i18n = {
+      en: {
+        nav_about: "About", nav_skills: "Stack", nav_work: "Experience", nav_projects: "Work",
+        nav_services: "Hire me", nav_game: "Play", nav_contact: "Contact",
+        available: "Available for remote work", cv: "Download CV",
+        hero_eyebrow: "AI ENGINEER · FULL-STACK · REMOTE",
+        hero_h1a: "I orchestrate AI", hero_h1b: "to ship real outcomes.",
+        hero_sub: "Full-stack developer specialized in AI agents, automation harnesses and LLM orchestration — agents, loops, MCP, n8n. 5 years turning ideas into products that actually run in production.",
+        hero_cta1: "Hire me", hero_cta2: "Download CV", hero_scroll: "Scroll", hero_loc: "Medellín, Colombia · GMT-5",
+        about_label: "ABOUT", about_h2: "I don't just write code. I make AI get the job done.",
+        about_p1: "Full-stack developer with 5+ years building web products end to end. Over the last two years I pivoted hard into AI orchestration: my edge is not a single language — it's wiring models, tools and data into systems that hit a goal on their own.",
+        about_p2: "I've built voice agents connected to external sources through MCP, automation harnesses with n8n, and LLM pipelines running both in the cloud and locally (Ollama, OpenRouter). Solid backend foundations in PHP/CakePHP, Node and Python, with a modern frontend (React, Next.js, Tailwind).",
+        about_p3: "Right now I'm engineering AI content generation at anai. I work remote, ship fast, and I'm hungry — in every sense of the word.",
+        stat_years: "Years shipping", stat_projects: "Projects delivered", stat_tech: "Technologies",
+        skills_label: "THE STACK", skills_h2: "Built to orchestrate, not just to code.",
+        skills_sub: "A T-shaped toolkit: deep in AI orchestration & automation, broad across the full stack.",
+        skills_ai_title: "AI Orchestration & Agents",
+        skills_ai_desc: "Designing the loops, tools and guardrails that let models accomplish real objectives — not demos.",
+        skills_core: "Core focus", skills_loop: "A typical agent loop",
+        cat_backend: "Backend", cat_frontend: "Frontend", cat_infra: "Infra & Tools",
+        exp_label: "EXPERIENCE", exp_h2: "Where I've shipped.", exp_now: "Now",
+        projects_label: "SELECTED WORK", projects_h2: "Products I designed, built and shipped.",
+        projects_sub: "AI, automation and full-stack — from marketplaces with escrow to content engines.",
+        projects_view: "Open", projects_code: "Code",
+        work_earlier: "Earlier — Frontend Developer @ K Gumi & Wiptool (2020–2024)",
+        services_label: "FREELANCE", services_h2: "Hire me for the hard part.",
+        services_sub: "Available for full-time remote, contracts and AI consulting. Let's build.",
+        svc1_title: "AI Agents & Automation",
+        svc1_desc: "Custom agents, n8n harnesses, MCP integrations and bots on WhatsApp / Telegram that actually move the needle.",
+        svc2_title: "Full-Stack Development",
+        svc2_desc: "Web apps end to end — Next.js, React, Supabase, Node, payments and clean APIs that scale.",
+        svc3_title: "AI Strategy & Consulting",
+        svc3_desc: "LLM orchestration, harness & loop design, cloud + local models. I help teams ship AI that works.",
+        svc_cta: "Start a project",
+        game_label: "COFFEE BREAK", game_h2: "Catch the bugs. Dodge the errors.",
+        game_sub: "Every dev's day job, as an arcade game. Move with your mouse or arrow keys.",
+        game_start: "Start game", game_restart: "Play again", game_score: "Score", game_best: "Best", game_lives: "Lives",
+        game_over: "Game over", game_hint: "Catch 🐛 bugs · avoid red errors · don't drop three",
+        test_label: "TESTIMONIALS", test_h2: "What people say.",
+        test_sub: "Add your real client & teammate quotes here — Alexis, send them over and I'll drop them in.",
+        contact_label: "CONTACT", contact_h2: "Let's build something.",
+        contact_sub: "Open to remote roles, contracts and consulting worldwide. I usually reply same day.",
+        contact_email: "Email", contact_whats: "WhatsApp", contact_linkedin: "LinkedIn", contact_github: "GitHub",
+        contact_cta: "Get in touch", footer_built: "Designed & built with intent.", footer_rights: "All rights reserved."
+      },
+      es: {
+        nav_about: "Sobre mí", nav_skills: "Stack", nav_work: "Experiencia", nav_projects: "Proyectos",
+        nav_services: "Contrátame", nav_game: "Jugar", nav_contact: "Contacto",
+        available: "Disponible para trabajo remoto", cv: "Descargar CV",
+        hero_eyebrow: "INGENIERO IA · FULL-STACK · REMOTO",
+        hero_h1a: "Orquesto IA", hero_h1b: "para entregar resultados reales.",
+        hero_sub: "Desarrollador full-stack especializado en agentes de IA, harnesses de automatización y orquestación de LLMs — agentes, loops, MCP, n8n. 5 años convirtiendo ideas en productos que de verdad corren en producción.",
+        hero_cta1: "Contrátame", hero_cta2: "Descargar CV", hero_scroll: "Baja", hero_loc: "Medellín, Colombia · GMT-5",
+        about_label: "SOBRE MÍ", about_h2: "No solo escribo código. Hago que la IA cumpla el objetivo.",
+        about_p1: "Desarrollador full-stack con 5+ años construyendo productos web de punta a punta. En los últimos dos años me volqué a la orquestación de IA: mi fuerte no es un solo lenguaje — es conectar modelos, herramientas y datos en sistemas que logran una meta por sí solos.",
+        about_p2: "He construido agentes de voz conectados a fuentes externas vía MCP, harnesses de automatización con n8n y pipelines de LLM corriendo en la nube y en local (Ollama, OpenRouter). Base sólida en PHP/CakePHP, Node y Python, con frontend moderno (React, Next.js, Tailwind).",
+        about_p3: "Hoy estoy desarrollando generación de contenido con IA en anai. Trabajo remoto, entrego rápido y tengo hambre — en todos los sentidos de la palabra.",
+        stat_years: "Años entregando", stat_projects: "Proyectos entregados", stat_tech: "Tecnologías",
+        skills_label: "EL STACK", skills_h2: "Hecho para orquestar, no solo para codear.",
+        skills_sub: "Un perfil en T: profundidad en orquestación de IA y automatización, amplitud en todo el stack.",
+        skills_ai_title: "Orquestación de IA y Agentes",
+        skills_ai_desc: "Diseño los loops, herramientas y guardrails que permiten a los modelos cumplir objetivos reales — no demos.",
+        skills_core: "Foco principal", skills_loop: "Un loop de agente típico",
+        cat_backend: "Backend", cat_frontend: "Frontend", cat_infra: "Infra y Herramientas",
+        exp_label: "EXPERIENCIA", exp_h2: "Dónde he entregado.", exp_now: "Ahora",
+        projects_label: "TRABAJO SELECCIONADO", projects_h2: "Productos que diseñé, construí y entregué.",
+        projects_sub: "IA, automatización y full-stack — desde marketplaces con escrow hasta motores de contenido.",
+        projects_view: "Abrir", projects_code: "Código",
+        work_earlier: "Antes — Frontend Developer en K Gumi y Wiptool (2020–2024)",
+        services_label: "FREELANCE", services_h2: "Contrátame para la parte difícil.",
+        services_sub: "Disponible para remoto full-time, contratos y consultoría en IA. Construyamos.",
+        svc1_title: "Agentes de IA y Automatización",
+        svc1_desc: "Agentes a medida, harnesses con n8n, integraciones MCP y bots en WhatsApp / Telegram que mueven la aguja.",
+        svc2_title: "Desarrollo Full-Stack",
+        svc2_desc: "Apps web de punta a punta — Next.js, React, Supabase, Node, pagos y APIs limpias que escalan.",
+        svc3_title: "Estrategia y Consultoría IA",
+        svc3_desc: "Orquestación de LLMs, diseño de harness y loops, modelos cloud + local. Ayudo a equipos a entregar IA que funciona.",
+        svc_cta: "Empezar un proyecto",
+        game_label: "PAUSA CAFÉ", game_h2: "Atrapa los bugs. Esquiva los errores.",
+        game_sub: "El día a día de todo dev, como arcade. Muévete con el mouse o las flechas.",
+        game_start: "Jugar", game_restart: "Jugar de nuevo", game_score: "Puntos", game_best: "Récord", game_lives: "Vidas",
+        game_over: "Game over", game_hint: "Atrapa 🐛 bugs · evita los errores rojos · no dejes caer tres",
+        test_label: "TESTIMONIOS", test_h2: "Lo que dicen de mí.",
+        test_sub: "Acá van tus testimonios reales de clientes y colegas — Alexis, mándamelos y los pongo.",
+        contact_label: "CONTACTO", contact_h2: "Construyamos algo.",
+        contact_sub: "Abierto a roles remotos, contratos y consultoría en todo el mundo. Suelo responder el mismo día.",
+        contact_email: "Correo", contact_whats: "WhatsApp", contact_linkedin: "LinkedIn", contact_github: "GitHub",
+        contact_cta: "Hablemos", footer_built: "Diseñado y construido con intención.", footer_rights: "Todos los derechos reservados."
+      }
+    };
+    this.heroCanvasRef = React.createRef();
+    this.gameCanvasRef = React.createRef();
+    this.progressRef = React.createRef();
+    this.ditherRef = React.createRef();
+    this._counted = false;
+    this.g = null;
+  }
+
+  async componentDidMount() {
+    try { this.setState({ gameBest: parseInt(localStorage.getItem('ap_bug_best') || '0', 10) || 0 }); } catch (e) {}
+    this.initHero();
+    this.initCounters();
+    this.initReveals();
+    this._onScroll = () => this.onScroll();
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this.onScroll();
+    window.addEventListener('resize', this._onResize = () => this.sizeHero());
+  }
+  componentDidUpdate() { this.setupReveals(); }
+  componentWillUnmount() {
+    cancelAnimationFrame(this._heroRaf);
+    cancelAnimationFrame(this._gameRaf);
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('pointermove', this._heroPointer);
+    window.removeEventListener('scroll', this._onScroll);
+    clearTimeout(this._revFailsafe);
+    clearInterval(this._cardTimer);
+    clearInterval(this._swapInterval);
+    if (this._revObserver) this._revObserver.disconnect();
+    if (this._heroRO) this._heroRO.disconnect();
+    cancelAnimationFrame(this._ditherRaf);
+    if (this._ditherResize) window.removeEventListener('resize', this._ditherResize);
+    if (this._ditherMove) window.removeEventListener('pointermove', this._ditherMove);
+  }
+
+  /* ---------- Dither cursor trail ---------- */
+  initDither() {
+    const c = this.ditherRef.current; if (!c) return;
+    try { if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) { c.style.display = 'none'; return; } } catch (e) {}
+    const ctx = c.getContext('2d');
+    const cell = 9;
+    let cols = 0, rows = 0, buf = null;
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this._dw = window.innerWidth; this._dh = window.innerHeight;
+      c.width = this._dw * dpr; c.height = this._dh * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cols = Math.ceil(this._dw / cell) + 1; rows = Math.ceil(this._dh / cell) + 1;
+      buf = new Float32Array(cols * rows);
+    };
+    resize();
+    window.addEventListener('resize', this._ditherResize = resize);
+    const m = { x: -999, y: -999, px: -999, py: -999, active: false };
+    window.addEventListener('pointermove', this._ditherMove = (e) => {
+      if (m.x < -900) { m.px = e.clientX; m.py = e.clientY; }
+      m.x = e.clientX; m.y = e.clientY; m.active = true;
+    });
+    const bayer = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+    const loop = () => {
+      this._ditherRaf = requestAnimationFrame(loop);
+      if (!buf) return;
+      for (let i = 0; i < buf.length; i++) buf[i] *= 0.84;
+      if (m.active) {
+        const steps = 7, R = 7;
+        for (let s = 0; s <= steps; s++) {
+          const mx = m.px + (m.x - m.px) * (s / steps);
+          const my = m.py + (m.y - m.py) * (s / steps);
+          const cgx = Math.floor(mx / cell), cgy = Math.floor(my / cell);
+          for (let gy = -R; gy <= R; gy++) for (let gx = -R; gx <= R; gx++) {
+            const xx = cgx + gx, yy = cgy + gy; if (xx < 0 || yy < 0 || xx >= cols || yy >= rows) continue;
+            const d = Math.sqrt(gx * gx + gy * gy); if (d > R) continue;
+            const add = (1 - d / R) * 0.95; const idx = yy * cols + xx;
+            if (add > buf[idx]) buf[idx] = add;
+          }
+        }
+      }
+      m.px = m.x; m.py = m.y;
+      ctx.clearRect(0, 0, this._dw, this._dh);
+      ctx.fillStyle = '#C6F24E';
+      for (let y = 0; y < rows; y++) {
+        const yb = (y & 3) * 4;
+        for (let x = 0; x < cols; x++) {
+          const v = buf[y * cols + x]; if (v <= 0.05) continue;
+          const th = (bayer[yb + (x & 3)] + 0.5) / 16;
+          if (v > th) { ctx.globalAlpha = v < 0.85 ? v : 0.85; ctx.fillRect(x * cell, y * cell, cell - 1, cell - 1); }
+        }
+      }
+      ctx.globalAlpha = 1;
+    };
+    loop();
+  }
+
+  /* ---------- Scroll reveals + progress ---------- */
+  revealEl(el) { el.style.opacity = '1'; el.style.transform = 'none'; el.__revealed = true; }
+  setupReveals() {
+    try {
+      const els = document.querySelectorAll('.rev');
+      let i = 0;
+      els.forEach((el) => {
+        if (el.__revInit) { if (el.__revealed) { el.style.opacity = '1'; el.style.transform = 'none'; } return; }
+        el.__revInit = true;
+        el.style.willChange = 'opacity, transform';
+        el.style.transition = 'opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1)';
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.94) {
+          el.style.opacity = '0'; el.style.transform = 'translateY(26px)';
+          const d = 60 + (i % 6) * 75; i++;
+          setTimeout(() => this.revealEl(el), d);
+        } else {
+          el.style.opacity = '0'; el.style.transform = 'translateY(44px)';
+          if (this._revObserver) this._revObserver.observe(el);
+        }
+      });
+    } catch (e) {
+      document.querySelectorAll('.rev').forEach((el) => { el.style.opacity = '1'; el.style.transform = 'none'; });
+    }
+  }
+  initReveals() {
+    if ('IntersectionObserver' in window) {
+      this._revObserver = new IntersectionObserver((entries) => {
+        entries.forEach((en) => { if (en.isIntersecting) { this.revealEl(en.target); this._revObserver.unobserve(en.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    }
+    this.setupReveals();
+    this._revFailsafe = setTimeout(() => { document.querySelectorAll('.rev').forEach((el) => this.revealEl(el)); }, 3000);
+  }
+  onScroll() {
+    const h = document.documentElement;
+    const sc = window.scrollY || h.scrollTop || document.body.scrollTop || 0;
+    const max = h.scrollHeight - h.clientHeight;
+    const p = max > 0 ? Math.min(1, sc / max) : 0;
+    if (this.progressRef.current) this.progressRef.current.style.width = (p * 100) + '%';
+    const ids = ['about', 'skills', 'experience', 'projects', 'game', 'contact'];
+    let cur = '';
+    for (const id of ids) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top <= 130) cur = id; }
+    if (!this._navLinks) this._navLinks = document.querySelectorAll('nav .nav-links a');
+    this._navLinks.forEach((a) => { const on = a.getAttribute('href') === '#' + cur; a.style.opacity = on ? '1' : '0.7'; a.style.color = on ? '#C6F24E' : ''; });
+  }
+
+  L(en, es) { return this.state.lang === 'es' ? es : en; }
+
+  setLang(lang) { this.setState({ lang }); }
+
+  /* ---------- Project card-swap (gsap, ReactBits-style) ---------- */
+  initCardSwap() {
+    let tries = 0;
+    const start = () => {
+      const g = window.gsap;
+      const container = document.getElementById('proj-swap');
+      if (!g || !container) { if (tries++ < 120) setTimeout(start, 80); return; }
+      const cards = Array.from(container.querySelectorAll('.swap-card'));
+      if (cards.length < 2) { if (tries++ < 120) setTimeout(start, 80); return; }
+      if (this._swapInited) return; this._swapInited = true;
+      const cardDistance = 56, verticalDistance = 62, skew = 5, delay = 4500, total = cards.length;
+      const cfg = { ease: 'elastic.out(0.6,0.9)', durDrop: 2, durMove: 2, durReturn: 2, promoteOverlap: 0.9, returnDelay: 0.05 };
+      const slot = (i) => ({ x: i * cardDistance, y: -i * verticalDistance, z: -i * cardDistance * 1.5, zIndex: total - i });
+      const place = (el, s) => g.set(el, { x: s.x, y: s.y, z: s.z, xPercent: -50, yPercent: -50, skewY: skew, transformOrigin: 'center center', zIndex: s.zIndex, force3D: true });
+      let order = cards.map((_, i) => i);
+      cards.forEach((el, i) => place(el, slot(i)));
+      const swap = () => {
+        if (order.length < 2) return;
+        const [front, ...rest] = order;
+        const elFront = cards[front];
+        const tl = g.timeline(); this._swapTl = tl;
+        tl.to(elFront, { y: '+=500', duration: cfg.durDrop, ease: cfg.ease });
+        tl.addLabel('promote', '-=' + (cfg.durDrop * cfg.promoteOverlap));
+        rest.forEach((idx, i) => {
+          const el = cards[idx]; const s = slot(i);
+          tl.set(el, { zIndex: s.zIndex }, 'promote');
+          tl.to(el, { x: s.x, y: s.y, z: s.z, duration: cfg.durMove, ease: cfg.ease }, 'promote+=' + (i * 0.15));
+        });
+        const back = slot(total - 1);
+        tl.addLabel('return', 'promote+=' + (cfg.durMove * cfg.returnDelay));
+        tl.call(() => { g.set(elFront, { zIndex: back.zIndex }); }, undefined, 'return');
+        tl.to(elFront, { x: back.x, y: back.y, z: back.z, duration: cfg.durReturn, ease: cfg.ease }, 'return');
+        tl.call(() => { order = [...rest, front]; });
+      };
+      swap();
+      clearInterval(this._swapInterval);
+      this._swapInterval = setInterval(swap, delay);
+      container.addEventListener('mouseenter', () => { if (this._swapTl) this._swapTl.pause(); clearInterval(this._swapInterval); });
+      container.addEventListener('mouseleave', () => { if (this._swapTl) this._swapTl.play(); clearInterval(this._swapInterval); this._swapInterval = setInterval(swap, delay); });
+    };
+    start();
+  }
+
+  /* ---------- Hero node network ---------- */
+  seedNodes() {
+    const N = Math.max(34, Math.floor(this._hw / 26));
+    this.nodes = Array.from({ length: N }, () => ({
+      x: Math.random() * this._hw, y: Math.random() * this._hh,
+      vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
+      r: Math.random() * 1.6 + 1
+    }));
+  }
+  sizeHero() {
+    const c = document.getElementById('hero-canvas'); if (!c) return false;
+    if (this._hcanvas !== c || !this._hctx) { this._hcanvas = c; this._hctx = c.getContext('2d'); this._hw = 0; this._hh = 0; }
+    const r = c.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    if (Math.abs(r.width - this._hw) > 1 || Math.abs(r.height - this._hh) > 1) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr);
+      this._hctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      this._hw = r.width; this._hh = r.height;
+      this.seedNodes();
+    }
+    if (!this.nodes || this.nodes.length < 2) this.seedNodes();
+    return true;
+  }
+  initHero() {
+    this.mouse = { x: -9999, y: -9999 };
+    this._heroPointer = (e) => { const c = document.getElementById('hero-canvas'); if (!c) return; const b = c.getBoundingClientRect(); this.mouse.x = e.clientX - b.left; this.mouse.y = e.clientY - b.top; };
+    window.addEventListener('pointermove', this._heroPointer, { passive: true });
+    const draw = () => {
+      this._heroRaf = requestAnimationFrame(draw);
+      if (!this.sizeHero()) return;
+      const ctx = this._hctx;
+      const w = this._hw, h = this._hh;
+      ctx.clearRect(0, 0, w, h);
+      const ns = this.nodes; if (!ns) return;
+      for (const n of ns) {
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+        const dx = n.x - this.mouse.x, dy = n.y - this.mouse.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 16000) { const f = (16000 - d2) / 16000 * 0.9; n.x += dx / Math.sqrt(d2 + 0.01) * f; n.y += dy / Math.sqrt(d2 + 0.01) * f; }
+      }
+      for (let i = 0; i < ns.length; i++) {
+        for (let j = i + 1; j < ns.length; j++) {
+          const a = ns[i], b = ns[j];
+          const dx = a.x - b.x, dy = a.y - b.y; const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 132) {
+            ctx.globalAlpha = (1 - dist / 132) * 0.18;
+            ctx.strokeStyle = '#F2F2EE'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+      for (const n of ns) {
+        const near = (n.x - this.mouse.x) ** 2 + (n.y - this.mouse.y) ** 2 < 12000;
+        ctx.fillStyle = near ? '#C6F24E' : '#E8E8E2';
+        ctx.globalAlpha = near ? 0.95 : 0.42;
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    };
+    draw();
+  }
+
+  /* ---------- Counters ---------- */
+  initCounters() {
+    const targets = { years: 5, projects: 20, techs: 16 };
+    const run = () => {
+      if (this._counted) return; this._counted = true;
+      const start = performance.now(); const dur = 1400;
+      const tick = (now) => {
+        const p = Math.min(1, (now - start) / dur); const e = 1 - Math.pow(1 - p, 3);
+        this.setState({ counts: {
+          years: Math.round(targets.years * e), projects: Math.round(targets.projects * e), techs: Math.round(targets.techs * e)
+        } });
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const el = document.getElementById('about');
+    if (el && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => { es.forEach(en => { if (en.isIntersecting) { run(); io.disconnect(); } }); }, { threshold: 0.3 });
+      io.observe(el);
+    } else { run(); }
+  }
+
+  /* ---------- Minigame: Catch the Bug ---------- */
+  startGame() {
+    cancelAnimationFrame(this._gameRaf);
+    const c = this.gameCanvasRef.current; if (!c) return;
+    const ctx = c.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = c.clientWidth, H = c.clientHeight;
+    c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.setState({ gameState: 'playing', gameScore: 0, gameLives: 3 });
+    const g = this.g = {
+      W, H, ctx, player: { x: W / 2, w: 96, y: H - 38 }, items: [], t: 0,
+      score: 0, lives: 3, spawnEvery: 56, speed: 2.0, targetX: W / 2
+    };
+    if (!this._gameBound) {
+      this._gameBound = true;
+      c.addEventListener('pointermove', e => { if (!this.g) return; const b = c.getBoundingClientRect(); this.g.targetX = e.clientX - b.left; });
+      c.addEventListener('touchmove', e => { if (!this.g) return; const b = c.getBoundingClientRect(); this.g.targetX = e.touches[0].clientX - b.left; e.preventDefault(); }, { passive: false });
+      window.addEventListener('keydown', e => {
+        if (!this.g || this.state.gameState !== 'playing') return;
+        if (e.key === 'ArrowLeft') this.g.targetX -= 46;
+        if (e.key === 'ArrowRight') this.g.targetX += 46;
+      });
+    }
+    const loop = () => {
+      const g = this.g; if (!g) return;
+      g.t++;
+      g.speed = 2.0 + g.score * 0.018;
+      g.spawnEvery = Math.max(26, 56 - g.score * 0.5);
+      if (g.t % Math.round(g.spawnEvery) === 0) {
+        const isBug = Math.random() < 0.66;
+        g.items.push({ x: 26 + Math.random() * (g.W - 52), y: -20, type: isBug ? 'bug' : 'err', rot: 0 });
+      }
+      g.player.x += (g.targetX - g.player.x) * 0.22;
+      g.player.x = Math.max(g.player.w / 2, Math.min(g.W - g.player.w / 2, g.player.x));
+      const ctx = g.ctx; ctx.clearRect(0, 0, g.W, g.H);
+      // subtle grid
+      ctx.strokeStyle = 'rgba(242,242,238,0.05)'; ctx.lineWidth = 1;
+      for (let x = 0; x < g.W; x += 32) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, g.H); ctx.stroke(); }
+      // player basket
+      ctx.fillStyle = '#F2F2EE';
+      const px = g.player.x - g.player.w / 2;
+      ctx.fillRect(px, g.player.y, g.player.w, 16);
+      ctx.fillStyle = '#C6F24E'; ctx.fillRect(px, g.player.y, g.player.w, 5);
+      ctx.font = '13px "JetBrains Mono", monospace'; ctx.fillStyle = '#0C0D10'; ctx.textAlign = 'center';
+      ctx.fillText('</>', g.player.x, g.player.y + 13);
+      // items
+      let caught = false, lostLife = false;
+      for (const it of g.items) {
+        it.y += g.speed; it.rot += 0.04;
+        ctx.save(); ctx.translate(it.x, it.y); ctx.rotate(Math.sin(it.rot) * 0.3);
+        if (it.type === 'bug') { ctx.font = '26px serif'; ctx.textAlign = 'center'; ctx.fillText('🐛', 0, 9); }
+        else {
+          ctx.fillStyle = '#FF4D4D'; ctx.beginPath();
+          const s = 13; ctx.moveTo(-s, -s); ctx.lineTo(s, -s); ctx.lineTo(s, s); ctx.lineTo(-s, s); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.font = '700 16px "JetBrains Mono", monospace'; ctx.textAlign = 'center'; ctx.fillText('!', 0, 6);
+        }
+        ctx.restore();
+        if (it.y > g.player.y - 6 && it.y < g.player.y + 24 && Math.abs(it.x - g.player.x) < g.player.w / 2 + 6) {
+          it.dead = true;
+          if (it.type === 'bug') { g.score += 10; caught = true; } else { g.lives -= 1; lostLife = true; }
+        } else if (it.y > g.H + 30) { it.dead = true; }
+      }
+      g.items = g.items.filter(it => !it.dead);
+      if (caught || lostLife) this.setState({ gameScore: g.score, gameLives: g.lives });
+      if (g.lives <= 0) { this.endGame(); return; }
+      this._gameRaf = requestAnimationFrame(loop);
+    };
+    loop();
+  }
+  endGame() {
+    cancelAnimationFrame(this._gameRaf);
+    const g = this.g; const score = g ? g.score : 0;
+    let best = this.state.gameBest;
+    if (score > best) { best = score; try { localStorage.setItem('ap_bug_best', String(best)); } catch (e) {} }
+    this.setState({ gameState: 'over', gameScore: score, gameBest: best });
+    this.g = null;
+  }
+
+  renderVals() {
+    const dict = this.i18n || {};
+    const t = dict[this.state.lang] || dict.en || {};
+    const L = (en, es) => this.L(en, es);
+    const activeTab = (on) => 'padding:7px 12px;cursor:pointer;font-weight:700;' + (on ? 'background:#C6F24E;color:#0C0D10;' : 'background:transparent;color:#F2F2EE;');
+
+    const ms = (url, w) => `https://s.wordpress.com/mshots/v1/${encodeURIComponent(url)}?w=${w || 900}`;
+
+    const experience = [
+      { role: L('AI / Automation Engineer', 'Ingeniero IA / Automatización'), company: 'anai', period: L('2025 — Now', '2025 — Ahora'), now: true, tags: ['LLMs', 'AI Agents', 'n8n', 'MCP'],
+        bullets: [ L('Engineering an AI content-generation platform end to end.', 'Desarrollo de una plataforma de generación de contenido con IA de punta a punta.'),
+          L('LLM orchestration: prompts, tools and loops in production.', 'Orquestación de LLMs: prompts, herramientas y loops en producción.'),
+          L('Integrations across cloud and local models.', 'Integraciones entre modelos en la nube y locales.') ] },
+      { role: 'Backend PHP Developer', company: 'iMometrics', period: L('2024 — 2025', '2024 — 2025'), tags: ['CakePHP', 'PHP 7+', 'MySQL', 'Docker'],
+        bullets: [ L('Internal applications with CakePHP 4.6 and PHP 7+.', 'Aplicaciones internas con CakePHP 4.6 y PHP 7+.'),
+          L('Clean practices (PSR, SOLID), migrations and query tuning.', 'Buenas prácticas (PSR, SOLID), migraciones y optimización de consultas.'),
+          L('Automation with n8n, including WhatsApp bots.', 'Automatización con n8n, incluyendo bots de WhatsApp.') ] },
+      { role: L('Freelance — AI & n8n Automation', 'Freelance — Automatización IA y n8n'), company: L('Independent', 'Independiente'), period: L('2023 — Now', '2023 — Ahora'), tags: ['n8n', 'Voice Agents', 'Supabase', 'AWS'],
+        bullets: [ L('Voice agents and LLMs connected through MCP.', 'Agentes de voz y LLMs conectados vía MCP.'),
+          L('Automated flows with REST APIs and Telegram / WhatsApp bots.', 'Flujos automatizados con APIs REST y bots de Telegram / WhatsApp.'),
+          L('Deployments on AWS and local LLMs (Ollama, OpenRouter).', 'Despliegues en AWS y LLMs locales (Ollama, OpenRouter).') ] },
+      { role: 'Frontend Developer', company: 'K Gumi SAS', period: L('2021 — 2024', '2021 — 2024'), tags: ['JavaScript', 'Tailwind', 'HTML5', 'CSS3'],
+        bullets: [ L('Sites and landings with HTML, CSS and JavaScript.', 'Sitios y landings con HTML, CSS y JavaScript.'),
+          L('Responsive interfaces with Tailwind CSS.', 'Interfaces responsive con Tailwind CSS.') ] },
+      { role: 'Frontend Developer', company: 'Wiptool', period: L('2020', '2020'), tags: ['JavaScript', 'Mapbox API', 'CSS3'],
+        bullets: [ L('UI for a web application with Mapbox maps integration.', 'UI para aplicación web con integración de mapas Mapbox.'),
+          L('Responsive design and navigation routes.', 'Diseño responsive y rutas de navegación.') ] }
+    ];
+
+    const projects = [
+      { name: 'anai', kind: L('AI Content Platform', 'Plataforma de contenido IA'), accent: '#5B8DEF', tags: ['LLMs', 'Next.js', 'AI Orchestration'],
+        desc: L('AI platform that generates viral social-media content. My current focus — LLM orchestration in production.', 'Plataforma de IA que genera contenido viral para redes. Mi foco actual — orquestación de LLMs en producción.'),
+        link: 'https://app.anaiapp.ai/es/studio/content/explore', code: null, img: 'assets/cover-anai.png', featured: true,
+        status: L('Current', 'Actual') },
+      { name: 'Sticker Drops', kind: L('Drops Platform', 'Plataforma de drops'), accent: '#FF5CA8', tags: ['Web App', 'Supabase', 'Automation'],
+        desc: L('Platform for limited sticker drops — Alexis, confirm what it does and the stack and I’ll sharpen this copy.', 'Plataforma de drops limitados de stickers — Alexis, confírmame qué hace y el stack y afino el texto.'),
+        link: 'https://sticker-drops-18sbzvmed-poisoned-dogs-projects.vercel.app/', code: 'https://github.com/AlexisPalacioDev/sticker-drops', img: 'assets/cover-sticker.png', featured: true,
+        status: L('Live', 'Activo') },
+      { name: 'Tripi', kind: L('Trekking Marketplace', 'Marketplace de trekking'), accent: '#46C97E', tags: ['React Native', 'Expo', 'Supabase', 'Escrow'],
+        desc: L('Marketplace connecting travelers with certified local guides in Colombia — escrow payments and a creature-collecting gamification layer.', 'Marketplace que conecta viajeros con guías locales certificados en Colombia — pagos en escrow y gamificación coleccionando criaturas.'),
+        link: 'https://github.com/AlexisPalacioDev/apptreeking', code: 'https://github.com/AlexisPalacioDev/apptreeking', img: 'assets/cover-tripi.png', featured: true,
+        status: L('In progress', 'En progreso') },
+      { name: 'Carl Jung AI', kind: L('Educational AI', 'IA educativa'), accent: '#C6F24E', tags: ['Next.js', 'Supabase', 'OpenAI', 'Stripe'],
+        desc: L('Educational platform generating training content based on Carl Jung archetypes, with Stripe & PayPal checkout.', 'Plataforma educativa que genera contenido formativo basado en los arquetipos de Carl Jung, con pagos Stripe y PayPal.'),
+        link: 'https://carljung.app/home', code: null, img: 'assets/cover-carljung.png', featured: false,
+        status: L('Live', 'Activo') },
+      { name: 'BunnyGymWear', kind: 'E-commerce', accent: '#F5C24B', tags: ['Astro', 'Supabase', 'n8n', 'Telegram'],
+        desc: L('E-commerce with a Telegram panel that automates product creation and Instagram posting via n8n.', 'E-commerce con panel en Telegram que automatiza la creación de productos y publicaciones en Instagram vía n8n.'),
+        link: 'https://bunnygymwear.com', code: null, img: 'assets/cover-bunny.png', featured: false,
+        status: L('Live', 'Activo') },
+      { name: 'To-Do Automation', kind: L('AI Productivity', 'Productividad IA'), accent: '#3DD6C0', tags: ['Next.js', 'Supabase', 'n8n', 'OpenAI'],
+        desc: L('Task app with AI: fixes text, detects language and manages tasks through n8n and Supabase.', 'App de tareas con IA: corrige texto, detecta idioma y gestiona tareas vía n8n y Supabase.'),
+        link: 'https://todo-automation-challenge.vercel.app/', code: null, img: 'assets/cover-todo.png', featured: false,
+        status: L('Live', 'Activo') }
+    ];
+
+    const thum = (u) => 'https://image.thum.io/get/width/1000/crop/620/noanimate/' + u;
+    const shots = {
+      'Carl Jung AI': 'https://carljung.app/home',
+      'BunnyGymWear': 'https://bunnygymwear.com',
+      'To-Do Automation': 'https://todo-automation-challenge.vercel.app/',
+      'Sticker Drops': 'https://sticker-drops-18sbzvmed-poisoned-dogs-projects.vercel.app/'
+    };
+    projects.forEach(p => { p.cover = p.img; p.preview = shots[p.name] ? thum(shots[p.name]) : p.img; });
+
+    const A = this.state.activeWork || 0;
+    const work = [
+      { company: 'anai', period: L('2025 — Now', '2025 — Ahora'), role: L('AI / Automation Engineer', 'Ingeniero IA / Automatización'),
+        name: 'anai', kind: L('AI Content Platform', 'Plataforma de contenido IA'), accent: '#5B8DEF', cover: 'assets/cover-anai.png',
+        link: 'https://app.anaiapp.ai/es/studio/content/explore', code: null, status: L('Current', 'Actual'), tags: ['LLMs', 'AI Agents', 'n8n', 'MCP'],
+        desc: L('AI platform that generates viral social-media content — my current focus is LLM orchestration in production.', 'Plataforma de IA que genera contenido viral para redes — mi foco actual es la orquestación de LLMs en producción.'),
+        bullets: [L('Engineering the content-generation platform end to end.', 'Desarrollo de la plataforma de generación de contenido de punta a punta.'), L('LLM orchestration: prompts, tools and loops in production.', 'Orquestación de LLMs: prompts, herramientas y loops en producción.'), L('Integrations across cloud and local models.', 'Integraciones entre modelos en la nube y locales.')] },
+      { company: 'iMometrics', period: L('2024 — 2025', '2024 — 2025'), role: L('Backend Developer', 'Desarrollador Backend'),
+        name: 'iMometrics', kind: L('Internal Tools', 'Herramientas internas'), accent: '#8B7CF6', cover: 'assets/cover-imometrics.png',
+        link: null, code: null, status: L('Shipped', 'Entregado'), tags: ['PHP', 'MySQL', 'Docker', 'n8n'],
+        desc: L('Internal business applications, plus n8n automations including WhatsApp bots.', 'Aplicaciones internas de negocio, más automatizaciones con n8n incluyendo bots de WhatsApp.'),
+        bullets: [L('Internal apps with PHP & MySQL, clean practices (PSR, SOLID).', 'Apps internas con PHP y MySQL, buenas prácticas (PSR, SOLID).'), L('Migrations and query optimization.', 'Migraciones y optimización de consultas.'), L('Automation with n8n, including WhatsApp bots.', 'Automatización con n8n, incluyendo bots de WhatsApp.')] },
+      { company: L('Freelance', 'Freelance'), period: '2024', role: L('Full-Stack Dev', 'Dev Full-Stack'),
+        name: 'Sticker Drops', kind: L('Drops Platform', 'Plataforma de drops'), accent: '#FF5CA8', cover: 'assets/cover-sticker.png',
+        link: 'https://sticker-drops-18sbzvmed-poisoned-dogs-projects.vercel.app/', code: 'https://github.com/AlexisPalacioDev/sticker-drops', status: L('Live', 'Activo'), tags: ['Web App', 'Supabase', 'Automation'],
+        desc: L('Platform for limited sticker drops — Alexis, confirm what it does and the stack and I’ll sharpen this.', 'Plataforma de drops limitados de stickers — Alexis, confírmame qué hace y el stack y lo afino.'),
+        bullets: [L('Built and shipped as a freelance project.', 'Construido y entregado como proyecto freelance.')] },
+      { company: L('Personal project', 'Proyecto propio'), period: L('2024 — Now', '2024 — Ahora'), role: L('Founder / Developer', 'Fundador / Desarrollador'),
+        name: 'Tripi', kind: L('Trekking Marketplace', 'Marketplace de trekking'), accent: '#46C97E', cover: 'assets/cover-tripi.png',
+        link: 'https://github.com/AlexisPalacioDev/apptreeking', code: 'https://github.com/AlexisPalacioDev/apptreeking', status: L('In progress', 'En progreso'), tags: ['React Native', 'Expo', 'Supabase', 'Escrow'],
+        desc: L('Marketplace connecting travelers with certified local guides in Colombia — escrow payments and a creature-collecting gamification layer.', 'Marketplace que conecta viajeros con guías locales certificados en Colombia — pagos en escrow y gamificación coleccionando criaturas.'),
+        bullets: [L('Designed the product, data model and escrow flow.', 'Diseñé el producto, el modelo de datos y el flujo de escrow.'), L('Built in React Native (Expo) with Supabase.', 'Construido en React Native (Expo) con Supabase.')] },
+      { company: L('Freelance', 'Freelance'), period: '2023', role: L('Full-Stack Dev', 'Dev Full-Stack'),
+        name: 'Carl Jung AI', kind: L('Educational AI', 'IA educativa'), accent: '#C6F24E', cover: 'assets/cover-carljung.png',
+        link: 'https://carljung.app/home', code: null, status: L('Live', 'Activo'), tags: ['Next.js', 'Supabase', 'OpenAI', 'Stripe'],
+        desc: L('Educational platform generating training content from Carl Jung archetypes, with Stripe & PayPal checkout.', 'Plataforma educativa que genera contenido formativo desde los arquetipos de Carl Jung, con pagos Stripe y PayPal.'),
+        bullets: [L('Frontend in Next.js/React, auth & data in Supabase.', 'Frontend en Next.js/React, auth y datos en Supabase.'), L('OpenAI content generation + payments.', 'Generación de contenido con OpenAI + pagos.')] },
+      { company: L('Freelance', 'Freelance'), period: '2023', role: L('Full-Stack Dev', 'Dev Full-Stack'),
+        name: 'BunnyGymWear', kind: 'E-commerce', accent: '#F5C24B', cover: 'assets/cover-bunny.png',
+        link: 'https://bunnygymwear.com', code: null, status: L('Live', 'Activo'), tags: ['Astro', 'Supabase', 'n8n', 'Telegram'],
+        desc: L('E-commerce with a Telegram panel that automates product creation and Instagram posting via n8n.', 'E-commerce con panel en Telegram que automatiza la creación de productos y publicaciones en Instagram vía n8n.'),
+        bullets: [L('Store in Astro + Supabase.', 'Tienda en Astro + Supabase.'), L('Telegram→Instagram automation with n8n.', 'Automatización Telegram→Instagram con n8n.')] },
+      { company: L('Freelance', 'Freelance'), period: '2023', role: L('Full-Stack Dev', 'Dev Full-Stack'),
+        name: 'To-Do Automation', kind: L('AI Productivity', 'Productividad IA'), accent: '#3DD6C0', cover: 'assets/cover-todo.png',
+        link: 'https://todo-automation-challenge.vercel.app/', code: null, status: L('Live', 'Activo'), tags: ['Next.js', 'Supabase', 'n8n', 'OpenAI'],
+        desc: L('Task app with AI: fixes text, detects language and manages tasks through n8n and Supabase.', 'App de tareas con IA: corrige texto, detecta idioma y gestiona tareas vía n8n y Supabase.'),
+        bullets: [L('Next.js app wired to n8n + OpenAI.', 'App Next.js conectada a n8n + OpenAI.')] }
+    ];
+    const activeWork = work[A] || work[0];
+    const N = work.length;
+    const imgStyle = { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' };
+    const cardSlot = (i) => {
+      const s = (i - A + N) % N;
+      const tx = s * 42, ty = s * 16, sc = 1 - s * 0.055, hidden = s > 3;
+      return '--tx:' + tx + 'px; --ty:' + ty + 'px; --sc:' + sc + '; ' +
+        'position:absolute; top:0; left:0; width:340px; height:438px; transform-origin:center center; ' +
+        'transform: translate(var(--tx),var(--ty)) scale(var(--sc)) skewY(-3deg); ' +
+        'opacity:' + (hidden ? 0 : 1) + '; z-index:' + (N - s) + '; pointer-events:' + (hidden ? 'none' : 'auto') + '; cursor:pointer; ' +
+        'transition: transform .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease, box-shadow .35s ease, border-color .3s ease; ' +
+        'background:#14151A; border:1px solid ' + (s === 0 ? '#C6F24E' : '#2C2F38') + '; overflow:hidden; ' +
+        'box-shadow:0 ' + (16 + s * 6) + 'px 50px rgba(0,0,0,0.55);';
+    };
+    const stackCards = work.map((p, i) => Object.assign({}, p, {
+      _i: i, _active: i === A, _style: cardSlot(i),
+      _onClick: () => this.setState({ activeWork: i }),
+      _dot: 'width:9px; height:9px; border-radius:50%; cursor:pointer; transition: background .3s, transform .3s; background:' + (i === A ? '#C6F24E' : '#34373F') + '; transform: scale(' + (i === A ? 1.25 : 1) + ');',
+      _imgs: React.createElement('img', { src: p.cover, alt: '', style: imgStyle })
+    }));
+    const frontCard = activeWork;
+
+    const featuredProjects = projects.filter(p => p.featured);
+    const restProjects = projects.filter(p => !p.featured);
+
+    const testimonials = [
+      { quote: L('“Add a real client quote here — Alexis delivered X in Y time.”', '“Pon aquí un testimonio real — Alexis entregó X en Y tiempo.”'), name: L('Client / Company', 'Cliente / Empresa'), role: L('Role — replace me', 'Cargo — reemplázame') },
+      { quote: L('“Drop a teammate or manager quote about working with you.”', '“Pon una cita de un colega o manager sobre trabajar contigo.”'), name: L('Teammate', 'Colega'), role: L('Role — replace me', 'Cargo — reemplázame') },
+      { quote: L('“A freelance client testimonial fits perfectly right here.”', '“Un testimonio de cliente freelance encaja perfecto aquí.”'), name: L('Freelance client', 'Cliente freelance'), role: L('Role — replace me', 'Cargo — reemplázame') }
+    ];
+
+    const skillsAI = ['LLM Orchestration', 'AI Agents', 'MCP', 'n8n', 'RAG', 'Prompt Engineering'];
+    const skillsBackend = ['Node.js', 'Python', 'PHP', 'Supabase'];
+    const skillsFrontend = ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'];
+    const skillsInfra = ['AWS', 'Docker', 'Git / GitHub'];
+
+    return {
+      t,
+      setEN: () => this.setLang('en'), setES: () => this.setLang('es'),
+      enStyle: activeTab(this.state.lang === 'en'), esStyle: activeTab(this.state.lang === 'es'),
+      heroCanvasRef: this.heroCanvasRef, gameCanvasRef: this.gameCanvasRef, progressRef: this.progressRef, ditherRef: this.ditherRef,
+      counts: this.state.counts,
+      experience, projects, featuredProjects, restProjects, testimonials,
+      stackCards, frontCard, work, activeWork, projectsCount: work.length,
+      selectWork: (i) => this.setState({ activeWork: i }),
+      skillsAI, skillsBackend, skillsFrontend, skillsInfra,
+      gameState: this.state.gameState, gameScore: this.state.gameScore, gameBest: this.state.gameBest, gameLives: this.state.gameLives,
+      isIdle: this.state.gameState === 'idle', isPlaying: this.state.gameState === 'playing', isOver: this.state.gameState === 'over',
+      startGame: () => this.startGame(),
+      photoError: (e) => { try { e.target.style.display = 'none'; } catch (_) {} },
+      year: '2026'
+    };
+  }
+}
+</script>
+</body>
+</html>
