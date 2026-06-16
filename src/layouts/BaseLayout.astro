@@ -1,0 +1,50 @@
+---
+import '@fontsource/space-grotesk/400.css';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/600.css';
+import '@fontsource/space-grotesk/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '@fontsource/jetbrains-mono/700.css';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Alexis Palacio — AI Engineer & Full-Stack Developer',
+  description = 'AI orchestration, full-stack development, and automation. Available for remote work and freelance.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!--
+      No-FOUC: read persisted lang from localStorage before first paint
+      and set html[lang] + data-lang so apply.ts can swap on load.
+    -->
+    <script is:inline>
+      (function () {
+        try {
+          var lang = localStorage.getItem('lang');
+          if (lang === 'es') {
+            document.documentElement.lang = 'es';
+            document.documentElement.setAttribute('data-lang', 'es');
+          }
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-bg text-ink font-display">
+    <slot />
+  </body>
+</html>

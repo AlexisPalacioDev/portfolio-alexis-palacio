@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <main class="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 p-8">
+    <h1 class="text-lime font-display text-4xl font-bold">Portfolio — scaffold OK</h1>
+    <p class="text-muted font-mono text-sm">
+      Astro 5 + Tailwind 4 tokens + Fontsource — WU-1 complete
+    </p>
+    <ul class="text-faint font-mono text-xs flex flex-col gap-1 text-center">
+      <li><span class="text-lime">bg-bg</span> → background</li>
+      <li><span class="text-lime">text-lime</span> → lime accent</li>
+      <li><span class="text-ink">text-ink</span> → primary text</li>
+      <li><span class="shadow-hard inline-block px-4 py-2 bg-lime text-bg font-bold">shadow-hard</span></li>
+    </ul>
+  </main>
+</BaseLayout>

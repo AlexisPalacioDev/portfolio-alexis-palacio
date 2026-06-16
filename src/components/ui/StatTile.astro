@@ -1,0 +1,14 @@
+---
+interface Props {
+  value: string;
+  label: string;
+  'data-count': number;
+}
+
+const { value, label, 'data-count': dataCount } = Astro.props;
+---
+
+<div class="bg-surface p-6 flex flex-col gap-1" data-count={dataCount}>
+  <span class="font-display text-4xl font-bold text-lime tabular-nums">{value}</span>
+  <span class="font-mono text-xs text-muted uppercase tracking-[2px]">{label}</span>
+</div>

@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+
+@theme {
+  /* ─── Color palette ─────────────────────────────────────────────────────── */
+  --color-bg:      #0C0D10;   /* page background (near-black)                 */
+  --color-panel:   #101218;   /* alternate section bg (skills, work, tests)   */
+  --color-surface: #14151A;   /* cards, stat tiles                            */
+  --color-ink:     #F2F2EE;   /* primary text (off-white)                     */
+  --color-muted:   #9D9D95;   /* body / secondary text                        */
+  --color-faint:   #6E6E66;   /* mono labels, captions                        */
+  --color-line:    #23252D;   /* section dividers / hairlines                 */
+  --color-line-2:  #2C2F38;   /* card borders / stronger hairlines            */
+  --color-lime:    #C6F24E;   /* primary accent (CTAs, active states)         */
+  --color-blue:    #3D5BFF;   /* secondary accent (hard shadows on lime CTAs) */
+
+  /* ─── Typography ────────────────────────────────────────────────────────── */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* ─── Spacing one-offs that recur ───────────────────────────────────────── */
+  --spacing-section:    110px;   /* section vertical padding                  */
+  --container-content:  1280px;  /* max-width for content wrapper             */
+}
+
+/* ─── Brutalist hard-offset shadow utilities ─────────────────────────────── */
+@utility shadow-hard {
+  box-shadow: 6px 6px 0 var(--color-blue);
+}
+
+@utility shadow-hard-sm {
+  box-shadow: 4px 4px 0 var(--color-blue);
+}
+
+@utility shadow-hard-lime {
+  box-shadow: 6px 6px 0 var(--color-lime);
+}
+
+/* ─── Scroll-snap base ───────────────────────────────────────────────────── */
+html {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+
+/* ─── Base body defaults ─────────────────────────────────────────────────── */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+}
+
+/* ─── Scroll-snap sections ───────────────────────────────────────────────── */
+section {
+  scroll-snap-align: start;
+}
