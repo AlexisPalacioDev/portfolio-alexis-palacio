@@ -94,7 +94,10 @@
     const lift = lifted ? 'translateY(-22px) scale(1.04) ' : '';
 
     card.style.transform = `translate(-50%, -50%) ${lift}${buildCardTransform(geo)}`;
-    card.style.zIndex = lifted ? String(N + 1) : String(geo.zIndex);
+    // Hover only PEEKS the card up — it must NOT jump to the front. Keep the
+    // natural slot z-index so it stays behind the active card; only a click
+    // (activate) brings a card forward.
+    card.style.zIndex = String(geo.zIndex);
     card.style.opacity = isVisible ? '1' : '0';
     card.style.pointerEvents = isVisible ? 'auto' : 'none';
     card.style.borderColor = geo.isFront || lifted ? '#C6F24E' : '#2C2F38';
