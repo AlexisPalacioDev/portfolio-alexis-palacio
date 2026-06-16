@@ -1,6 +1,7 @@
 ---
 import { t } from '../../lib/i18n/store';
 import Cta from '../ui/Cta.astro';
+import HeroCanvas from '../islands/HeroCanvas.astro';
 ---
 
 <section
@@ -8,12 +9,13 @@ import Cta from '../ui/Cta.astro';
   class="relative min-h-screen flex flex-col justify-center overflow-hidden"
   style="padding: 130px 40px 72px;"
 >
-  <!-- Node-network canvas (populated by HeroCanvas island in WU-4) -->
+  <!-- Node-network canvas — HeroCanvas island attaches its RAF loop here -->
   <canvas
     id="hero-canvas"
     aria-hidden="true"
     style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;"
   ></canvas>
+  <HeroCanvas />
 
   <!-- Giant translucent "AI" watermark -->
   <div
@@ -35,7 +37,7 @@ import Cta from '../ui/Cta.astro';
       >
         <!-- Pulsing dot (animation via global CSS @keyframes blink in WU-4, static here) -->
         <span
-          class="bg-lime"
+          class="bg-lime dot-blink"
           style="width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 10px #C6F24E; display: inline-block;"
           aria-hidden="true"
         ></span>
@@ -104,9 +106,9 @@ import Cta from '../ui/Cta.astro';
 
   </div>
 
-  <!-- Scroll cue (floaty animation wired in WU-4, static here) -->
+  <!-- Scroll cue (float-up-down animation via CSS @keyframes in global.css) -->
   <div
-    class="font-mono text-faint"
+    class="font-mono text-faint scroll-cue"
     style="position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 3; font-size: 11px; letter-spacing: 2px; display: flex; flex-direction: column; align-items: center; gap: 6px;"
     aria-hidden="true"
   >

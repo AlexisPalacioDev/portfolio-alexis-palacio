@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Eyebrow from '../ui/Eyebrow.astro';
 import { work, pick } from '../../lib/data/work';
 import { computeSlot, buildCardTransform } from '../../lib/deck/slot';
+import ProjectDeck from '../islands/ProjectDeck.astro';
 
 // SSR active index — always 0 at build time. WU-4 island takes over at runtime.
 const ACTIVE = 0;
@@ -312,14 +313,18 @@ const activeItem = work[ACTIVE];
 </section>
 
 <!--
-  Deck click interactivity is implemented in WU-4 (ProjectDeck island).
-  The SSR output above already has the correct initial layout (active=0)
-  so the page looks correct before hydration.
-  WU-4 will read data-active / data-count / data-index attributes and
-  attach event listeners. data-work is passed via JSON embed below.
+  ProjectDeck island: attaches click handlers, indicator dot handlers, and
+  wires the lang-reactive detail panel. The SSR static fan above is already
+  correctly rendered (active=0) so there is no hydration pop-in.
+  Data is supplied via the JSON embed below (avoids re-importing ESM modules
+  client-side on the static build).
 -->
-<script type="application/json" id="work-data">
-  {JSON.stringify(work.map((item, i) => ({
+<ProjectDeck />
+
+<script
+  type="application/json"
+  id="work-data"
+  set:html={JSON.stringify(work.map((item, i) => ({
     id: item.id,
     index: i,
     company: item.company,
@@ -335,4 +340,4 @@ const activeItem = work[ACTIVE];
     bullets: item.bullets,
     tags: item.tags,
   })))}
-</script>
+></script>

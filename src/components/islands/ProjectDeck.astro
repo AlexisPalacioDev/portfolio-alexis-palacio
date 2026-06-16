@@ -1,0 +1,223 @@
+---
+/**
+ * ProjectDeck island — interactive card fan + detail panel for #projects.
+ *
+ * Design: sdd/portfolio-rebuild/design §8
+ * Spec:   sdd/portfolio-rebuild/spec CAP-06
+ *
+ * Hydration strategy: vanilla Astro <script> (deferred module script).
+ * The Work.astro SSR pass already rendered the static fan (active=0) so
+ * there is NO visual pop-in — this island only attaches click handlers and
+ * wires the lang-reactive detail panel re-render.
+ *
+ * Data source: <script type="application/json" id="work-data"> embedded
+ * by Work.astro at build time. Avoids re-importing ESM modules client-side.
+ *
+ * Lang integration (highest-risk coupling per design):
+ * Subscribes to $lang. When the language changes while a non-default project
+ * is active, the detail panel immediately re-renders in the new language.
+ */
+---
+
+<script>
+  import { computeSlot, buildCardTransform } from '../../lib/deck/slot';
+  import { $lang } from '../../lib/i18n/store';
+
+  // ── Type: serialized work item (cover is omitted from JSON — not needed client-side) ─
+  interface WorkItemClient {
+    id: string;
+    index: number;
+    company: string;
+    name: string;
+    accent: string;
+    links: { link: string | null; code: string | null };
+    statusKey: string;
+    period: { en: string; es: string };
+    role: { en: string; es: string };
+    kind: { en: string; es: string };
+    status: { en: string; es: string };
+    desc: { en: string; es: string };
+    bullets: { en: string[]; es: string[] };
+    tags: readonly string[];
+  }
+
+  // ── Read embedded JSON data ────────────────────────────────────────────────
+  const dataEl = document.getElementById('work-data');
+  if (!dataEl) throw new Error('[ProjectDeck] #work-data JSON embed not found');
+  const workData: WorkItemClient[] = JSON.parse(dataEl.textContent ?? '[]');
+  const N = workData.length;
+  if (N === 0) throw new Error('[ProjectDeck] work-data is empty');
+
+  // ── DOM refs ──────────────────────────────────────────────────────────────
+  const deckRoot = document.getElementById('work-deck');
+  if (!deckRoot) throw new Error('[ProjectDeck] #work-deck not found');
+
+  const cards = Array.from(
+    deckRoot.querySelectorAll<HTMLElement>('.work-card')
+  );
+  const dotsContainer = document.getElementById('work-dots');
+  const dots = dotsContainer
+    ? Array.from(dotsContainer.querySelectorAll<HTMLElement>('.work-dot'))
+    : [];
+
+  // Detail panel sub-elements
+  const detailCompany = document.getElementById('detail-company');
+  const detailPeriod = document.getElementById('detail-period');
+  const detailStatus = document.getElementById('detail-status');
+  const detailRole = document.getElementById('detail-role');
+  const detailName = document.getElementById('detail-name');
+  const detailKind = document.getElementById('detail-kind');
+  const detailDesc = document.getElementById('detail-desc');
+  const detailBullets = document.getElementById('detail-bullets');
+  const detailTags = document.getElementById('detail-tags');
+  const detailLinks = document.getElementById('detail-links');
+
+  // ── Module state ──────────────────────────────────────────────────────────
+  let active = 0; // currently active (front) card index
+
+  // ── Helper: pick localized value ──────────────────────────────────────────
+  function pick<T>(loc: { en: T; es: T }, lang: string): T {
+    return lang === 'es' ? loc.es : loc.en;
+  }
+
+  // ── Re-layout cards (CSS transitions handle the animation) ────────────────
+  function layoutCards(): void {
+    cards.forEach((card, i) => {
+      const geo = computeSlot(i, active, N);
+      const transform = buildCardTransform(geo);
+      const isVisible = !geo.hidden;
+
+      // Base transform — note: SSR already set translate(-50%,-50%) as the centering
+      // offset. We must compose our slot transform ON TOP of the centering.
+      card.style.transform = `translate(-50%, -50%) ${transform}`;
+      card.style.zIndex = String(geo.zIndex);
+      card.style.opacity = isVisible ? '1' : '0';
+      card.style.pointerEvents = isVisible ? 'auto' : 'none';
+      card.style.borderColor = geo.isFront ? '#C6F24E' : '#2C2F38';
+      card.setAttribute('tabindex', isVisible ? '0' : '-1');
+    });
+  }
+
+  // ── Re-render detail panel ─────────────────────────────────────────────────
+  function renderDetail(item: WorkItemClient, lang: string): void {
+    if (detailCompany) detailCompany.textContent = item.company;
+    if (detailPeriod) detailPeriod.textContent = pick(item.period, lang);
+    if (detailStatus) detailStatus.textContent = pick(item.status, lang);
+    if (detailRole) detailRole.textContent = pick(item.role, lang);
+    if (detailName) detailName.textContent = item.name;
+    if (detailKind) {
+      detailKind.textContent = pick(item.kind, lang);
+      detailKind.style.color = item.accent;
+    }
+    if (detailDesc) detailDesc.textContent = pick(item.desc, lang);
+
+    // Bullets — rebuild list items
+    if (detailBullets) {
+      const bullets = pick(item.bullets, lang);
+      detailBullets.innerHTML = bullets
+        .map(
+          (b) =>
+            `<li class="text-muted" style="display:flex;gap:12px;font-size:15px;line-height:1.55;">` +
+            `<span class="font-mono text-lime" aria-hidden="true">▹</span>${escapeHtml(b)}</li>`
+        )
+        .join('');
+    }
+
+    // Tags — rebuild tag chips
+    if (detailTags) {
+      detailTags.innerHTML = item.tags
+        .map(
+          (tag) =>
+            `<span class="font-mono" style="padding:5px 11px;border:1px solid #34373F;color:#C8C8C0;font-size:11.5px;">${escapeHtml(tag)}</span>`
+        )
+        .join('');
+    }
+
+    // Action links
+    if (detailLinks) {
+      let linksHtml = '';
+      if (item.links.link) {
+        linksHtml += `<a href="${escapeAttr(item.links.link)}" target="_blank" rel="noopener noreferrer"
+          class="font-display font-bold text-bg bg-lime shadow-hard-sm"
+          style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;font-size:14px;"
+          data-i18n="projects_view">
+          ${lang === 'es' ? 'Ver proyecto' : 'Open project'} <span class="font-mono" aria-hidden="true">↗</span>
+        </a>`;
+      }
+      if (item.links.code) {
+        linksHtml += `<a href="${escapeAttr(item.links.code)}" target="_blank" rel="noopener noreferrer"
+          class="font-display font-bold text-ink"
+          style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;font-size:14px;border:1px solid #34373F;"
+          data-i18n="projects_code">
+          ${lang === 'es' ? 'Código' : 'Code'} <span class="font-mono" aria-hidden="true">↗</span>
+        </a>`;
+      }
+      detailLinks.innerHTML = linksHtml;
+    }
+  }
+
+  // ── Update indicator dots ─────────────────────────────────────────────────
+  function renderDots(): void {
+    dots.forEach((dot, i) => {
+      const isActive = i === active;
+      dot.style.background = isActive ? '#C6F24E' : '#2C2F38';
+      dot.style.transform = isActive ? 'scale(1.25)' : 'scale(1)';
+      dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+  }
+
+  // ── Activate a card by index ──────────────────────────────────────────────
+  function activate(index: number): void {
+    active = ((index % N) + N) % N; // clamp/wrap
+    layoutCards();
+    renderDots();
+    renderDetail(workData[active], $lang.get());
+  }
+
+  // ── Escape helpers (avoid XSS from data) ─────────────────────────────────
+  function escapeHtml(s: string): string {
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function escapeAttr(s: string): string {
+    return s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ── Attach card click handlers ────────────────────────────────────────────
+  cards.forEach((card, i) => {
+    card.addEventListener('click', () => activate(i));
+    // Keyboard: Enter/Space should also activate
+    card.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate(i);
+      }
+    });
+  });
+
+  // ── Attach dot click handlers ─────────────────────────────────────────────
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => activate(i));
+  });
+
+  // ── Lang reactivity: re-render panel when language changes ────────────────
+  // This is the key WU-2/WU-4 integration. Toggling lang while a non-default
+  // project is active must update the panel text immediately.
+  $lang.subscribe((lang) => {
+    renderDetail(workData[active], lang);
+  });
+
+  // ── Initial layout sync ───────────────────────────────────────────────────
+  // SSR already rendered with active=0, so we just attach handlers.
+  // Call layoutCards() to ensure the DOM attributes match module state
+  // (in case of HMR or any mismatch).
+  layoutCards();
+  renderDots();
+
+  // Signal to E2E tests (and any other observers) that the island is hydrated
+  // and event handlers are attached. Tests can wait for this attribute.
+  deckRoot.setAttribute('data-hydrated', 'true');
+</script>

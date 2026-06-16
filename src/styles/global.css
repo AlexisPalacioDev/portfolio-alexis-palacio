@@ -52,3 +52,55 @@ body {
 section {
   scroll-snap-align: start;
 }
+
+/* ─── Marquee animation — tech band between Hero and About ──────────────── */
+/* The band uses two identical <span> children; the animation scrolls the
+   outer flex container left by exactly 50% so the loop is seamless. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-inner {
+  animation: marquee 26s linear infinite;
+  /* Pause on hover (accessibility: reduces motion stress for hover-capable users) */
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-inner {
+    animation: none;
+  }
+}
+
+/* ─── Pulsing lime dot animation (hero status pill + availability pill) ─── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+.dot-blink {
+  animation: blink 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot-blink {
+    animation: none;
+  }
+}
+
+/* ─── Scroll cue float animation ─────────────────────────────────────────── */
+@keyframes float-up-down {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(-8px); }
+}
+
+.scroll-cue {
+  animation: float-up-down 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue {
+    animation: none;
+  }
+}

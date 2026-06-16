@@ -152,5 +152,26 @@ const {
     <div class="pt-[67px]">
       <slot />
     </div>
+
+    <!--
+      Scroll behavior module scripts — bundled by Astro as deferred module scripts.
+      They observe the whole-page DOM so they belong in the layout, not individual sections.
+      All run after DOMContentLoaded (module scripts are deferred by default).
+    -->
+    <script>
+      import { initScrollProgress } from '../lib/dom/scrollProgress';
+      import { initReveals } from '../lib/dom/reveals';
+      import { initCountUp } from '../lib/dom/countUp';
+      import { initActiveNav } from '../lib/dom/activeNav';
+
+      // Note: initI18n() is called by LangToggle.astro which loads on every page.
+      // Calling it here again would create a duplicate $lang subscriber and double
+      // the querySelectorAll swap (harmless but wasteful). Keep the single call in
+      // LangToggle so the i18n module is co-located with the toggle that drives it.
+      initScrollProgress();
+      initReveals();
+      initCountUp();
+      initActiveNav();
+    </script>
   </body>
 </html>

@@ -1,0 +1,228 @@
+---
+/**
+ * HeroCanvas island — node-network particle effect on #hero-canvas.
+ *
+ * This is a pure vanilla Astro island. The <script> below is bundled by
+ * Astro as a module script (deferred/async by default) so it runs after
+ * DOMContentLoaded — equivalent to client:idle semantics without a
+ * framework directive.
+ *
+ * Design source: design_handoff_portfolio/Portfolio.dc.html § canvas RAF
+ * Design doc:    sdd/portfolio-rebuild/design §7
+ */
+---
+
+<script>
+  // ── Canvas color constants (mirror global.css tokens — avoids hex in className rules
+  //    but canvas ctx.fillStyle legitimately uses literal colors)
+  const CANVAS_COLORS = {
+    nodeDim: '#E8E8E2',
+    nodeLime: '#C6F24E',
+    line: '#F2F2EE',
+  } as const;
+
+  // ── Node type ─────────────────────────────────────────────────────────────
+  type Node = { x: number; y: number; vx: number; vy: number; r: number };
+
+  // ── State ─────────────────────────────────────────────────────────────────
+  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
+  if (!canvas) throw new Error('[HeroCanvas] #hero-canvas not found');
+
+  const ctx = canvas.getContext('2d')!;
+  const mouse = { x: -9999, y: -9999 };
+  let nodes: Node[] = [];
+  let hw = 0;
+  let hh = 0;
+  let raf = 0;
+  let running = false;
+
+  // ── prefers-reduced-motion check ──────────────────────────────────────────
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Seed nodes ────────────────────────────────────────────────────────────
+  function seed(w: number, h: number): void {
+    const N = Math.max(34, Math.floor(w / 26)); // density from prototype
+    nodes = Array.from({ length: N }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: Math.random() * 1.6 + 0.6,
+    }));
+  }
+
+  // ── DPR-aware resize with <2px guard and >1px change guard ───────────────
+  // Returns false when the canvas bounding box is too small (e.g., during
+  // scroll-snap transitions where the hero section is mid-animation).
+  function size(): boolean {
+    const r = canvas!.getBoundingClientRect();
+    // <2px guard: skip resize during snap mid-transition (avoids zero-size canvas)
+    if (r.width < 2 || r.height < 2) return false;
+    // >1px change guard: only re-size when dimensions actually changed
+    if (Math.abs(r.width - hw) > 1 || Math.abs(r.height - hh) > 1) {
+      const dpr = Math.min(devicePixelRatio || 1, 2); // clamp DPR at 2 for perf
+      canvas!.width = Math.round(r.width * dpr);
+      canvas!.height = Math.round(r.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      hw = r.width;
+      hh = r.height;
+      seed(hw, hh);
+    }
+    // Guard: if seed wasn't called yet (first frame), seed now
+    if (nodes.length < 2) seed(hw || r.width, hh || r.height);
+    return true;
+  }
+
+  // ── Single static frame (for reduced-motion) ─────────────────────────────
+  function drawStatic(): void {
+    if (!size()) return;
+    ctx.clearRect(0, 0, hw, hh);
+    // Draw lines
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i];
+        const b = nodes[j];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        if (dist < 132) {
+          ctx.globalAlpha = (1 - dist / 132) * 0.18;
+          ctx.strokeStyle = CANVAS_COLORS.line;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+    // Draw dots
+    for (const n of nodes) {
+      ctx.fillStyle = CANVAS_COLORS.nodeDim;
+      ctx.globalAlpha = 0.42;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // ── RAF loop (full animation) ─────────────────────────────────────────────
+  function draw(): void {
+    raf = requestAnimationFrame(draw);
+    if (!size()) return;
+
+    ctx.clearRect(0, 0, hw, hh);
+
+    // Drift, wall-bounce, cursor repulsion
+    for (const n of nodes) {
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < 0 || n.x > hw) n.vx *= -1;
+      if (n.y < 0 || n.y > hh) n.vy *= -1;
+      const dx = n.x - mouse.x;
+      const dy = n.y - mouse.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < 16000) {
+        // repulsion radius² = 16000 (≈126px radius)
+        const f = ((16000 - d2) / 16000) * 0.9;
+        const dist = Math.sqrt(d2 + 0.01);
+        n.x += (dx / dist) * f;
+        n.y += (dy / dist) * f;
+      }
+    }
+
+    // Lines between nodes closer than 132px, alpha by distance
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i];
+        const b = nodes[j];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        if (dist < 132) {
+          ctx.globalAlpha = (1 - dist / 132) * 0.18;
+          ctx.strokeStyle = CANVAS_COLORS.line;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Dots — lime highlight near cursor (radius² = 12000, ≈109px)
+    for (const n of nodes) {
+      const near = (n.x - mouse.x) ** 2 + (n.y - mouse.y) ** 2 < 12000;
+      ctx.fillStyle = near ? CANVAS_COLORS.nodeLime : CANVAS_COLORS.nodeDim;
+      ctx.globalAlpha = near ? 0.95 : 0.42;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // ── Start / stop ──────────────────────────────────────────────────────────
+  function start(): void {
+    if (running) return;
+    running = true;
+    if (prefersReducedMotion) {
+      // One static frame then stop — respects user preference
+      drawStatic();
+    } else {
+      draw();
+    }
+  }
+
+  function stop(): void {
+    if (!running) return;
+    running = false;
+    cancelAnimationFrame(raf);
+  }
+
+  // ── IntersectionObserver: pause when hero leaves viewport ─────────────────
+  // This saves CPU/battery while the user scrolls through other sections.
+  // Also dodges the scroll-snap + canvas resize race (design §7).
+  const heroSection = canvas.closest('section') ?? canvas.parentElement;
+  if (heroSection) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            start();
+          } else {
+            stop();
+          }
+        }
+      },
+      { threshold: 0.01 } // pause as soon as hero is mostly out of view
+    );
+    observer.observe(heroSection);
+  } else {
+    // Fallback: just start (no section parent found)
+    start();
+  }
+
+  // ── Cursor tracking (passive for perf) ────────────────────────────────────
+  canvas.addEventListener(
+    'pointermove',
+    (e) => {
+      const rect = canvas!.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    },
+    { passive: true }
+  );
+
+  // Reset cursor when pointer leaves canvas
+  canvas.addEventListener('pointerleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  // ── HMR / view-transition teardown ────────────────────────────────────────
+  // Astro static output doesn't use View Transitions by default but guard anyway.
+  document.addEventListener('astro:before-swap', () => {
+    stop();
+  });
+</script>
