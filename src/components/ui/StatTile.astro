@@ -3,12 +3,38 @@ interface Props {
   value: string;
   label: string;
   'data-count': number;
+  /** i18n key for the label — used by apply.ts to swap on lang change */
+  'data-i18n-label'?: string;
+  /** Override the value color (defaults to text-lime) */
+  valueColor?: string;
 }
 
-const { value, label, 'data-count': dataCount } = Astro.props;
+const {
+  value,
+  label,
+  'data-count': dataCount,
+  'data-i18n-label': dataI18nLabel,
+  valueColor,
+} = Astro.props;
 ---
 
-<div class="bg-surface p-6 flex flex-col gap-1" data-count={dataCount}>
-  <span class="font-display text-4xl font-bold text-lime tabular-nums">{value}</span>
-  <span class="font-mono text-xs text-muted uppercase tracking-[2px]">{label}</span>
+<div
+  class="bg-surface"
+  style="border: 1px solid #23252D; padding: 22px 18px;"
+  data-count={dataCount}
+>
+  <div
+    class="font-display font-bold"
+    style={`font-size: 46px; letter-spacing: -2px; line-height: 1; color: ${valueColor ?? '#C6F24E'};`}
+    data-stat-value
+  >
+    {value}
+  </div>
+  <div
+    class="font-mono text-faint"
+    style="font-size: 11px; margin-top: 10px; letter-spacing: 0.5px; text-transform: uppercase;"
+    data-i18n={dataI18nLabel}
+  >
+    {label}
+  </div>
 </div>

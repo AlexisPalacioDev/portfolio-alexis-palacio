@@ -1,0 +1,179 @@
+---
+import { t } from '../../lib/i18n/store';
+import Eyebrow from '../ui/Eyebrow.astro';
+---
+
+<section
+  id="contact"
+  class="min-h-screen"
+  style="padding: 120px 40px; border-top: 1px solid #23252D;"
+>
+  <div style="max-width: 1180px; margin: 0 auto;">
+
+    <!-- Eyebrow 06 -->
+    <div class="rev" style="margin-bottom: 22px;">
+      <Eyebrow index="06" data-i18n="contact_label">{t('en', 'contact_label')}</Eyebrow>
+    </div>
+
+    <!-- Giant headline -->
+    <h2
+      class="rev font-display font-bold text-ink"
+      style="font-size: clamp(44px, 9vw, 132px); line-height: 0.9; letter-spacing: -0.04em; margin: 0 0 24px;"
+      data-i18n="contact_h2"
+    >
+      {t('en', 'contact_h2')}
+    </h2>
+
+    <p
+      class="rev text-muted"
+      style="font-size: 18px; line-height: 1.6; max-width: 560px; margin: 0 0 46px;"
+      data-i18n="contact_sub"
+    >
+      {t('en', 'contact_sub')}
+    </p>
+
+    <!-- 4 contact tiles — 2-column grid -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px;">
+
+      <!-- Email -->
+      <a
+        href="mailto:alexis26-93@live.com"
+        class="rev bg-surface"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #2C2F38; padding: 24px 26px; transition: border-color .22s ease, transform .22s ease; text-decoration: none;"
+        onmouseenter="this.style.borderColor='#C6F24E'; this.style.transform='translateY(-3px)'"
+        onmouseleave="this.style.borderColor='#2C2F38'; this.style.transform='translateY(0)'"
+      >
+        <div>
+          <div
+            class="font-mono text-faint"
+            style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;"
+            data-i18n="contact_email"
+          >
+            {t('en', 'contact_email')}
+          </div>
+          <div class="font-bold text-ink" style="font-size: 18px; margin-top: 5px;">
+            alexis26-93@live.com
+          </div>
+        </div>
+        <span class="font-mono text-lime" aria-hidden="true">↗</span>
+      </a>
+
+      <!-- WhatsApp -->
+      <a
+        href="https://wa.me/573216551350?text=Hola%20Alexis%2C%20vi%20tu%20portafolio."
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rev bg-surface"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #2C2F38; padding: 24px 26px; transition: border-color .22s ease, transform .22s ease; text-decoration: none;"
+        onmouseenter="this.style.borderColor='#46C97E'; this.style.transform='translateY(-3px)'"
+        onmouseleave="this.style.borderColor='#2C2F38'; this.style.transform='translateY(0)'"
+      >
+        <div>
+          <div
+            class="font-mono text-faint"
+            style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;"
+            data-i18n="contact_whats"
+          >
+            {t('en', 'contact_whats')}
+          </div>
+          <div class="font-bold text-ink" style="font-size: 18px; margin-top: 5px;">
+            +57 321 655 1350
+          </div>
+        </div>
+        <span class="font-mono" style="color: #46C97E;" aria-hidden="true">↗</span>
+      </a>
+
+      <!-- LinkedIn -->
+      <a
+        href="https://www.linkedin.com/in/poisoneddog/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rev bg-surface"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #2C2F38; padding: 24px 26px; transition: border-color .22s ease, transform .22s ease; text-decoration: none;"
+        onmouseenter="this.style.borderColor='#5B8DEF'; this.style.transform='translateY(-3px)'"
+        onmouseleave="this.style.borderColor='#2C2F38'; this.style.transform='translateY(0)'"
+      >
+        <div>
+          <div
+            class="font-mono text-faint"
+            style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;"
+            data-i18n="contact_linkedin"
+          >
+            {t('en', 'contact_linkedin')}
+          </div>
+          <div class="font-bold text-ink" style="font-size: 18px; margin-top: 5px;">
+            in/poisoneddog
+          </div>
+        </div>
+        <span class="font-mono" style="color: #5B8DEF;" aria-hidden="true">↗</span>
+      </a>
+
+      <!-- GitHub -->
+      <a
+        href="https://github.com/AlexisPalacioDev"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rev bg-surface"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #2C2F38; padding: 24px 26px; transition: border-color .22s ease, transform .22s ease; text-decoration: none;"
+        onmouseenter="this.style.borderColor='#F2F2EE'; this.style.transform='translateY(-3px)'"
+        onmouseleave="this.style.borderColor='#2C2F38'; this.style.transform='translateY(0)'"
+      >
+        <div>
+          <div
+            class="font-mono text-faint"
+            style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;"
+            data-i18n="contact_github"
+          >
+            {t('en', 'contact_github')}
+          </div>
+          <div class="font-bold text-ink" style="font-size: 18px; margin-top: 5px;">
+            AlexisPalacioDev
+          </div>
+        </div>
+        <span class="font-mono text-ink" aria-hidden="true">↗</span>
+      </a>
+
+    </div>
+
+    <!-- Bottom action row: lime CTA + outline CV + availability pill -->
+    <div
+      class="rev"
+      style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 28px;"
+    >
+      <a
+        href="mailto:alexis26-93@live.com"
+        class="font-display font-bold text-bg bg-lime shadow-hard"
+        style="display: inline-flex; align-items: center; gap: 10px; padding: 17px 32px; font-size: 17px;"
+        data-i18n="contact_cta"
+      >
+        {t('en', 'contact_cta')}
+        <span class="font-mono" aria-hidden="true">→</span>
+      </a>
+
+      <a
+        href="/Alexis-Palacio-CV.pdf"
+        download="Alexis-Palacio-CV.pdf"
+        class="font-display font-bold text-ink"
+        style="display: inline-flex; align-items: center; gap: 10px; padding: 17px 32px; font-size: 17px; border: 2px solid #34373F;"
+        data-i18n="cv"
+      >
+        {t('en', 'cv')}
+        <span class="font-mono" aria-hidden="true">↓</span>
+      </a>
+
+      <!-- Availability pill -->
+      <span
+        class="font-mono text-lime"
+        style="display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px;"
+      >
+        <span
+          class="bg-lime"
+          style="width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 10px #C6F24E; display: inline-block;"
+          aria-hidden="true"
+        ></span>
+        <span data-i18n="available">{t('en', 'available')}</span>
+      </span>
+    </div>
+
+  </div>
+</section>

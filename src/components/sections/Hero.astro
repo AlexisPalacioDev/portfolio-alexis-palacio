@@ -1,0 +1,116 @@
+---
+import { t } from '../../lib/i18n/store';
+import Cta from '../ui/Cta.astro';
+---
+
+<section
+  id="home"
+  class="relative min-h-screen flex flex-col justify-center overflow-hidden"
+  style="padding: 130px 40px 72px;"
+>
+  <!-- Node-network canvas (populated by HeroCanvas island in WU-4) -->
+  <canvas
+    id="hero-canvas"
+    aria-hidden="true"
+    style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;"
+  ></canvas>
+
+  <!-- Giant translucent "AI" watermark -->
+  <div
+    aria-hidden="true"
+    style="position: absolute; right: -3%; bottom: -11%; z-index: 1; font-weight: 700; font-size: 38vw; line-height: 0.7; color: rgba(198,242,78,0.045); letter-spacing: -2vw; pointer-events: none; user-select: none;"
+  >
+    AI
+  </div>
+
+  <!-- Content -->
+  <div style="position: relative; z-index: 3; max-width: 1340px; margin: 0 auto; width: 100%;">
+
+    <!-- Top row: status pill + location -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 34px;">
+      <!-- Status pill -->
+      <div
+        class="font-mono font-bold text-lime"
+        style="display: inline-flex; align-items: center; gap: 10px; padding: 9px 15px; border: 1px solid #34373F; background: rgba(20,21,26,0.55); font-size: 12px; letter-spacing: 1px;"
+      >
+        <!-- Pulsing dot (animation via global CSS @keyframes blink in WU-4, static here) -->
+        <span
+          class="bg-lime"
+          style="width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 10px #C6F24E; display: inline-block;"
+          aria-hidden="true"
+        ></span>
+        <span data-i18n="hero_status">{t('en', 'hero_status')}</span>
+      </div>
+
+      <!-- Location -->
+      <div
+        class="font-mono text-faint"
+        style="font-size: 12px; text-align: right; line-height: 1.8;"
+      >
+        EST. 2020<br />
+        <span data-i18n="hero_loc">{t('en', 'hero_loc')}</span>
+      </div>
+    </div>
+
+    <!-- Giant H1 -->
+    <h1
+      class="font-display font-bold text-ink"
+      style="font-size: clamp(54px, 12vw, 188px); line-height: 0.85; letter-spacing: -0.045em; margin: 0;"
+    >
+      <span style="display: block;" data-i18n="hero_h1">{t('en', 'hero_h1')}</span>
+      <span style="display: block; color: #C6F24E;" data-i18n="hero_h1_accent">{t('en', 'hero_h1_accent')}</span>
+    </h1>
+
+    <!-- Sub-row: description + CTAs -->
+    <div style="display: grid; grid-template-columns: 1fr 0.82fr; gap: 44px; margin-top: 46px; align-items: end;">
+      <p
+        class="text-muted"
+        style="font-size: clamp(16px, 1.5vw, 20px); line-height: 1.6; margin: 0; max-width: 600px;"
+        data-i18n="hero_sub"
+      >
+        {t('en', 'hero_sub')}
+      </p>
+
+      <div>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px;">
+          <!-- Hire me CTA — primary lime -->
+          <a
+            href="#contact"
+            class="font-display font-bold text-bg bg-lime shadow-hard"
+            style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; font-size: 16px;"
+            data-i18n="hero_cta_hire"
+          >
+            {t('en', 'hero_cta_hire')}
+            <span class="font-mono" aria-hidden="true">→</span>
+          </a>
+          <!-- Download CV — outline -->
+          <a
+            href="/Alexis-Palacio-CV.pdf"
+            download="Alexis-Palacio-CV.pdf"
+            class="font-display font-bold text-ink"
+            style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; font-size: 16px; background: transparent; border: 2px solid #34373F;"
+            data-i18n="hero_cta_cv"
+          >
+            {t('en', 'hero_cta_cv')}
+            <span class="font-mono" aria-hidden="true">↓</span>
+          </a>
+        </div>
+        <!-- Signature line -->
+        <div class="font-mono text-faint" style="margin-top: 22px; font-size: 12px;">
+          — ALEXIS PALACIO / Full-stack · AI Engineer
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scroll cue (floaty animation wired in WU-4, static here) -->
+  <div
+    class="font-mono text-faint"
+    style="position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 3; font-size: 11px; letter-spacing: 2px; display: flex; flex-direction: column; align-items: center; gap: 6px;"
+    aria-hidden="true"
+  >
+    <span data-i18n="hero_scroll">{t('en', 'hero_scroll')}</span>
+    <span>↓</span>
+  </div>
+</section>

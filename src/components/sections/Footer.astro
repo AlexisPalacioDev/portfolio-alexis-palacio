@@ -1,0 +1,35 @@
+---
+import { t } from '../../lib/i18n/store';
+
+const year = new Date().getFullYear();
+---
+
+<footer
+  class="bg-bg"
+  style="border-top: 1px solid #23252D; padding: 38px 40px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;"
+>
+  <!-- AP monogram + copyright -->
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <a
+      href="#home"
+      class="font-mono font-bold text-bg bg-lime"
+      style="display: grid; place-items: center; width: 34px; height: 34px; font-size: 15px; text-decoration: none;"
+      aria-label="Back to top"
+    >
+      AP
+    </a>
+    <span class="font-mono text-faint" style="font-size: 12px;">
+      © {year} Alexis Palacio ·&nbsp;
+      <span data-i18n="footer_rights">{t('en', 'footer_rights')}</span>
+    </span>
+  </div>
+
+  <!-- Tagline -->
+  <span
+    class="font-mono text-faint"
+    style="font-size: 12px;"
+    data-i18n="footer_built"
+  >
+    {t('en', 'footer_built')}
+  </span>
+</footer>

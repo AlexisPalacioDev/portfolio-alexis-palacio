@@ -1,0 +1,338 @@
+---
+import { t } from '../../lib/i18n/store';
+import { Image } from 'astro:assets';
+import Eyebrow from '../ui/Eyebrow.astro';
+import { work, pick } from '../../lib/data/work';
+import { computeSlot, buildCardTransform } from '../../lib/deck/slot';
+
+// SSR active index — always 0 at build time. WU-4 island takes over at runtime.
+const ACTIVE = 0;
+const N = work.length;
+
+// Default language for SSR render
+const LANG = 'en' as const;
+
+// Active item for the detail panel
+const activeItem = work[ACTIVE];
+---
+
+<section
+  id="projects"
+  class="min-h-screen bg-panel"
+  style="padding: 110px 40px; border-top: 1px solid #23252D;"
+>
+  <div style="max-width: 1280px; margin: 0 auto;">
+
+    <!-- Eyebrow 03 -->
+    <div class="rev" style="margin-bottom: 22px;">
+      <Eyebrow index="03" data-i18n="projects_label">{t('en', 'projects_label')}</Eyebrow>
+    </div>
+
+    <h2
+      class="rev font-display font-bold text-ink"
+      style="font-size: clamp(34px, 5vw, 72px); line-height: 0.98; letter-spacing: -2px; margin: 0 0 16px; max-width: 880px;"
+      data-i18n="projects_h2"
+    >
+      {t('en', 'projects_h2')}
+    </h2>
+
+    <p
+      class="rev text-muted"
+      style="font-size: 17px; line-height: 1.6; max-width: 600px; margin: 0 0 50px;"
+      data-i18n="projects_sub"
+    >
+      {t('en', 'projects_sub')}
+    </p>
+
+    <!-- Main two-column layout: detail panel (left) + deck (right) -->
+    <div style="display: grid; grid-template-columns: 1fr 480px; gap: 48px; align-items: center;">
+
+      <!-- ── LEFT: Detail panel ── -->
+      <div class="rev" id="work-detail">
+
+        <!-- Company · Period · Status -->
+        <div
+          class="font-mono text-lime"
+          style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px;"
+        >
+          <span id="detail-company">{activeItem.company}</span>
+          <span style="color: #3A3D47;">·</span>
+          <span class="text-muted" id="detail-period">{pick(activeItem.period, LANG)}</span>
+          <span
+            class="font-mono bg-surface"
+            style="padding: 3px 9px; border: 1px solid #2C2F38; color: #93938B; font-size: 10px; font-weight: 700;"
+            id="detail-status"
+          >
+            {pick(activeItem.status, LANG)}
+          </span>
+        </div>
+
+        <!-- Role -->
+        <div
+          class="font-mono text-faint"
+          style="font-size: 12px; margin-bottom: 6px;"
+          id="detail-role"
+        >
+          {pick(activeItem.role, LANG)}
+        </div>
+
+        <!-- Project name -->
+        <h3
+          class="font-display font-bold text-ink"
+          style="font-size: clamp(30px, 4vw, 50px); line-height: 1.0; letter-spacing: -1.5px; margin: 0 0 6px;"
+          id="detail-name"
+        >
+          {activeItem.name}
+        </h3>
+
+        <!-- Kind — colored by accent -->
+        <div
+          class="font-mono font-bold"
+          style={`font-size: 13px; margin-bottom: 22px; color: ${activeItem.accent};`}
+          id="detail-kind"
+        >
+          {pick(activeItem.kind, LANG)}
+        </div>
+
+        <!-- Description -->
+        <p
+          class="text-muted"
+          style="font-size: 16.5px; line-height: 1.7; margin: 0 0 22px; max-width: 560px;"
+          id="detail-desc"
+        >
+          {pick(activeItem.desc, LANG)}
+        </p>
+
+        <!-- Bullets -->
+        <ul
+          style="margin: 0 0 24px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px;"
+          id="detail-bullets"
+        >
+          {pick(activeItem.bullets, LANG).map((bullet) => (
+            <li
+              class="text-muted"
+              style="display: flex; gap: 12px; font-size: 15px; line-height: 1.55;"
+            >
+              <span class="font-mono text-lime" aria-hidden="true">▹</span>
+              {bullet}
+            </li>
+          ))}
+        </ul>
+
+        <!-- Tags -->
+        <div
+          style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px;"
+          id="detail-tags"
+        >
+          {activeItem.tags.map((tag) => (
+            <span
+              class="font-mono"
+              style="padding: 5px 11px; border: 1px solid #34373F; color: #C8C8C0; font-size: 11.5px;"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <!-- Action links -->
+        <div style="display: flex; flex-wrap: wrap; gap: 12px;" id="detail-links">
+          {activeItem.links.link && (
+            <a
+              href={activeItem.links.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-display font-bold text-bg bg-lime shadow-hard-sm"
+              style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; font-size: 14px;"
+              data-i18n="projects_view"
+            >
+              {t('en', 'projects_view')}
+              <span class="font-mono" aria-hidden="true">↗</span>
+            </a>
+          )}
+          {activeItem.links.code && (
+            <a
+              href={activeItem.links.code}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-display font-bold text-ink"
+              style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; font-size: 14px; border: 1px solid #34373F;"
+              data-i18n="projects_code"
+            >
+              {t('en', 'projects_code')}
+              <span class="font-mono" aria-hidden="true">↗</span>
+            </a>
+          )}
+        </div>
+
+      </div>
+      <!-- /detail panel -->
+
+      <!-- ── RIGHT: Card deck (SSR static fan) ── -->
+      <div class="rev" id="work-deck-root">
+
+        <!-- Deck container — 340×438 viewport, overflow visible for fan peek -->
+        <div
+          id="work-deck"
+          style="position: relative; height: 496px; width: 340px; margin: 0 auto;"
+          data-active="0"
+          data-count={N}
+        >
+          {work.map((item, i) => {
+            const geo = computeSlot(i, ACTIVE, N);
+            const transform = buildCardTransform(geo);
+            const isVisible = !geo.hidden;
+            return (
+              <div
+                class="work-card"
+                data-index={i}
+                style={[
+                  'position: absolute;',
+                  'top: 50%; left: 50%;',
+                  'width: 340px; height: 438px;',
+                  `transform: translate(-50%, -50%) ${transform};`,
+                  `z-index: ${geo.zIndex};`,
+                  `transition: transform .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease, box-shadow .35s ease, border-color .3s ease;`,
+                  `will-change: transform;`,
+                  isVisible ? 'opacity: 1; pointer-events: auto;' : 'opacity: 0; pointer-events: none;',
+                  `border: 1px solid ${geo.isFront ? '#C6F24E' : '#2C2F38'};`,
+                  'background: #14151A;',
+                  'cursor: pointer;',
+                  'backface-visibility: hidden;',
+                ].join(' ')}
+                aria-label={`Project: ${item.name}`}
+                tabindex={isVisible ? '0' : '-1'}
+              >
+                <!-- Cover area -->
+                <div
+                  style={`position: relative; height: 262px; overflow: hidden; border-bottom: 1px solid #2C2F38; background: ${item.accent};`}
+                >
+                  <!-- Cover image -->
+                  <Image
+                    src={item.cover}
+                    alt={`${item.name} project cover`}
+                    width={340}
+                    height={262}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.8;"
+                  />
+                  <!-- Project name overlay -->
+                  <div
+                    style="position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,0.9); font-weight: 700; font-size: 30px; letter-spacing: -1px; text-align: center; padding: 0 14px;"
+                  >
+                    {item.name}
+                  </div>
+                  <!-- Status badge -->
+                  <span
+                    class="font-mono text-lime"
+                    style="position: absolute; top: 12px; left: 12px; padding: 5px 11px; background: rgba(12,13,16,0.8); font-size: 10px; font-weight: 700; border: 1px solid #34373F;"
+                  >
+                    {pick(item.status, LANG)}
+                  </span>
+                </div>
+
+                <!-- Card body -->
+                <div style="padding: 18px 20px;">
+                  <h3
+                    class="font-display font-bold text-ink"
+                    style="font-size: 21px; letter-spacing: -0.6px; margin: 0 0 4px;"
+                  >
+                    {item.name}
+                  </h3>
+                  <div
+                    class="font-mono"
+                    style="font-size: 11px; color: #8F8F87;"
+                  >
+                    {item.company} · {pick(item.kind, LANG)}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- Indicator dots -->
+        <div
+          id="work-dots"
+          style="display: flex; gap: 8px; justify-content: center; margin-top: 28px;"
+          role="tablist"
+          aria-label="Project selector"
+        >
+          {work.map((item, i) => {
+            const isActive = i === ACTIVE;
+            return (
+              <button
+                class="work-dot"
+                data-index={i}
+                role="tab"
+                aria-selected={isActive ? 'true' : 'false'}
+                aria-label={`Select project: ${item.name}`}
+                style={[
+                  'width: 8px; height: 8px; border-radius: 50%; border: none; cursor: pointer; padding: 0;',
+                  `background: ${isActive ? '#C6F24E' : '#2C2F38'};`,
+                  `transform: ${isActive ? 'scale(1.25)' : 'scale(1)'};`,
+                  'transition: background .3s ease, transform .3s ease;',
+                ].join(' ')}
+              />
+            );
+          })}
+        </div>
+
+        <!-- Footer note -->
+        <div class="font-mono text-faint" style="font-size: 11px; text-align: center; margin-top: 14px;">
+          // {t('en', 'projects_view')} · {N} projects
+        </div>
+
+      </div>
+      <!-- /deck -->
+
+    </div>
+    <!-- /grid -->
+
+    <!-- Earlier work footnote -->
+    <div class="rev" style="margin-top: 44px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+      <a
+        href="https://github.com/AlexisPalacioDev?tab=repositories"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-mono font-bold text-ink"
+        style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border: 1px solid #34373F; font-size: 13px;"
+      >
+        GitHub → AlexisPalacioDev <span aria-hidden="true">↗</span>
+      </a>
+      <span
+        class="font-mono text-faint"
+        style="font-size: 12px;"
+        data-i18n="work_earlier"
+      >
+        {t('en', 'work_earlier')}
+      </span>
+    </div>
+
+  </div>
+</section>
+
+<!--
+  Deck click interactivity is implemented in WU-4 (ProjectDeck island).
+  The SSR output above already has the correct initial layout (active=0)
+  so the page looks correct before hydration.
+  WU-4 will read data-active / data-count / data-index attributes and
+  attach event listeners. data-work is passed via JSON embed below.
+-->
+<script type="application/json" id="work-data">
+  {JSON.stringify(work.map((item, i) => ({
+    id: item.id,
+    index: i,
+    company: item.company,
+    name: item.name,
+    accent: item.accent,
+    links: item.links,
+    statusKey: item.statusKey,
+    period: item.period,
+    role: item.role,
+    kind: item.kind,
+    status: item.status,
+    desc: item.desc,
+    bullets: item.bullets,
+    tags: item.tags,
+  })))}
+</script>

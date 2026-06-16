@@ -1,0 +1,101 @@
+---
+import { t } from '../../lib/i18n/store';
+import { Image } from 'astro:assets';
+import Eyebrow from '../ui/Eyebrow.astro';
+import StatTile from '../ui/StatTile.astro';
+import alexisPhoto from '../../assets/alexis-photo.jpg';
+---
+
+<section
+  id="about"
+  class="min-h-screen"
+  style="padding: 110px 40px; border-top: 1px solid #23252D;"
+>
+  <div style="max-width: 1280px; margin: 0 auto;">
+
+    <!-- Eyebrow 01 -->
+    <div class="rev" style="margin-bottom: 30px;">
+      <Eyebrow index="01" data-i18n="about_label">{t('en', 'about_label')}</Eyebrow>
+    </div>
+
+    <!-- Two-column layout: text left, portrait right -->
+    <div style="display: grid; grid-template-columns: 1.45fr 0.9fr; gap: 60px; align-items: start;">
+
+      <!-- Left column: headline + paragraphs + stat tiles -->
+      <div>
+        <h2
+          class="rev font-display font-bold text-ink"
+          style="font-size: clamp(32px, 4.6vw, 64px); line-height: 1.0; letter-spacing: -2px; margin: 0 0 30px;"
+          data-i18n="about_h2"
+        >
+          {t('en', 'about_h2')}
+        </h2>
+
+        <p
+          class="rev text-muted"
+          style="font-size: 17px; line-height: 1.75; margin: 0 0 18px; max-width: 620px;"
+          data-i18n="about_p1"
+        >
+          {t('en', 'about_p1')}
+        </p>
+
+        <p
+          class="rev text-muted"
+          style="font-size: 17px; line-height: 1.75; margin: 0 0 18px; max-width: 620px;"
+          data-i18n="about_p2"
+        >
+          {t('en', 'about_p2')}
+        </p>
+
+        <p
+          class="rev text-muted"
+          style="font-size: 17px; line-height: 1.75; margin: 0; max-width: 620px;"
+          data-i18n="about_p3"
+        >
+          {t('en', 'about_p3')}
+        </p>
+
+        <!-- Stat tiles — data-count for WU-4 count-up -->
+        <div
+          class="rev"
+          style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 44px;"
+        >
+          <StatTile value="5+" label={t('en', 'stat_years')} data-count="5" data-i18n-label="stat_years" valueColor="#C6F24E" />
+          <StatTile value="20+" label={t('en', 'stat_projects')} data-count="20" data-i18n-label="stat_projects" valueColor="#F2F2EE" />
+          <StatTile value="16+" label={t('en', 'stat_tech')} data-count="16" data-i18n-label="stat_tech" valueColor="#3D5BFF" />
+        </div>
+      </div>
+
+      <!-- Right column: framed portrait + online bar -->
+      <div class="rev" style="position: relative;">
+        <div
+          class="bg-surface"
+          style="border: 1px solid #2C2F38; box-shadow: 12px 12px 0 #C6F24E; position: relative;"
+        >
+          <!-- Portrait image — 4:5 aspect, eager for LCP -->
+          <div style="position: relative; width: 100%; aspect-ratio: 4/5; overflow: hidden;">
+            <Image
+              src={alexisPhoto}
+              alt="Alexis Palacio — AI Engineer & Full-Stack Developer"
+              width={520}
+              height={650}
+              loading="eager"
+              fetchpriority="high"
+              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; display: block;"
+            />
+          </div>
+
+          <!-- Online bar -->
+          <div
+            class="font-mono text-ink"
+            style="position: absolute; bottom: 0; left: 0; right: 0; padding: 14px 16px; background: rgba(12,13,16,0.85); backdrop-filter: blur(6px); font-size: 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #2C2F38;"
+          >
+            <span>@AlexisPalacioDev</span>
+            <span class="text-lime">● online</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

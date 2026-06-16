@@ -47,37 +47,109 @@ const {
       })();
     </script>
   </head>
-  <body class="bg-bg text-ink font-display">
-    <!-- Fixed nav bar — full nav markup ships in WU-3; this is the i18n-wired placeholder -->
+  <body class="bg-bg text-ink font-display" style="-webkit-font-smoothing: antialiased; overflow-x: hidden;">
+
+    <!--
+      3px lime scroll-progress bar — positioned at the absolute top of the viewport.
+      Width is driven by scroll position; the RAF behavior is wired in WU-4 (scrollProgress.ts).
+      The DOM element ships here so it exists in the initial HTML before hydration.
+    -->
+    <div
+      id="scroll-progress"
+      aria-hidden="true"
+      style="position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: #C6F24E; z-index: 60; box-shadow: 0 0 10px rgba(198,242,78,0.7); pointer-events: none;"
+    ></div>
+
+    <!-- Fixed navigation bar -->
     <nav
-      class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 border-b border-line"
-      style="backdrop-filter: blur(12px); background: rgba(12,13,16,0.85);"
+      class="fixed left-0 right-0 z-50 flex items-center justify-between"
+      style="top: 3px; padding: 14px 34px; background: rgba(12,13,16,0.78); backdrop-filter: blur(12px); border-bottom: 1px solid #23252D;"
       aria-label="Primary navigation"
     >
-      <!-- AP monogram -->
+      <!-- AP monogram + logotype -->
       <a
-        href="/#home"
-        class="font-mono font-bold text-sm bg-lime text-bg px-2 py-1 shadow-hard-lime inline-block"
-        aria-label="Alexis Palacio — home"
+        href="#home"
+        style="display: flex; align-items: center; gap: 12px; text-decoration: none;"
+        aria-label="Alexis Palacio — back to top"
       >
-        AP
+        <span
+          class="font-mono font-bold text-bg bg-lime"
+          style="display: grid; place-items: center; width: 38px; height: 38px; font-size: 17px; box-shadow: 3px 3px 0 #3D5BFF; letter-spacing: -0.5px;"
+        >
+          AP
+        </span>
+        <span
+          class="font-mono text-muted hidden md:block"
+          style="font-size: 12px; font-weight: 500; letter-spacing: 1px; line-height: 1.4;"
+        >
+          ALEXIS<br />PALACIO
+        </span>
       </a>
 
-      <!-- Nav links (data-i18n wired — full links land in WU-3) -->
-      <ul class="hidden md:flex items-center gap-6 text-sm font-medium" role="list">
-        <li><a href="/#about" data-i18n="nav_about" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_about')}</a></li>
-        <li><a href="/#skills" data-i18n="nav_skills" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_skills')}</a></li>
-        <li><a href="/#projects" data-i18n="nav_projects" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_projects')}</a></li>
-        <li><a href="/#services" data-i18n="nav_services" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_services')}</a></li>
-        <li><a href="/#contact" data-i18n="nav_contact" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_contact')}</a></li>
+      <!-- Nav anchor links -->
+      <ul
+        class="hidden md:flex items-center gap-6 font-mono"
+        style="font-size: 12.5px; letter-spacing: 0.4px; color: #93938B;"
+        role="list"
+      >
+        <li>
+          <a
+            href="#about"
+            class="nav-link hover:text-lime"
+            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
+            data-i18n="nav_about"
+          >
+            {t('en', 'nav_about')}
+          </a>
+        </li>
+        <li>
+          <a
+            href="#skills"
+            class="nav-link hover:text-lime"
+            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
+            data-i18n="nav_skills"
+          >
+            {t('en', 'nav_skills')}
+          </a>
+        </li>
+        <li>
+          <a
+            href="#projects"
+            class="nav-link hover:text-lime"
+            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
+            data-i18n="nav_projects"
+          >
+            {t('en', 'nav_projects')}
+          </a>
+        </li>
+        <li>
+          <a
+            href="#services"
+            class="nav-link hover:text-lime"
+            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
+            data-i18n="nav_services"
+          >
+            {t('en', 'nav_services')}
+          </a>
+        </li>
+        <li>
+          <a
+            href="#contact"
+            class="nav-link hover:text-lime"
+            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
+            data-i18n="nav_contact"
+          >
+            {t('en', 'nav_contact')}
+          </a>
+        </li>
       </ul>
 
-      <!-- Language toggle — script runs as Astro module bundle (no framework directive needed) -->
+      <!-- Language toggle — no framework directive needed; Astro .astro scripts bundle automatically -->
       <LangToggle />
     </nav>
 
-    <!-- Page content (pt accounts for fixed nav height ~60px) -->
-    <div class="pt-[60px]">
+    <!-- Page content — pt accounts for fixed nav (~64px) + 3px progress bar -->
+    <div class="pt-[67px]">
       <slot />
     </div>
   </body>

@@ -2,14 +2,17 @@
 interface Props {
   index: string;
   label?: string;
+  'data-i18n'?: string;
 }
 
-const { index, label } = Astro.props;
+const { index, label, 'data-i18n': dataI18n } = Astro.props;
 ---
 
-<div class="flex items-center gap-3 font-mono text-xs font-bold uppercase tracking-[2px] text-lime">
-  <span class="tabular-nums">{index}</span>
-  <span class="h-px w-10 bg-lime" aria-hidden="true"></span>
-  {label && <span>{label}</span>}
-  {!label && <slot />}
+<div class="flex items-baseline gap-4 font-mono text-xs font-bold uppercase tracking-[2px] text-lime">
+  <span class="text-faint" style="font-size: 13px;">{index}</span>
+  <span class="h-px w-10 bg-line-2 inline-block" aria-hidden="true"></span>
+  {label
+    ? <span data-i18n={dataI18n}>{label}</span>
+    : <span data-i18n={dataI18n}><slot /></span>
+  }
 </div>

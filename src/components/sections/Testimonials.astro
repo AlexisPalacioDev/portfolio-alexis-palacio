@@ -1,0 +1,88 @@
+---
+import { t } from '../../lib/i18n/store';
+import Eyebrow from '../ui/Eyebrow.astro';
+
+// Placeholder testimonials — real quotes TBD per spec (out of scope)
+const placeholders = [
+  {
+    quote: 'Real testimonial coming soon — Alexis, send over your client quotes.',
+    name: 'Client Name',
+    role: 'Role · Company',
+  },
+  {
+    quote: 'Real testimonial coming soon — Alexis, send over your client quotes.',
+    name: 'Client Name',
+    role: 'Role · Company',
+  },
+  {
+    quote: 'Real testimonial coming soon — Alexis, send over your client quotes.',
+    name: 'Client Name',
+    role: 'Role · Company',
+  },
+];
+---
+
+<section
+  id="testimonials"
+  class="min-h-screen bg-panel"
+  style="padding: 110px 40px;"
+>
+  <div style="max-width: 1280px; margin: 0 auto;">
+
+    <!-- Eyebrow 05 -->
+    <div class="rev" style="margin-bottom: 22px;">
+      <Eyebrow index="05" data-i18n="test_label">{t('en', 'test_label')}</Eyebrow>
+    </div>
+
+    <h2
+      class="rev font-display font-bold text-ink"
+      style="font-size: clamp(34px, 5vw, 72px); line-height: 0.98; letter-spacing: -2px; margin: 0 0 14px;"
+      data-i18n="test_h2"
+    >
+      {t('en', 'test_h2')}
+    </h2>
+
+    <p
+      class="rev font-mono text-faint"
+      style="font-size: 14px; line-height: 1.6; max-width: 540px; margin: 0 0 46px;"
+      data-i18n="test_sub"
+    >
+      ↳ <span data-i18n="test_sub">{t('en', 'test_sub')}</span>
+    </p>
+
+    <!-- 3 dashed placeholder cards -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      {placeholders.map((q) => (
+        <div
+          class="rev"
+          style="border: 1.5px dashed #34373F; padding: 28px; display: flex; flex-direction: column; gap: 18px;"
+          aria-label="Testimonial placeholder"
+        >
+          <!-- Opening quote mark -->
+          <div
+            class="text-lime font-bold"
+            style="font-size: 34px; line-height: 0.6;"
+            aria-hidden="true"
+          >
+            &ldquo;
+          </div>
+
+          <!-- Quote text -->
+          <p
+            class="text-ink"
+            style="font-size: 16px; line-height: 1.6; margin: 0; flex: 1; color: #D4D4CC;"
+          >
+            {q.quote}
+          </p>
+
+          <!-- Attribution -->
+          <div>
+            <div class="font-bold text-ink" style="font-size: 14px;">{q.name}</div>
+            <div class="font-mono text-faint" style="font-size: 11px;">{q.role}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
