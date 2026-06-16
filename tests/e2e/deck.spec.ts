@@ -132,6 +132,40 @@ test.describe('ProjectDeck — lang toggle updates detail panel', () => {
   });
 });
 
+test.describe('ProjectDeck — regression: count-up must not clobber the deck', () => {
+  // Regression for the `data-count` selector collision: the About count-up
+  // animation queried `[data-count]` document-wide, which also matched the
+  // deck container (`data-count="7"`). animateTile() then overwrote the deck's
+  // textContent, destroying all 7 .work-card elements (they collapsed to a
+  // single text node like "7 anai Current anai ..."). The fix scopes the
+  // count-up selector to #about. This test triggers the count-up by scrolling
+  // through About, then asserts the deck still has its 7 card ELEMENTS.
+  test('deck retains its 7 card elements after the About count-up fires', async ({ page }) => {
+    await page.goto('/');
+
+    // Scroll About into view to trigger the count-up IntersectionObserver
+    await page.evaluate(() => {
+      document.getElementById('about')?.scrollIntoView({ behavior: 'instant' });
+    });
+    // Let the count-up animation run to completion (~1200ms + margin)
+    await page.waitForTimeout(1600);
+
+    // Now go to projects and let the deck hydrate
+    await page.evaluate(() => {
+      document.getElementById('projects')?.scrollIntoView({ behavior: 'instant' });
+    });
+    await page.waitForSelector('#work-deck[data-hydrated="true"]', { state: 'attached', timeout: 8000 });
+
+    // The deck must still contain 7 real card elements, not a flattened text node
+    const cardCount = await page.locator('#work-deck .work-card').count();
+    expect(cardCount).toBe(7);
+
+    // And the stat tiles must still show their animated final values
+    const firstStat = page.locator('#about [data-count]').first();
+    await expect(firstStat).toHaveText(/\d/);
+  });
+});
+
 test.describe('Scroll progress bar', () => {
   test('scroll-progress bar width increases when scrolling down', async ({ page }) => {
     await page.goto('/');

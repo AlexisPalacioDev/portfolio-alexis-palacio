@@ -29,8 +29,14 @@ export function interpolateCount(target: number, t: number): number {
 }
 
 export function initCountUp(): void {
+  // Scope the query to the About section. `data-count` is intentionally
+  // namespaced to stat tiles here — other components (e.g. the project deck)
+  // legitimately use `data-count` for unrelated purposes, so a document-wide
+  // selector would wrongly animate them and overwrite their markup.
+  const aboutSection = document.getElementById('about');
+  const scope: ParentNode = aboutSection ?? document;
   const tiles = Array.from(
-    document.querySelectorAll<HTMLElement>('[data-count]')
+    scope.querySelectorAll<HTMLElement>('[data-count]')
   );
   if (tiles.length === 0) return;
 
@@ -88,12 +94,9 @@ export function initCountUp(): void {
   );
 
   // Observe the About section (or fallback: the first tile's closest section)
-  const aboutSection =
-    document.getElementById('about') ??
-    tiles[0]?.closest('section') ??
-    null;
+  const observeTarget = aboutSection ?? tiles[0]?.closest('section') ?? null;
 
-  if (aboutSection) {
-    observer.observe(aboutSection);
+  if (observeTarget) {
+    observer.observe(observeTarget);
   }
 }

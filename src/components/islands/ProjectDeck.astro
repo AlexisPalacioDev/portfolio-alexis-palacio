@@ -5,12 +5,12 @@
  * Design: sdd/portfolio-rebuild/design §8
  * Spec:   sdd/portfolio-rebuild/spec CAP-06
  *
- * Hydration strategy: vanilla Astro <script> (deferred module script).
+ * Hydration strategy: vanilla Astro script tag (deferred module script).
  * The Work.astro SSR pass already rendered the static fan (active=0) so
  * there is NO visual pop-in — this island only attaches click handlers and
  * wires the lang-reactive detail panel re-render.
  *
- * Data source: <script type="application/json" id="work-data"> embedded
+ * Data source: an application/json script tag (id="work-data") embedded
  * by Work.astro at build time. Avoids re-importing ESM modules client-side.
  *
  * Lang integration (highest-risk coupling per design):
