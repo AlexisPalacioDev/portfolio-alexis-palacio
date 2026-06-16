@@ -22,6 +22,7 @@
 <script>
   import { computeSlot, buildCardTransform } from '../../lib/deck/slot';
   import { $lang } from '../../lib/i18n/store';
+  import { I18N } from '../../lib/i18n/dictionary';
 
   // ── Type: serialized work item (cover is omitted from JSON — not needed client-side) ─
   interface WorkItemClient {
@@ -133,23 +134,22 @@
         .join('');
     }
 
-    // Action links
+    // Action links — labels from the shared i18n dictionary for consistency
     if (detailLinks) {
+      const dict = lang === 'es' ? I18N.es : I18N.en;
       let linksHtml = '';
       if (item.links.link) {
         linksHtml += `<a href="${escapeAttr(item.links.link)}" target="_blank" rel="noopener noreferrer"
           class="font-display font-bold text-bg bg-lime shadow-hard-sm"
-          style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;font-size:14px;"
-          data-i18n="projects_view">
-          ${lang === 'es' ? 'Ver proyecto' : 'Open project'} <span class="font-mono" aria-hidden="true">↗</span>
+          style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;font-size:14px;">
+          ${escapeHtml(dict.projects_view)} <span class="font-mono" aria-hidden="true">↗</span>
         </a>`;
       }
       if (item.links.code) {
         linksHtml += `<a href="${escapeAttr(item.links.code)}" target="_blank" rel="noopener noreferrer"
           class="font-display font-bold text-ink"
-          style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;font-size:14px;border:1px solid #34373F;"
-          data-i18n="projects_code">
-          ${lang === 'es' ? 'Código' : 'Code'} <span class="font-mono" aria-hidden="true">↗</span>
+          style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;font-size:14px;border:1px solid #34373F;">
+          ${escapeHtml(dict.projects_code)} <span class="font-mono" aria-hidden="true">↗</span>
         </a>`;
       }
       detailLinks.innerHTML = linksHtml;
