@@ -1,0 +1,79 @@
+---
+// LangToggle.astro — EN/ES language toggle
+// Hydration: client:load (tiny payload, must be interactive immediately)
+// The SSR render provides two buttons with correct initial aria-pressed
+// state based on the default lang (always 'en' at build time — the
+// no-FOUC script may have already flipped data-lang, but aria-pressed
+// correction happens in the client script on first run).
+---
+
+<div class="lang-toggle flex items-center gap-1" aria-label="Language selector" role="group">
+  <button
+    id="lang-btn-en"
+    class="lang-btn font-mono text-xs font-bold uppercase tracking-[2px] px-2 py-1 rounded-sm transition-colors duration-150"
+    aria-pressed="true"
+    data-lang-target="en"
+  >
+    EN
+  </button>
+  <span class="text-muted text-xs" aria-hidden="true">/</span>
+  <button
+    id="lang-btn-es"
+    class="lang-btn font-mono text-xs font-bold uppercase tracking-[2px] px-2 py-1 rounded-sm transition-colors duration-150"
+    aria-pressed="false"
+    data-lang-target="es"
+  >
+    ES
+  </button>
+</div>
+
+<script>
+  import { $lang } from '../../lib/i18n/store';
+  import { initI18n } from '../../lib/i18n/apply';
+
+  // Boot the runtime swap — subscribes $lang → querySelectorAll swap
+  initI18n();
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.lang-btn');
+
+  function syncButtons(activeLang: string): void {
+    buttons.forEach((btn) => {
+      const target = btn.dataset.langTarget;
+      btn.setAttribute('aria-pressed', String(target === activeLang));
+      if (target === activeLang) {
+        btn.classList.add('text-lime');
+        btn.classList.remove('text-muted');
+      } else {
+        btn.classList.remove('text-lime');
+        btn.classList.add('text-muted');
+      }
+    });
+  }
+
+  // Subscribe to $lang for aria-pressed sync (handles external changes too)
+  $lang.subscribe((lang) => {
+    syncButtons(lang);
+  });
+
+  // Click handlers
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.langTarget;
+      if (target === 'en' || target === 'es') {
+        $lang.set(target);
+      }
+    });
+  });
+</script>
+
+<style>
+  .lang-btn[aria-pressed='true'] {
+    color: var(--color-lime);
+  }
+  .lang-btn[aria-pressed='false'] {
+    color: var(--color-muted);
+  }
+  .lang-btn:hover {
+    color: var(--color-ink);
+  }
+</style>

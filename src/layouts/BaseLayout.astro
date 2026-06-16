@@ -7,6 +7,8 @@ import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import '@fontsource/jetbrains-mono/700.css';
 import '../styles/global.css';
+import LangToggle from '../components/islands/LangToggle.astro';
+import { t } from '../lib/i18n/store';
 
 interface Props {
   title?: string;
@@ -31,6 +33,7 @@ const {
     <!--
       No-FOUC: read persisted lang from localStorage before first paint
       and set html[lang] + data-lang so apply.ts can swap on load.
+      $lang (persistentAtom) uses the key 'lang' — must match here.
     -->
     <script is:inline>
       (function () {
@@ -45,6 +48,37 @@ const {
     </script>
   </head>
   <body class="bg-bg text-ink font-display">
-    <slot />
+    <!-- Fixed nav bar — full nav markup ships in WU-3; this is the i18n-wired placeholder -->
+    <nav
+      class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 border-b border-line"
+      style="backdrop-filter: blur(12px); background: rgba(12,13,16,0.85);"
+      aria-label="Primary navigation"
+    >
+      <!-- AP monogram -->
+      <a
+        href="/#home"
+        class="font-mono font-bold text-sm bg-lime text-bg px-2 py-1 shadow-hard-lime inline-block"
+        aria-label="Alexis Palacio — home"
+      >
+        AP
+      </a>
+
+      <!-- Nav links (data-i18n wired — full links land in WU-3) -->
+      <ul class="hidden md:flex items-center gap-6 text-sm font-medium" role="list">
+        <li><a href="/#about" data-i18n="nav_about" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_about')}</a></li>
+        <li><a href="/#skills" data-i18n="nav_skills" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_skills')}</a></li>
+        <li><a href="/#projects" data-i18n="nav_projects" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_projects')}</a></li>
+        <li><a href="/#services" data-i18n="nav_services" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_services')}</a></li>
+        <li><a href="/#contact" data-i18n="nav_contact" class="text-muted hover:text-ink transition-colors">{t('en', 'nav_contact')}</a></li>
+      </ul>
+
+      <!-- Language toggle — script runs as Astro module bundle (no framework directive needed) -->
+      <LangToggle />
+    </nav>
+
+    <!-- Page content (pt accounts for fixed nav height ~60px) -->
+    <div class="pt-[60px]">
+      <slot />
+    </div>
   </body>
 </html>

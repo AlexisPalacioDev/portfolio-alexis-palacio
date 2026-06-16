@@ -1,18 +1,68 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../lib/i18n/store';
 ---
 
 <BaseLayout>
-  <main class="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 p-8">
-    <h1 class="text-lime font-display text-4xl font-bold">Portfolio — scaffold OK</h1>
-    <p class="text-muted font-mono text-sm">
-      Astro 5 + Tailwind 4 tokens + Fontsource — WU-1 complete
+  <!--
+    Hero placeholder for WU-2 integration proof.
+    data-i18n attributes are the mechanism contract — full Hero section ships in WU-3.
+    The EN text is rendered at build time; LangToggle + apply.ts swap it client-side.
+  -->
+  <section id="home" class="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 p-8 text-center">
+    <!-- Status pill — proves data-i18n swap end-to-end -->
+    <p
+      class="font-mono text-xs text-lime uppercase tracking-[2px]"
+      data-i18n="hero_status"
+    >
+      {t('en', 'hero_status')}
     </p>
-    <ul class="text-faint font-mono text-xs flex flex-col gap-1 text-center">
+
+    <!-- H1 — asserted in Playwright E2E -->
+    <h1 class="font-display font-bold text-ink" style="font-size: clamp(2.5rem, 8vw, 6rem); line-height: 0.9; letter-spacing: -0.04em;">
+      <span data-i18n="hero_h1">{t('en', 'hero_h1')}</span>
+      <br />
+      <span class="text-lime" data-i18n="hero_h1_accent">{t('en', 'hero_h1_accent')}</span>
+    </h1>
+
+    <!-- Sub-copy -->
+    <p
+      class="text-muted max-w-xl leading-relaxed"
+      data-i18n="hero_sub"
+    >
+      {t('en', 'hero_sub')}
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex gap-4 flex-wrap justify-center">
+      <a
+        href="#contact"
+        class="bg-lime text-bg font-bold px-6 py-3 shadow-hard inline-block hover:shadow-hard-lime transition-shadow"
+        data-i18n="hero_cta_hire"
+      >
+        {t('en', 'hero_cta_hire')}
+      </a>
+      <a
+        href="/Alexis-Palacio-CV.pdf"
+        download
+        class="border border-lime text-lime font-bold px-6 py-3 inline-block hover:bg-lime hover:text-bg transition-colors"
+        data-i18n="hero_cta_cv"
+      >
+        {t('en', 'hero_cta_cv')}
+      </a>
+    </div>
+
+    <!-- Scroll cue -->
+    <p class="text-faint text-sm mt-8" data-i18n="hero_scroll">
+      {t('en', 'hero_scroll')}
+    </p>
+
+    <!-- WU-1 token smoke test (kept for scaffold verification, removed in WU-3) -->
+    <ul class="text-faint font-mono text-xs flex flex-col gap-1 text-center mt-8 border-t border-line pt-6">
+      <li class="text-muted text-[10px] uppercase tracking-widest mb-2">WU-1 scaffold tokens OK</li>
       <li><span class="text-lime">bg-bg</span> → background</li>
       <li><span class="text-lime">text-lime</span> → lime accent</li>
-      <li><span class="text-ink">text-ink</span> → primary text</li>
       <li><span class="shadow-hard inline-block px-4 py-2 bg-lime text-bg font-bold">shadow-hard</span></li>
     </ul>
-  </main>
+  </section>
 </BaseLayout>
