@@ -59,7 +59,7 @@ export const I18N = {
 
     // ── Work & Projects ───────────────────────────────────────────────────
     projects_label: 'SELECTED WORK',
-    projects_h2: 'Products I designed, built and shipped.',
+    projects_h2: 'Real products I worked on.',
     projects_sub:
       'AI, automation and full-stack — from marketplaces with escrow to content engines.',
     projects_view: 'Open',
@@ -152,7 +152,7 @@ export const I18N = {
 
     // ── Work & Projects ───────────────────────────────────────────────────
     projects_label: 'TRABAJO SELECCIONADO',
-    projects_h2: 'Productos que diseñé, construí y entregué.',
+    projects_h2: 'Productos reales en los que trabajé.',
     projects_sub:
       'IA, automatización y full-stack — desde marketplaces con escrow hasta motores de contenido.',
     projects_view: 'Abrir',

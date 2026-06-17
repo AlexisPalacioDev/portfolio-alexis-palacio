@@ -57,12 +57,12 @@ export interface WorkItem {
 
 // ── Cover images (ESM imports → Sharp-optimized at build time) ────────────────
 import coverAnai from '../../assets/preview-anai.png';
-import coverImometrics from '../../assets/cover-imometrics.png';
+import coverImometrics from '../../assets/preview-imometrics.png';
 import coverSticker from '../../assets/preview-sticker.png';
 import coverTripi from '../../assets/cover-tripi.png';
 import coverCarljung from '../../assets/cover-carljung.png';
-import coverBunny from '../../assets/cover-bunny.png';
-import coverTodo from '../../assets/cover-todo.png';
+import coverBunny from '../../assets/preview-bunny.png';
+import coverTodo from '../../assets/preview-todo.png';
 
 // ── Work array — most-recent first ───────────────────────────────────────────
 export const work: readonly WorkItem[] = [
@@ -108,18 +108,18 @@ export const work: readonly WorkItem[] = [
     name: 'iMometrics',
     accent: '#8B7CF6',
     cover: coverImometrics,
-    links: { link: null, code: null },
+    links: { link: 'https://www.imometrics.com', code: null },
     period: { en: '2023 — 2024', es: '2023 — 2024' },
     role: {
       en: 'Backend Developer',
       es: 'Desarrollador Backend',
     },
-    kind: { en: 'Analytics & Metrics Platform', es: 'Plataforma de Analítica y Métricas' },
-    status: { en: 'Delivered', es: 'Entregado' },
-    statusKey: WORK_STATUS.ARCHIVED,
+    kind: { en: 'Cold-Chain Monitoring Platform', es: 'Plataforma de Monitoreo de Cadena de Frío' },
+    status: { en: 'Live', es: 'En vivo' },
+    statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'Backend architecture and API development for a B2B analytics platform delivering real-time metrics and reporting dashboards to enterprise clients.',
-      es: 'Arquitectura backend y desarrollo de APIs para una plataforma de analítica B2B que entrega métricas en tiempo real y dashboards de reportes a clientes enterprise.',
+      en: 'Backend architecture and APIs for iMometrics, a cold-chain monitoring platform that turns sensor data from refrigeration fleets into real-time metrics and dashboards across 1 to 1,000+ units.',
+      es: 'Arquitectura backend y APIs para iMometrics, una plataforma de monitoreo de cadena de frío que convierte datos de sensores de equipos de refrigeración en métricas y dashboards en tiempo real, de 1 a 1.000+ equipos.',
     },
     bullets: {
       en: [
@@ -254,7 +254,7 @@ export const work: readonly WorkItem[] = [
     name: 'BunnyGymWear',
     accent: '#F5C24B',
     cover: coverBunny,
-    links: { link: null, code: null },
+    links: { link: 'https://bunnygymwear.com', code: null },
     period: { en: '2022', es: '2022' },
     role: {
       en: 'Full-Stack Developer',
@@ -291,7 +291,7 @@ export const work: readonly WorkItem[] = [
     name: 'To-Do Automation',
     accent: '#3DD6C0',
     cover: coverTodo,
-    links: { link: null, code: 'https://github.com/AlexisPalacioDev' },
+    links: { link: 'https://todo-automation-challenge.vercel.app', code: 'https://github.com/AlexisPalacioDev' },
     period: { en: '2023', es: '2023' },
     role: {
       en: 'AI Engineer & Developer',
