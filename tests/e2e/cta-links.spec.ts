@@ -57,10 +57,10 @@ test.describe('Contact tiles — CAP-09', () => {
   });
 
   test('WhatsApp tile links to wa.me with correct number', async ({ page }) => {
-    const waTile = page.locator('a[href^="https://wa.me/573216551350"]').first();
+    const waTile = page.locator('a[href^="https://wa.me/573206088114"]').first();
     await expect(waTile).toBeVisible();
     const href = await waTile.getAttribute('href');
-    expect(href).toContain('wa.me/573216551350');
+    expect(href).toContain('wa.me/573206088114');
   });
 
   test('LinkedIn tile links to correct profile', async ({ page }) => {

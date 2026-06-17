@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // These are the exact EN/ES pairs for keys that appear in the page markup
 const translations = {
   hero_h1:     { en: 'I orchestrate AI',                   es: 'Orquesto IA' },
-  hero_status: { en: 'AI ENGINEER · FULL-STACK · REMOTE',  es: 'INGENIERO IA · FULL-STACK · REMOTO' },
+  hero_status: { en: 'FULL-STACK · AI ENGINEER · REMOTE · FREELANCE',  es: 'FULL-STACK · INGENIERO IA · REMOTO · FREELANCE' },
   hero_cta_cv: { en: 'Download CV',                        es: 'Descargar CV' },
 } as const;
 

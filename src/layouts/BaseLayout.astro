@@ -23,7 +23,7 @@ const SITE = 'https://alexispalacio.dev';
 
 const {
   title = 'Alexis Palacio — AI Engineer & Lead Fullstack Developer',
-  description = 'Alexis Palacio — AI Engineer and Lead Fullstack Developer in Medellín, Colombia. I orchestrate AI agents, automation and full-stack products with Next.js, React, TypeScript and NestJS. Available for remote work and freelance.',
+  description = 'Alexis Palacio — freelance full-stack developer & AI engineer in Medellín, Colombia. Available for remote work, full-time or by project: Next.js, React, TypeScript, NestJS and AI orchestration. Hire me to ship real products.',
   ogImage = '/og-image.png',
   canonical = `${SITE}/`,
 } = Astro.props;
@@ -33,9 +33,17 @@ const ogDescription = description;
 const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${SITE}${ogImage}`;
 
 const keywords = [
+  // identity + role
   'Alexis Palacio', 'AI Engineer', 'Lead Fullstack Developer', 'Full-Stack Developer',
+  // recruiter searches (EN)
+  'freelance full-stack developer', 'remote full-stack developer', 'hire full-stack developer',
+  'freelance developer', 'remote developer', 'full-stack engineer for hire',
+  // recruiter searches (ES)
+  'desarrollador full stack', 'desarrollador full stack remoto', 'programador remoto',
+  'desarrollador freelance', 'contratar desarrollador full stack', 'programador full stack',
+  // specialties + stack
   'AI orchestration', 'LLM agents', 'automation', 'Next.js', 'React', 'React Native',
-  'TypeScript', 'NestJS', 'remote developer', 'Medellín', 'Colombia', 'freelance developer',
+  'TypeScript', 'NestJS', 'Medellín', 'Colombia',
 ].join(', ');
 
 // JSON-LD structured data — tells Google this is Alexis Palacio's portfolio

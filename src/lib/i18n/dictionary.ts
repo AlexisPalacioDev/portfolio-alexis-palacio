@@ -21,7 +21,7 @@ export const I18N = {
     nav_contact: 'Contact',
 
     // ── Hero ─────────────────────────────────────────────────────────────
-    hero_status: 'AI ENGINEER · FULL-STACK · REMOTE',
+    hero_status: 'FULL-STACK · AI ENGINEER · REMOTE · FREELANCE',
     hero_h1: 'I orchestrate AI',
     hero_h1_accent: 'to ship real outcomes.',
     hero_sub:
@@ -70,7 +70,7 @@ export const I18N = {
     // ── Services ──────────────────────────────────────────────────────────
     services_label: 'FREELANCE',
     services_h2: 'Hire me for the hard part.',
-    services_sub: 'Available for full-time remote, contracts and AI consulting. Let\'s build.',
+    services_sub: 'Freelance full-stack developer for hire — fully remote, full-time or by project. Full-stack web development and AI consulting for teams worldwide. Let\'s build.',
     svc1_title: 'AI Agents & Automation',
     svc1_desc:
       'Custom agents, automation harnesses, MCP integrations and bots on WhatsApp / Telegram that actually move the needle.',
@@ -118,7 +118,7 @@ export const I18N = {
     nav_contact: 'Contacto',
 
     // ── Hero ─────────────────────────────────────────────────────────────
-    hero_status: 'INGENIERO IA · FULL-STACK · REMOTO',
+    hero_status: 'FULL-STACK · INGENIERO IA · REMOTO · FREELANCE',
     hero_h1: 'Orquesto IA',
     hero_h1_accent: 'para entregar resultados reales.',
     hero_sub:
@@ -167,7 +167,7 @@ export const I18N = {
     // ── Services ──────────────────────────────────────────────────────────
     services_label: 'FREELANCE',
     services_h2: 'Contrátame para la parte difícil.',
-    services_sub: 'Disponible para remoto full-time, contratos y consultoría en IA. Construyamos.',
+    services_sub: 'Desarrollador full-stack freelance disponible — 100% remoto, full-time o por proyecto. Desarrollo web full-stack y consultoría en IA para equipos en todo el mundo. Construyamos.',
     svc1_title: 'Agentes de IA y Automatización',
     svc1_desc:
       'Agentes a medida, harnesses de automatización, integraciones MCP y bots en WhatsApp / Telegram que mueven la aguja.',
