@@ -42,7 +42,7 @@ export const I18N = {
       "Right now I'm engineering AI content generation at anai. I work remote, ship fast, and I'm hungry — in every sense of the word.",
     stat_years: 'Years shipping',
     stat_projects: 'Projects delivered',
-    stat_tech: 'Technologies',
+    stat_tech: 'Stack-agnostic',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
     skills_label: 'THE STACK',
@@ -139,7 +139,7 @@ export const I18N = {
       "Hoy estoy desarrollando generación de contenido con IA en anai. Trabajo remoto, entrego rápido y tengo hambre — en todos los sentidos de la palabra.",
     stat_years: 'Años entregando',
     stat_projects: 'Proyectos entregados',
-    stat_tech: 'Tecnologías',
+    stat_tech: 'Stack-agnostic',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
     skills_label: 'EL STACK',
