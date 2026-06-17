@@ -27,6 +27,17 @@ const {
 const ogTitle = title;
 const ogDescription = description;
 const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `https://alexispalacio.dev${ogImage}`;
+
+// Single source of truth for the nav — rendered into both the desktop bar and
+// the mobile dropdown so the two can't drift apart.
+const navItems = [
+  { href: '#about', key: 'nav_about' },
+  { href: '#skills', key: 'nav_skills' },
+  { href: '#projects', key: 'nav_projects' },
+  { href: '#services', key: 'nav_services' },
+  { href: '#testimonials', key: 'nav_testimonials' },
+  { href: '#contact', key: 'nav_contact' },
+] as const;
 ---
 
 <!doctype html>
@@ -51,6 +62,7 @@ const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `https://alexispa
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Alexis Palacio" />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
 
     <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -126,71 +138,58 @@ const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `https://alexispa
         style="font-size: 12.5px; letter-spacing: 0.4px; color: #93938B;"
         role="list"
       >
-        <li>
-          <a
-            href="#about"
-            class="nav-link hover:text-lime"
-            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
-            data-i18n="nav_about"
-          >
-            {t('en', 'nav_about')}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#skills"
-            class="nav-link hover:text-lime"
-            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
-            data-i18n="nav_skills"
-          >
-            {t('en', 'nav_skills')}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#projects"
-            class="nav-link hover:text-lime"
-            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
-            data-i18n="nav_projects"
-          >
-            {t('en', 'nav_projects')}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#services"
-            class="nav-link hover:text-lime"
-            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
-            data-i18n="nav_services"
-          >
-            {t('en', 'nav_services')}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#testimonials"
-            class="nav-link hover:text-lime"
-            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
-            data-i18n="nav_testimonials"
-          >
-            {t('en', 'nav_testimonials')}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#contact"
-            class="nav-link hover:text-lime"
-            style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
-            data-i18n="nav_contact"
-          >
-            {t('en', 'nav_contact')}
-          </a>
-        </li>
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="nav-link hover:text-lime"
+              style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
+              data-i18n={item.key}
+            >
+              {t('en', item.key)}
+            </a>
+          </li>
+        ))}
       </ul>
 
-      <!-- Language toggle — no framework directive needed; Astro .astro scripts bundle automatically -->
-      <LangToggle />
+      <!-- Right cluster: language toggle + mobile menu button -->
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <LangToggle />
+        <button
+          id="nav-toggle"
+          class="md:hidden font-mono"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          style="width: 40px; height: 38px; display: grid; place-items: center; background: transparent; border: 1px solid #34373F; color: #F2F2EE; font-size: 18px; cursor: pointer; line-height: 1;"
+        >
+          <span id="nav-toggle-icon" aria-hidden="true">☰</span>
+        </button>
+      </div>
     </nav>
+
+    <!-- Mobile dropdown menu (only rendered/visible below md) -->
+    <div
+      id="mobile-menu"
+      class="md:hidden"
+      hidden
+      style="position: fixed; top: 72px; left: 0; right: 0; z-index: 49; background: rgba(12,13,16,0.97); backdrop-filter: blur(14px); border-bottom: 1px solid #23252D;"
+    >
+      <ul role="list" style="list-style: none; margin: 0; padding: 8px 24px 16px;">
+        {navItems.map((item) => (
+          <li style="border-bottom: 1px solid #1A1C22;">
+            <a
+              href={item.href}
+              class="mobile-nav-link font-mono"
+              style="display: block; padding: 16px 4px; text-decoration: none; color: #C8C8C0; font-size: 16px; letter-spacing: 0.5px;"
+              data-i18n={item.key}
+            >
+              {t('en', item.key)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
 
     <!-- Page content — pt accounts for fixed nav (~64px) + 3px progress bar -->
     <main>
@@ -218,6 +217,30 @@ const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `https://alexispa
       initCountUp();
       initActiveNav();
       initSectionSnap();
+
+      // ── Mobile menu toggle ──────────────────────────────────────────────
+      const navToggle = document.getElementById('nav-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const navToggleIcon = document.getElementById('nav-toggle-icon');
+      if (navToggle && mobileMenu) {
+        const setOpen = (open: boolean) => {
+          mobileMenu.hidden = !open;
+          navToggle.setAttribute('aria-expanded', String(open));
+          if (navToggleIcon) navToggleIcon.textContent = open ? '✕' : '☰';
+        };
+        navToggle.addEventListener('click', () => setOpen(mobileMenu.hidden));
+        // Tapping a link navigates and closes the menu.
+        mobileMenu.querySelectorAll('a').forEach((a) =>
+          a.addEventListener('click', () => setOpen(false))
+        );
+        // Esc closes it; resizing up to desktop clears the open state.
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') setOpen(false);
+        });
+        window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+          if (e.matches) setOpen(false);
+        });
+      }
     </script>
   </body>
 </html>
