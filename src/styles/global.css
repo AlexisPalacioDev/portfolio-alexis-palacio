@@ -133,6 +133,11 @@ section > * {
    min-height, keeping the section a constant height per viewport.
    Only applies on desktop (≥768px); mobile uses its own layout. Inline → !important. */
 @media (min-width: 768px) {
+  /* The mobile menu button has an inline display:grid that overrides its
+     `md:hidden` class — force it hidden on desktop. */
+  #nav-toggle {
+    display: none !important;
+  }
   section {
     padding-block: clamp(34px, 5.2vh, 84px) !important;
   }

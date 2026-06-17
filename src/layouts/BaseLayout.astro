@@ -17,16 +17,64 @@ interface Props {
   canonical?: string;
 }
 
+// Single source of truth for the site origin (used by canonical, OG, JSON-LD).
+// ⚠️ Set this to the real production domain before launch.
+const SITE = 'https://alexispalacio.dev';
+
 const {
-  title = 'Alexis Palacio — AI Engineer & Full-Stack Developer',
-  description = 'AI orchestration, full-stack development, and automation. Available for remote work and freelance.',
+  title = 'Alexis Palacio — AI Engineer & Lead Fullstack Developer',
+  description = 'Alexis Palacio — AI Engineer and Lead Fullstack Developer in Medellín, Colombia. I orchestrate AI agents, automation and full-stack products with Next.js, React, TypeScript and NestJS. Available for remote work and freelance.',
   ogImage = '/og-image.png',
-  canonical = 'https://alexispalacio.dev/',
+  canonical = `${SITE}/`,
 } = Astro.props;
 
 const ogTitle = title;
 const ogDescription = description;
-const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `https://alexispalacio.dev${ogImage}`;
+const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${SITE}${ogImage}`;
+
+const keywords = [
+  'Alexis Palacio', 'AI Engineer', 'Lead Fullstack Developer', 'Full-Stack Developer',
+  'AI orchestration', 'LLM agents', 'automation', 'Next.js', 'React', 'React Native',
+  'TypeScript', 'NestJS', 'remote developer', 'Medellín', 'Colombia', 'freelance developer',
+].join(', ');
+
+// JSON-LD structured data — tells Google this is Alexis Palacio's portfolio
+// (rich results + helps rank for his name and role).
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${SITE}/#alexis`,
+      name: 'Alexis Palacio',
+      alternateName: 'AlexisPalacioDev',
+      url: `${SITE}/`,
+      image: ogImageAbsolute,
+      jobTitle: 'AI Engineer & Lead Fullstack Developer',
+      description: 'AI orchestration, agents, automation and full-stack development.',
+      email: 'mailto:alexis26-93@live.com',
+      address: { '@type': 'PostalAddress', addressLocality: 'Medellín', addressCountry: 'CO' },
+      worksFor: { '@type': 'Organization', name: 'anai', url: 'https://anaiapp.ai' },
+      knowsAbout: [
+        'AI orchestration', 'LLM agents', 'Automation', 'Next.js', 'React',
+        'React Native', 'TypeScript', 'NestJS', 'Full-stack development',
+      ],
+      sameAs: [
+        'https://github.com/AlexisPalacioDev',
+        'https://www.linkedin.com/in/poisoneddog/',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE}/#website`,
+      url: `${SITE}/`,
+      name: 'Alexis Palacio — Portfolio',
+      description: ogDescription,
+      inLanguage: ['en', 'es'],
+      publisher: { '@id': `${SITE}/#alexis` },
+    },
+  ],
+};
 
 // Single source of truth for the nav — rendered into both the desktop bar and
 // the mobile dropdown so the two can't drift apart.
@@ -46,7 +94,12 @@ const navItems = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="Alexis Palacio" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#0C0D10" />
+    <meta name="geo.region" content="CO-ANT" />
+    <meta name="geo.placename" content="Medellín, Colombia" />
     <title>{title}</title>
 
     <!-- Canonical URL -->
@@ -58,8 +111,10 @@ const navItems = [
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:image" content={ogImageAbsolute} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Alexis Palacio — AI Engineer & Lead Fullstack Developer" />
     <meta property="og:site_name" content="Alexis Palacio" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="es_ES" />
@@ -69,6 +124,8 @@ const navItems = [
     <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImageAbsolute} />
+    <meta name="twitter:image:alt" content="Alexis Palacio — AI Engineer & Lead Fullstack Developer" />
+    <meta name="twitter:creator" content="@AlexisPalacioDev" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -89,6 +146,9 @@ const navItems = [
         } catch (_) {}
       })();
     </script>
+
+    <!-- Structured data (JSON-LD): Person + WebSite for rich results & ranking -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="bg-bg text-ink font-display" style="-webkit-font-smoothing: antialiased; overflow-x: hidden;">
 
