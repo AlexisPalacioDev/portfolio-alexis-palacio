@@ -289,15 +289,12 @@ section > * {
 
 .marquee-inner {
   animation: marquee 26s linear infinite;
-  /* Pause on hover (accessibility: reduces motion stress for hover-capable users) */
   will-change: transform;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-inner {
-    animation: none;
-  }
-}
+/* NOTE: intentionally NOT gated on prefers-reduced-motion. Some mobile devices
+   report reduce=true unexpectedly (Android dev-options animation scale, certain
+   ROMs), which froze this decorative band. It's a slow, continuous, gentle
+   scroll, so it runs regardless. */
 
 /* ─── Pulsing lime dot animation (hero status pill + availability pill) ─── */
 @keyframes blink {

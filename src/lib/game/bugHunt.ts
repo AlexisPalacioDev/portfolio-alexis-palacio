@@ -51,7 +51,6 @@ export function initBugHunt(): void {
   // Server-safe guard (Astro bundles this as a module script, but be defensive).
   if (typeof window === 'undefined') return;
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = window.matchMedia('(pointer: fine)');
   const coarsePointer = window.matchMedia('(pointer: coarse)');
   // Touch devices: no hover/cursor, so the game uses a tap-to-strike model.
@@ -86,13 +85,10 @@ export function initBugHunt(): void {
 
   // ── Eligibility ─────────────────────────────────────────────────────────
   function eligible(): boolean {
-    // Runs on desktop AND touch now (touch uses tap-to-strike). Still gated on
-    // reduced-motion and a sane minimum width.
-    return (
-      document.visibilityState === 'visible' &&
-      !reduceMotion.matches &&
-      window.innerWidth >= 360
-    );
+    // Runs on desktop AND touch (touch uses tap-to-strike). NOT gated on
+    // reduced-motion: some phones report reduce=true unexpectedly and that was
+    // silently hiding the game. Only gate on visibility + a sane min width.
+    return document.visibilityState === 'visible' && window.innerWidth >= 360;
   }
 
   // ── Idle scheduling ───────────────────────────────────────────────────────
@@ -753,7 +749,7 @@ function injectStyles(): void {
 
     .bh-bug {
       position: fixed; left: 0; top: 0; width: ${SPRITE_W}px; height: ${SPRITE_H}px;
-      z-index: 70; will-change: transform; pointer-events: auto; cursor: pointer;
+      z-index: 9996; will-change: transform; pointer-events: auto; cursor: pointer;
     }
     .bh-bob { animation: bh-bob 0.42s ease-in-out infinite; }
     .bh-chomp { transform-origin: center bottom; }
@@ -779,7 +775,7 @@ function injectStyles(): void {
 
     /* Glyphs the bug spits out when it explodes. */
     .bh-flyletter {
-      position: fixed; z-index: 53; pointer-events: none;
+      position: fixed; z-index: 9994; pointer-events: none;
       font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700;
       color: #F2F2EE; will-change: transform, opacity;
       text-shadow: 0 1px 2px rgba(0,0,0,0.45);
@@ -787,7 +783,7 @@ function injectStyles(): void {
 
     .bh-menu {
       position: fixed; right: 0; top: 50%; transform: translate(110%, -50%);
-      z-index: 48; pointer-events: auto;
+      z-index: 9995; pointer-events: auto;
       display: flex; flex-direction: column; gap: 10px; align-items: stretch;
       padding: 16px 16px 14px; min-width: 168px;
       background: rgba(12,13,16,0.94); border: 1px solid #34373F; border-right: none;
@@ -822,22 +818,20 @@ function injectStyles(): void {
     .bh-weapon--lethal.bh-weapon--active { border-color: #FF5C5C; box-shadow: 0 0 0 2px rgba(255,92,92,0.3); }
     .bh-menu-hint { color: #5F6068; font-size: 10px; letter-spacing: 0.5px; text-align: center; }
 
-    .bh-catcher { position: fixed; inset: 0; z-index: 47; pointer-events: auto; cursor: none; }
+    .bh-catcher { position: fixed; inset: 0; z-index: 9990; pointer-events: auto; cursor: none; }
     .bh-weapon-cursor {
       position: fixed; left: 0; top: 0;
-      z-index: 55; pointer-events: none; transform-origin: 60% 85%;
+      z-index: 9999; pointer-events: none; transform-origin: 60% 85%;
       filter: drop-shadow(0 2px 2px rgba(0,0,0,0.4));
     }
-    .bh-particle { position: fixed; z-index: 54; pointer-events: none; border-radius: 1px; }
+    .bh-particle { position: fixed; z-index: 9997; pointer-events: none; border-radius: 1px; }
     .bh-toast {
-      position: fixed; left: 50%; top: 42%; z-index: 60; pointer-events: none;
+      position: fixed; left: 50%; top: 42%; z-index: 9998; pointer-events: none;
       transform: translate(-50%, -50%); white-space: nowrap;
       font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 700;
       font-size: 24px; letter-spacing: 3px; color: #FF5C5C;
       text-shadow: 0 2px 10px rgba(0,0,0,0.7);
     }
-
-    @media (prefers-reduced-motion: reduce) { .bh-root { display: none !important; } }
   `;
   document.head.appendChild(style);
 }
