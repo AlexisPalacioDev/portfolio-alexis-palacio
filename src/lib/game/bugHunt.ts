@@ -53,6 +53,9 @@ export function initBugHunt(): void {
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = window.matchMedia('(pointer: fine)');
+  const coarsePointer = window.matchMedia('(pointer: coarse)');
+  // Touch devices: no hover/cursor, so the game uses a tap-to-strike model.
+  const isTouch = (): boolean => coarsePointer.matches || !finePointer.matches;
 
   let state: State = 'idle';
   let idleTimer = 0;
@@ -83,11 +86,12 @@ export function initBugHunt(): void {
 
   // ── Eligibility ─────────────────────────────────────────────────────────
   function eligible(): boolean {
+    // Runs on desktop AND touch now (touch uses tap-to-strike). Still gated on
+    // reduced-motion and a sane minimum width.
     return (
       document.visibilityState === 'visible' &&
       !reduceMotion.matches &&
-      finePointer.matches &&
-      window.innerWidth >= 768
+      window.innerWidth >= 360
     );
   }
 
@@ -146,11 +150,13 @@ export function initBugHunt(): void {
     bug.appendChild(bob);
     root.appendChild(bug);
 
-    // Unarmed, the fly is skittish: clicking it makes it dart away. (When the
-    // hammer is armed, arm() disables this so the catcher can land hits.)
+    // Tap/click the fly: unarmed → it darts away (skittish); armed → strike it.
+    // On desktop+armed the catcher intercepts instead (bug pointer-events: none),
+    // so this path only strikes on touch, where there is no catcher.
     bug.addEventListener('click', (e) => {
       e.stopPropagation();
-      dodge();
+      if (armed && weapon) strikeBug();
+      else dodge();
     });
 
     // Fly in from a random side, a little below the top nav.
@@ -285,6 +291,19 @@ export function initBugHunt(): void {
     eatTimer = window.setTimeout(nextBite, FLIGHT_MS + 280);
   }
 
+  /** Touch strike: tap the armed fly to hit it right where it sits. */
+  function strikeBug(): void {
+    const r = bug?.getBoundingClientRect();
+    const cx = r ? r.left + r.width / 2 : bugCenter.x;
+    const cy = r ? r.top + r.height / 2 : bugCenter.y;
+    if (weapon === 'spray') {
+      sprayJet(cx, cy + 44, cx, cy); // mist rising into the bug
+      explode(true); // lethal
+    } else {
+      explode(false);
+    }
+  }
+
   /** Squash-and-stretch bite: the bug lunges down, the mouth gapes open. */
   function chomp(): void {
     const el = bug?.querySelector<HTMLElement>('.bh-chomp');
@@ -368,7 +387,9 @@ export function initBugHunt(): void {
 
     menu = document.createElement('div');
     menu.className = 'bh-menu';
+    const dismissHint = isTouch() ? 'Tap ✕ to dismiss' : 'Esc to dismiss';
     menu.innerHTML = `
+      <button class="bh-menu-close" type="button" aria-label="Dismiss the game">✕</button>
       <div class="bh-menu-title">PEST CONTROL</div>
       <button class="bh-weapon" data-weapon="hammer" type="button" aria-label="Swat the bug with a hammer">
         <span class="bh-weapon-icon">${hammerSprite()}</span>
@@ -378,10 +399,11 @@ export function initBugHunt(): void {
         <span class="bh-weapon-icon">${spraySprite()}</span>
         <span class="bh-weapon-label">Insecticide<small>lethal</small></span>
       </button>
-      <div class="bh-menu-hint">Esc to dismiss</div>
+      <div class="bh-menu-hint">${dismissHint}</div>
     `;
     root.appendChild(menu);
 
+    menu.querySelector<HTMLButtonElement>('.bh-menu-close')?.addEventListener('click', kill);
     menu.querySelectorAll<HTMLButtonElement>('.bh-weapon').forEach((btn) =>
       btn.addEventListener('click', () => {
         const kind = btn.dataset.weapon === 'spray' ? 'spray' : 'hammer';
@@ -398,7 +420,17 @@ export function initBugHunt(): void {
     if (armed || !root) return;
     armed = true;
     weapon = kind;
-    // Hand click control to the catcher: the fly stops dodging clicks.
+
+    menu?.classList.add('bh-menu--armed');
+    menu?.querySelectorAll<HTMLElement>('.bh-weapon').forEach((b) =>
+      b.classList.toggle('bh-weapon--active', b.dataset.weapon === kind)
+    );
+
+    // Touch: no cursor or full-screen catcher (that would block page scrolling).
+    // The fly stays tappable and its click handler routes to strikeBug().
+    if (isTouch()) return;
+
+    // Desktop: hand click control to the catcher; the fly stops dodging clicks.
     if (bug) bug.style.pointerEvents = 'none';
 
     catcher = document.createElement('div');
@@ -433,11 +465,6 @@ export function initBugHunt(): void {
     } else {
       catcher.addEventListener('click', onSwing);
     }
-
-    menu?.classList.add('bh-menu--armed');
-    menu?.querySelectorAll<HTMLElement>('.bh-weapon').forEach((b) =>
-      b.classList.toggle('bh-weapon--active', b.dataset.weapon === kind)
-    );
   }
 
   function onAim(e: MouseEvent): void {
@@ -726,7 +753,7 @@ function injectStyles(): void {
 
     .bh-bug {
       position: fixed; left: 0; top: 0; width: ${SPRITE_W}px; height: ${SPRITE_H}px;
-      z-index: 49; will-change: transform; pointer-events: auto; cursor: pointer;
+      z-index: 70; will-change: transform; pointer-events: auto; cursor: pointer;
     }
     .bh-bob { animation: bh-bob 0.42s ease-in-out infinite; }
     .bh-chomp { transform-origin: center bottom; }
@@ -769,6 +796,12 @@ function injectStyles(): void {
       font-family: 'JetBrains Mono', ui-monospace, monospace;
     }
     .bh-menu--open { transform: translate(0, -50%); }
+    .bh-menu-close {
+      position: absolute; top: 6px; right: 8px;
+      background: transparent; border: none; color: #93938B; cursor: pointer;
+      font-size: 14px; line-height: 1; padding: 4px; font-family: inherit;
+    }
+    .bh-menu-close:hover { color: #FF5C5C; }
     .bh-menu-title {
       color: #C6F24E; font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
       border-bottom: 1px solid #23252D; padding-bottom: 8px; margin-bottom: 2px;
