@@ -22,10 +22,10 @@ export const I18N = {
 
     // ── Hero ─────────────────────────────────────────────────────────────
     hero_status: 'FULL-STACK · AI ENGINEER · REMOTE · FREELANCE',
-    hero_h1: 'I orchestrate AI',
-    hero_h1_accent: 'to ship real outcomes.',
+    hero_h1: 'Give me the hard problem.',
+    hero_h1_accent: 'I hand it back working.',
     hero_sub:
-      'Full-stack developer specialized in AI agents, automation harnesses and LLM orchestration — agents, loops, MCP. 4 years turning ideas into products that actually run in production, adapting to whatever stack the job needs.',
+      'Full-stack developer who actually ships. Give me a half-baked idea and I figure it out, build it, and explain every step in plain words — no jargon, no hand-holding. Web apps, AI, automation: whatever it takes, I learn it fast and own it to the finish line.',
     hero_cta_hire: 'Hire me',
     hero_cta_cv: 'Download CV',
     hero_scroll: 'Scroll',
@@ -33,25 +33,25 @@ export const I18N = {
 
     // ── About ─────────────────────────────────────────────────────────────
     about_label: 'ABOUT',
-    about_h2: "I don't just write code. I make AI get the job done.",
+    about_h2: 'The developer you don’t have to babysit.',
     about_p1:
-      'Full-stack developer with 5+ years building web products end to end. Over the last two years I pivoted hard into AI orchestration: my edge is not a single language — it\'s wiring models, tools and data into systems that hit a goal on their own.',
+      'I’m a full-stack developer with 5+ years building real products — but my real edge isn’t a language or a framework. It’s that I don’t get stuck. Hand me a fuzzy, half-defined problem and I come back with something working, plus a clear explanation of how it works.',
     about_p2:
-      "I've built voice agents connected to external sources through MCP, automation harnesses, and LLM pipelines running both in the cloud and locally (Ollama, OpenRouter). Solid backend foundations in PHP, Node and Python, with a modern frontend (React, React Native, Next.js, Tailwind).",
+      'I move fast across the whole stack (React, Next.js, Node, Python) and over the last couple of years I’ve gone deep into AI. New tool, new domain, weird legacy codebase? I pick it up quickly and run with it — honestly, that’s the part I enjoy most.',
     about_p3:
-      "Right now I'm engineering AI content generation at anai. I work remote, ship fast, and I'm hungry — in every sense of the word.",
+      'Right now I’m building AI-powered content generation at anai. I work remote, I step up to lead when something needs leading, and I care about the people on the other side of the screen as much as the code. Hungry — in every sense of the word.',
     stat_years: 'Years shipping',
     stat_projects: 'Projects delivered',
-    stat_tech: 'Stack-agnostic',
+    stat_tech: 'Any stack, fast',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
     skills_label: 'THE STACK',
-    skills_h2: 'Built to orchestrate, not just to code.',
+    skills_h2: 'It’s not the tools. It’s what I do with them.',
     skills_sub:
-      'A T-shaped toolkit: deep in AI orchestration & automation, broad across the full stack.',
-    skills_ai_title: 'AI Orchestration & Agents',
+      'Deep where it matters, broad enough to connect the dots — and quick to pick up whatever’s missing.',
+    skills_ai_title: 'AI Agents & Automation',
     skills_ai_desc:
-      "Designing the loops, tools and guardrails that let models accomplish real objectives — not demos.",
+      'I build AI that actually gets the job done in the real world — not slick demos that fall apart the moment a real user shows up.',
     skills_core: 'Core focus',
     skills_loop: 'A typical agent loop',
     cat_backend: 'Backend',
@@ -60,26 +60,27 @@ export const I18N = {
 
     // ── Work & Projects ───────────────────────────────────────────────────
     projects_label: 'SELECTED WORK',
-    projects_h2: 'Real products I worked on.',
+    projects_h2: 'Stuff I actually shipped.',
     projects_sub:
-      'AI, automation and full-stack — from marketplaces with escrow to content engines.',
+      'Real products with real users — from marketplaces to AI content engines. No tutorials, no toys.',
     projects_view: 'Open',
     projects_code: 'Code',
     work_earlier: 'Earlier — Frontend Developer @ K Gumi & Wiptool (2020–2024)',
 
     // ── Services ──────────────────────────────────────────────────────────
     services_label: 'FREELANCE',
-    services_h2: 'Hire me for the hard part.',
-    services_sub: 'Freelance full-stack developer for hire — fully remote, full-time or by project. Full-stack web development and AI consulting for teams worldwide. Let\'s build.',
+    services_h2: 'Hire me for the part nobody wants to touch.',
+    services_sub:
+      'Freelance full-stack developer for hire — fully remote, full-time or by project. You bring the problem; I bring a working solution and straight talk the whole way. Let’s build.',
     svc1_title: 'AI Agents & Automation',
     svc1_desc:
-      'Custom agents, automation harnesses, MCP integrations and bots on WhatsApp / Telegram that actually move the needle.',
+      'Bots and automations that quietly handle the boring, repetitive work for you — on WhatsApp, Telegram, or wherever your people already are.',
     svc2_title: 'Full-Stack Development',
     svc2_desc:
-      'Web apps end to end — Next.js, React, Supabase, Node, payments and clean APIs that scale.',
+      'Web apps from zero to live — fast to launch, solid under the hood, and built so they don’t crack the moment you start growing.',
     svc3_title: 'AI Strategy & Consulting',
     svc3_desc:
-      'LLM orchestration, harness & loop design, cloud + local models. I help teams ship AI that works.',
+      'Not sure where AI actually fits your business? I help you skip the hype and ship the parts that genuinely move the needle.',
     svc_cta: 'Start a project',
 
     // ── Testimonials ──────────────────────────────────────────────────────
@@ -92,9 +93,9 @@ export const I18N = {
 
     // ── Contact ───────────────────────────────────────────────────────────
     contact_label: 'CONTACT',
-    contact_h2: "Let's build something.",
+    contact_h2: 'Let’s build something.',
     contact_sub:
-      'Open to remote roles, contracts and consulting worldwide. I usually reply same day.',
+      'Open to remote roles, contracts and consulting — anywhere in the world. Tell me what you need in plain words; I usually reply the same day.',
     contact_email: 'Email',
     contact_whats: 'WhatsApp',
     contact_linkedin: 'LinkedIn',
@@ -119,36 +120,36 @@ export const I18N = {
 
     // ── Hero ─────────────────────────────────────────────────────────────
     hero_status: 'FULL-STACK · INGENIERO IA · REMOTO · FREELANCE',
-    hero_h1: 'Orquesto IA',
-    hero_h1_accent: 'para entregar resultados reales.',
+    hero_h1: 'Dame el problema difícil.',
+    hero_h1_accent: 'te lo devuelvo funcionando.',
     hero_sub:
-      'Desarrollador full-stack especializado en agentes de IA, harnesses de automatización y orquestación de LLMs — agentes, loops, MCP. 4 años convirtiendo ideas en productos que de verdad corren en producción, adaptándome a la tecnología que el proyecto necesite.',
-    hero_cta_hire: 'Contratame',
+      'Desarrollador full-stack que de verdad entrega. Dame una idea a medio cocinar y la resuelvo, la construyo y te explico cada paso en palabras simples — sin jerga y sin que tengas que estar encima. Apps web, IA, automatización: lo que haga falta, lo aprendo rápido y lo llevo hasta el final.',
+    hero_cta_hire: 'Contrátame',
     hero_cta_cv: 'Descargar CV',
     hero_scroll: 'Baja',
     hero_loc: 'Medellín, Colombia · GMT-5',
 
     // ── About ─────────────────────────────────────────────────────────────
     about_label: 'SOBRE MÍ',
-    about_h2: 'No solo escribo código. Hago que la IA cumpla el objetivo.',
+    about_h2: 'El desarrollador que no tienes que estar vigilando.',
     about_p1:
-      "Desarrollador full-stack con 5+ años construyendo productos web de punta a punta. En los últimos dos años me volqué a la orquestación de IA: mi fuerte no es un solo lenguaje — es conectar modelos, herramientas y datos en sistemas que logran una meta por sí solos.",
+      'Soy desarrollador full-stack con 5+ años construyendo productos reales — pero mi verdadero fuerte no es un lenguaje ni un framework. Es que no me trabo. Dame un problema difuso, a medio definir, y vuelvo con algo funcionando y una explicación clara de cómo funciona.',
     about_p2:
-      "He construido agentes de voz conectados a fuentes externas vía MCP, harnesses de automatización y pipelines de LLM corriendo en la nube y en local (Ollama, OpenRouter). Base sólida en PHP, Node y Python, con frontend moderno (React, React Native, Next.js, Tailwind).",
+      'Me muevo rápido en todo el stack (React, Next.js, Node, Python) y en los últimos años me metí de lleno en la IA. ¿Herramienta nueva, dominio nuevo, código heredado raro? Lo agarro rápido y lo saco adelante — la verdad, esa es la parte que más disfruto.',
     about_p3:
-      "Hoy estoy desarrollando generación de contenido con IA en anai. Trabajo remoto, entrego rápido y tengo hambre — en todos los sentidos de la palabra.",
+      'Hoy construyo generación de contenido con IA en anai. Trabajo remoto, doy un paso al frente para liderar cuando algo lo necesita, y me importan tanto las personas del otro lado de la pantalla como el código. Con hambre — en todos los sentidos de la palabra.',
     stat_years: 'Años entregando',
     stat_projects: 'Proyectos entregados',
-    stat_tech: 'Stack-agnostic',
+    stat_tech: 'Cualquier stack, rápido',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
     skills_label: 'EL STACK',
-    skills_h2: 'Hecho para orquestar, no solo para codear.',
+    skills_h2: 'No son las herramientas. Es lo que hago con ellas.',
     skills_sub:
-      'Un perfil en T: profundidad en orquestación de IA y automatización, amplitud en todo el stack.',
-    skills_ai_title: 'Orquestación de IA y Agentes',
+      'Profundidad donde importa, amplitud para conectar los puntos — y rapidez para aprender lo que falte.',
+    skills_ai_title: 'Agentes de IA y Automatización',
     skills_ai_desc:
-      "Diseño los loops, herramientas y guardrails que permiten a los modelos cumplir objetivos reales — no demos.",
+      'Construyo IA que de verdad resuelve en el mundo real — no demos vistosas que se caen apenas aparece un usuario de carne y hueso.',
     skills_core: 'Foco principal',
     skills_loop: 'Un loop de agente típico',
     cat_backend: 'Backend',
@@ -157,33 +158,34 @@ export const I18N = {
 
     // ── Work & Projects ───────────────────────────────────────────────────
     projects_label: 'TRABAJO SELECCIONADO',
-    projects_h2: 'Productos reales en los que trabajé.',
+    projects_h2: 'Cosas que de verdad entregué.',
     projects_sub:
-      'IA, automatización y full-stack — desde marketplaces con escrow hasta motores de contenido.',
+      'Productos reales, con usuarios reales — desde marketplaces hasta motores de contenido con IA. Nada de tutoriales ni juguetes.',
     projects_view: 'Abrir',
     projects_code: 'Código',
     work_earlier: 'Antes — Frontend Developer en K Gumi y Wiptool (2020–2024)',
 
     // ── Services ──────────────────────────────────────────────────────────
     services_label: 'FREELANCE',
-    services_h2: 'Contrátame para la parte difícil.',
-    services_sub: 'Desarrollador full-stack freelance disponible — 100% remoto, full-time o por proyecto. Desarrollo web full-stack y consultoría en IA para equipos en todo el mundo. Construyamos.',
+    services_h2: 'Contrátame para la parte que nadie quiere tocar.',
+    services_sub:
+      'Desarrollador full-stack freelance disponible — 100% remoto, full-time o por proyecto. Tú traes el problema; yo traigo una solución que funciona y te hablo claro en todo el camino. Construyamos.',
     svc1_title: 'Agentes de IA y Automatización',
     svc1_desc:
-      'Agentes a medida, harnesses de automatización, integraciones MCP y bots en WhatsApp / Telegram que mueven la aguja.',
+      'Bots y automatizaciones que hacen por ti, sin ruido, el trabajo aburrido y repetitivo — en WhatsApp, Telegram o donde ya está tu gente.',
     svc2_title: 'Desarrollo Full-Stack',
     svc2_desc:
-      'Apps web de punta a punta — Next.js, React, Supabase, Node, pagos y APIs limpias que escalan.',
+      'Apps web de cero a producción — rápidas de lanzar, sólidas por dentro y hechas para que no se rompan cuando empieces a crecer.',
     svc3_title: 'Estrategia y Consultoría IA',
     svc3_desc:
-      'Orquestación de LLMs, diseño de harness y loops, modelos cloud + local. Ayudo a equipos a entregar IA que funciona.',
+      '¿No sabes dónde encaja la IA en tu negocio? Te ayudo a saltarte el humo y lanzar lo que de verdad mueve la aguja.',
     svc_cta: 'Empezar un proyecto',
 
     // ── Testimonials ──────────────────────────────────────────────────────
     test_label: 'TESTIMONIOS',
     test_h2: 'Lo que dicen de mí.',
     test_sub: 'Testimonios reales de clientes y colegas — próximamente.',
-    test_ph_quote: 'Testimonio real próximamente — Alexis, mandá las citas de tus clientes.',
+    test_ph_quote: 'Testimonio real próximamente — Alexis, manda las citas de tus clientes.',
     test_ph_name: 'Nombre del Cliente',
     test_ph_role: 'Rol · Empresa',
 
@@ -191,7 +193,7 @@ export const I18N = {
     contact_label: 'CONTACTO',
     contact_h2: 'Construyamos algo.',
     contact_sub:
-      'Abierto a roles remotos, contratos y consultoría en todo el mundo. Suelo responder el mismo día.',
+      'Abierto a roles remotos, contratos y consultoría — en cualquier parte del mundo. Cuéntame qué necesitas en palabras simples; suelo responder el mismo día.',
     contact_email: 'Correo',
     contact_whats: 'WhatsApp',
     contact_linkedin: 'LinkedIn',
