@@ -35,6 +35,17 @@ export function initSectionSnap(): void {
     return Math.max(0, s.offsetTop - NAV_OFFSET);
   }
 
+  // Where to land when ENTERING a section in a given direction.
+  // Going down → land at its top and read downward. Going up → if the section
+  // is taller than the viewport, land at its BOTTOM so you can scroll up
+  // THROUGH it (symmetric with the downward read), otherwise its top.
+  function enterTarget(s: HTMLElement, dir: number): number {
+    if (dir < 0 && s.offsetHeight > window.innerHeight) {
+      return Math.max(0, s.offsetTop + s.offsetHeight - window.innerHeight);
+    }
+    return targetTop(s);
+  }
+
   function animateTo(y: number): void {
     busy = true;
     const startY = window.scrollY;
@@ -90,7 +101,7 @@ export function initSectionSnap(): void {
       if (nextIdx === idx) return;
 
       e.preventDefault();
-      animateTo(targetTop(sections[nextIdx]));
+      animateTo(enterTarget(sections[nextIdx], dir));
     },
     { passive: false }
   );
