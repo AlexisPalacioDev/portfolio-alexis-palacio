@@ -17,6 +17,7 @@ export const I18N = {
     nav_skills: 'Stack',
     nav_projects: 'Work',
     nav_services: 'Hire me',
+    nav_testimonials: 'Testimonials',
     nav_contact: 'Contact',
 
     // ── Hero ─────────────────────────────────────────────────────────────
@@ -110,6 +111,7 @@ export const I18N = {
     nav_skills: 'Stack',
     nav_projects: 'Proyectos',
     nav_services: 'Contrátame',
+    nav_testimonials: 'Testimonios',
     nav_contact: 'Contacto',
 
     // ── Hero ─────────────────────────────────────────────────────────────

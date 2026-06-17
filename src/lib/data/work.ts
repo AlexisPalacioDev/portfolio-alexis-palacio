@@ -180,7 +180,7 @@ export const work: readonly WorkItem[] = [
     name: 'Tripi',
     accent: '#46C97E',
     cover: coverTripi,
-    links: { link: null, code: null },
+    links: { link: null, code: 'https://github.com/AlexisPalacioDev/apptreeking' },
     period: { en: '2022 — 2023', es: '2022 — 2023' },
     role: {
       en: 'Full-Stack Developer',

@@ -46,7 +46,9 @@ export function initCountUp(): void {
     // Keep original display text suffix (e.g., "+" in "20+")
     // The element textContent at SSR time is the final value like "5+".
     // We store the suffix so we can append it during animation.
-    const originalText = el.textContent ?? '';
+    // Trim first: SSR markup can wrap the value in whitespace (" 5+ "), which
+    // would defeat the leading-digit strip and smear the number into the suffix.
+    const originalText = (el.textContent ?? '').trim();
     const suffix = originalText.replace(/^\d+/, ''); // strip leading digits → "+"
 
     function step(now: number): void {
@@ -84,8 +86,12 @@ export function initCountUp(): void {
 
         tiles.forEach((tile) => {
           const target = parseInt(tile.dataset.count ?? '0', 10);
-          if (!isNaN(target) && target > 0) {
-            animateTile(tile, target);
+          // Animate ONLY the inner value element — writing textContent on the
+          // tile wrapper would wipe its sibling label node. The wrapper carries
+          // data-count; the number lives in [data-stat-value].
+          const valueEl = tile.querySelector<HTMLElement>('[data-stat-value]');
+          if (valueEl && !isNaN(target) && target > 0) {
+            animateTile(valueEl, target);
           }
         });
       }
