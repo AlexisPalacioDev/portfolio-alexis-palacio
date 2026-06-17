@@ -26,9 +26,9 @@ export const I18N = {
     // ── Hero ─────────────────────────────────────────────────────────────
     hero_status: 'FULL-STACK · AI ENGINEER · REMOTE · FREELANCE',
     hero_h1: 'Hi, I’m Alexis.',
-    hero_h1_accent: 'I lead the frontend of an AI SaaS in production.',
+    hero_h1_accent: 'I lead products from idea to production.',
     hero_sub:
-      'Lead fullstack developer building AI products end to end — from the Next.js frontend to the agents and infra behind it. I ship fast, own the whole problem, and explain the technical part in plain language.',
+      'Lead full-stack developer specializing in AI. I architect and ship web platforms end to end — from the Next.js frontend to the AI orchestration underneath — and I explain the hard parts without the jargon.',
     hero_cta_hire: 'Hire me',
     hero_cta_cv: 'Download CV',
     hero_scroll: 'Scroll',
@@ -38,13 +38,13 @@ export const I18N = {
     about_label: 'ABOUT',
     about_h2: 'Here’s how I work.',
     about_p1:
-      'I’m Alexis, a lead fullstack developer with 5+ years building web products end to end. My strength is taking a messy, half-defined problem and owning it all the way to production — architecture, implementation and the decisions in between.',
+      'I’m Alexis, a lead full-stack developer with 5+ years building web products from start to finish. What I’m best at is taking a messy, half-defined problem and owning it end to end — scoping it, building it, and shipping it to production.',
     about_p2:
       'These last couple of years I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). A new tool or language shows up? I pick it up fast — honestly, that’s the part I enjoy most.',
     about_p3:
-      'Right now I lead the frontend at anai, an AI content-generation SaaS. I work remotely, ship fast, and care about the person on the other side of the screen as much as the code.',
-    stat_years: 'Years shipping in production',
-    stat_projects: 'Products shipped',
+      'Right now I lead the frontend at anai, an AI content-generation SaaS. I work remotely and care about the person on the other side of the screen as much as the code. I ship fast, I sweat the details, and I keep teams moving.',
+    stat_years: 'Years shipping to production',
+    stat_projects: 'Products in production',
     stat_tech: 'Units monitored at iMometrics',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
@@ -54,7 +54,7 @@ export const I18N = {
       'I know my own tools well, and I pick up whatever a project needs — fast.',
     skills_ai_title: 'AI Agents & Automation',
     skills_ai_desc:
-      'I build AI that does something real — not demos that look great and then fall apart the moment a real person uses them.',
+      'I build AI that holds up in production — agents and pipelines that real users depend on every day.',
     skills_core: 'Core focus',
     skills_loop: 'A typical agent loop',
     cat_backend: 'Backend',
@@ -80,7 +80,7 @@ export const I18N = {
       'Bots and automations that handle the boring, repetitive work for you — on WhatsApp, Telegram, or wherever your people already are.',
     svc2_title: 'Full-Stack Development',
     svc2_desc:
-      'Web apps from start to finish: fast to launch, built on solid architecture, and designed to scale as your users grow.',
+      'Web apps from start to finish: quick to launch, solid underneath, and built to scale as your users grow.',
     svc3_title: 'AI Strategy & Consulting',
     svc3_desc:
       'Not sure where AI fits in your business? I’ll help you tell the useful part from the hype and ship what actually helps.',
@@ -124,9 +124,9 @@ export const I18N = {
     // ── Hero ─────────────────────────────────────────────────────────────
     hero_status: 'FULL-STACK · INGENIERO IA · REMOTO · FREELANCE',
     hero_h1: 'Hola, soy Alexis.',
-    hero_h1_accent: 'Lidero el frontend de un SaaS de IA en producción.',
+    hero_h1_accent: 'Llevo productos de la idea a producción.',
     hero_sub:
-      'Desarrollador lead fullstack que construye productos de IA de punta a punta — del frontend en Next.js a los agentes e infra que lo sostienen. Entrego rápido, me hago cargo del problema completo y te explico la parte técnica en lenguaje simple.',
+      'Lead full-stack developer especializado en IA. Diseño y construyo plataformas web de punta a punta — del frontend en Next.js a la orquestación de IA que va por debajo — y explico lo complejo sin tecnicismos.',
     hero_cta_hire: 'Contrátame',
     hero_cta_cv: 'Descargar CV',
     hero_scroll: 'Baja',
@@ -136,13 +136,13 @@ export const I18N = {
     about_label: 'SOBRE MÍ',
     about_h2: 'Te cuento cómo trabajo.',
     about_p1:
-      'Soy Alexis, desarrollador lead fullstack con 5+ años construyendo productos web de punta a punta. Mi fuerte es agarrar un problema enredado, a medio definir, y hacerme cargo de todo el camino hasta producción — arquitectura, implementación y las decisiones del medio.',
+      'Soy Alexis, lead full-stack developer. Llevo 5+ años construyendo productos web de principio a fin. En lo que mejor me muevo es en tomar un problema desordenado y a medio definir, apropiármelo de punta a punta — definirlo, construirlo y llevarlo a producción.',
     about_p2:
       'Estos últimos años me metí de lleno en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). ¿Aparece una herramienta o un lenguaje nuevo? Lo aprendo rápido — y la verdad, esa es la parte que más disfruto.',
     about_p3:
-      'Hoy lidero el frontend en anai, un SaaS de generación de contenido con IA. Trabajo remoto, entrego rápido y me importa la persona del otro lado de la pantalla tanto como el código.',
-    stat_years: 'Años en producción',
-    stat_projects: 'Productos lanzados',
+      'Hoy lidero el frontend en anai, un SaaS de generación de contenido con IA. Trabajo remoto y me importa la persona del otro lado de la pantalla tanto como el código. Entrego rápido, cuido los detalles y mantengo al equipo avanzando.',
+    stat_years: 'Años entregando a producción',
+    stat_projects: 'Productos en producción',
     stat_tech: 'Unidades monitoreadas en iMometrics',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
@@ -152,7 +152,7 @@ export const I18N = {
       'Conozco bien mis herramientas y aprendo rápido lo que el proyecto pida.',
     skills_ai_title: 'Agentes de IA y Automatización',
     skills_ai_desc:
-      'Construyo IA que sirve para algo de verdad — no demos bonitas que se caen apenas la usa una persona real.',
+      'Construyo IA que aguanta en producción — agentes y pipelines de los que usuarios reales dependen a diario.',
     skills_core: 'Foco principal',
     skills_loop: 'Un loop de agente típico',
     cat_backend: 'Backend',
@@ -178,7 +178,7 @@ export const I18N = {
       'Bots y automatizaciones que hacen por ti el trabajo aburrido y repetitivo — en WhatsApp, Telegram o donde ya tengas a tu gente.',
     svc2_title: 'Desarrollo Full-Stack',
     svc2_desc:
-      'Apps web de principio a fin: rápidas de lanzar, sobre una arquitectura sólida, y pensadas para escalar a medida que crecen tus usuarios.',
+      'Apps web de principio a fin: rápidas de lanzar, sólidas por debajo y construidas para escalar a medida que crecen tus usuarios.',
     svc3_title: 'Estrategia y Consultoría IA',
     svc3_desc:
       '¿No sabes por dónde meterle IA a tu negocio? Te ayudo a separar lo útil del humo y lanzar lo que de verdad suma.',
