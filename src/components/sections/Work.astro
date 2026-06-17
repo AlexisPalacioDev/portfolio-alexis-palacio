@@ -49,7 +49,7 @@ const activeItem = work[ACTIVE];
     <!-- align-items: start keeps the two columns INDEPENDENT — the deck (right)
          no longer re-centers when the left detail panel changes height between
          projects, so the cards / arrows / dots stay put. -->
-    <div style="display: grid; grid-template-columns: 1fr 600px; gap: 48px; align-items: start;">
+    <div class="rg-2-deck" style="display: grid; grid-template-columns: 1fr 600px; gap: 48px; align-items: start;">
 
       <!-- ── LEFT: Detail panel ── -->
       <div class="rev" id="work-detail">
@@ -174,10 +174,11 @@ const activeItem = work[ACTIVE];
       <!-- ── RIGHT: Card deck (SSR static fan) ── -->
       <div class="rev" id="work-deck-root">
 
-        <!-- Deck container — landscape 460×276 cards (5:3, matches the cover art) -->
+        <!-- Deck container — landscape 5:3 cards. Size is driven by --card-w/--card-h
+             so a media query can shrink the whole deck on small screens. -->
         <div
           id="work-deck"
-          style="position: relative; height: 372px; width: 460px; margin: 0 auto;"
+          style="position: relative; --card-w: 460px; --card-h: 276px; height: calc(var(--card-h) + 96px); width: var(--card-w); margin: 0 auto;"
           data-active="0"
           data-count={N}
         >
@@ -193,7 +194,7 @@ const activeItem = work[ACTIVE];
                 style={[
                   'position: absolute;',
                   'top: 50%; left: 50%;',
-                  'width: 460px; height: 276px;',
+                  'width: var(--card-w); height: var(--card-h);',
                   `transform: translate(-50%, -50%) ${transform};`,
                   `z-index: ${geo.zIndex};`,
                   `transition: transform .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease, box-shadow .35s ease, border-color .3s ease;`,

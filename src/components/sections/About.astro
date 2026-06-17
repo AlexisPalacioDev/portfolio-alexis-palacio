@@ -19,7 +19,7 @@ import alexisPhoto from '../../assets/alexis-photo.jpg';
     </div>
 
     <!-- Two-column layout: text left, portrait right -->
-    <div style="display: grid; grid-template-columns: 1.45fr 0.9fr; gap: 60px; align-items: start;">
+    <div class="rg-2" style="display: grid; grid-template-columns: 1.45fr 0.9fr; gap: 60px; align-items: start;">
 
       <!-- Left column: headline + paragraphs + stat tiles -->
       <div>
@@ -57,7 +57,7 @@ import alexisPhoto from '../../assets/alexis-photo.jpg';
 
         <!-- Stat tiles — data-count for WU-4 count-up -->
         <div
-          class="rev"
+          class="rev rg-3"
           style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 44px;"
         >
           <StatTile value="5+" label={t('en', 'stat_years')} data-count="5" data-i18n-label="stat_years" valueColor="#C6F24E" />
