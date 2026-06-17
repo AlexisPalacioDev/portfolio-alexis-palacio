@@ -156,6 +156,26 @@ const navItems = [
       })();
     </script>
 
+    <!--
+      Scroll on (re)load: a one-page site should reopen at the TOP, not wherever
+      the reader left off or whatever #section anchor is stuck in the URL. We
+      turn off the browser's scroll restoration and, on a reload, strip the hash
+      before the browser can jump to it. A fresh deep-link (a shared /#section
+      URL) is left untouched so it still scrolls to that section.
+    -->
+    <script is:inline>
+      (function () {
+        try {
+          if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+          var entry = performance.getEntriesByType('navigation')[0];
+          var isReload = entry ? entry.type === 'reload' : false;
+          if (isReload && location.hash) {
+            history.replaceState(null, '', location.pathname + location.search);
+          }
+        } catch (_) {}
+      })();
+    </script>
+
     <!-- Structured data (JSON-LD): Person + WebSite for rich results & ranking -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>

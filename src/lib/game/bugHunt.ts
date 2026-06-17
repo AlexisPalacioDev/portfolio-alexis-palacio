@@ -37,8 +37,8 @@ const SPRITE_W = 54; // bug sprite width in px (height derived from aspect)
 const SPRITE_H = Math.round(SPRITE_W / BUG_ASPECT);
 const FLIGHT_MS = 520; // glide duration between letters
 const EAT_PAUSE_MS = 230; // pause on a letter before moving on
-const LETTERS_PER_STAGE = 4; // letters eaten per fatness bump
-const MAX_STAGE = 3; // cap on fatness
+const LETTERS_PER_STAGE = 3; // letters eaten per fatness bump
+const MAX_STAGE = 5; // cap on fatness
 const HARVEST_BATCH = 6; // elements split per refill
 const MENU_DELAY_MS = 1600; // delay before the weapons menu slides in
 const BASE_HIT_RADIUS = 46; // px; grows with the bug's fatness
@@ -184,7 +184,7 @@ export function initBugHunt(): void {
   }
 
   function currentScale(): number {
-    return 1 + stage * 0.24;
+    return 1 + stage * 0.28;
   }
 
   // ── Eating loop ─────────────────────────────────────────────────────────
@@ -243,8 +243,8 @@ export function initBugHunt(): void {
     const spriteEl = bug?.querySelector<HTMLElement>('.bh-sprite');
     if (spriteEl) {
       const s = currentScale();
-      // Belly grows a touch faster than height → reads as "getting fat".
-      spriteEl.style.transform = `scale(${s * 1.06}, ${s})`;
+      // Belly widens faster than it grows tall → reads as a round, fat bug.
+      spriteEl.style.transform = `scale(${s * (1 + stage * 0.07)}, ${s})`;
     }
   }
 
