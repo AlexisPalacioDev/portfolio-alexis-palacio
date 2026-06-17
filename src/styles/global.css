@@ -108,6 +108,13 @@ section > * {
   }
 }
 
+/* The detail panel's content varies per project (desc length, bullet count).
+   A fixed min-height keeps the whole Projects section a constant height so it
+   doesn't resize / shift the deck and title when you navigate between projects. */
+#work-detail {
+  min-height: 660px;
+}
+
 /* ─── Projects: 3D deck on desktop, swipe carousel on phones ──────────────── */
 .work-mobile {
   display: none;
