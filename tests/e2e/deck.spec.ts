@@ -160,9 +160,18 @@ test.describe('ProjectDeck — regression: count-up must not clobber the deck', 
     const cardCount = await page.locator('#work-deck .work-card').count();
     expect(cardCount).toBe(7);
 
-    // And the stat tiles must still show their animated final values
-    const firstStat = page.locator('#about [data-count]').first();
-    await expect(firstStat).toHaveText(/\d/);
+    // And the stat tile STRUCTURE must survive the count-up: the value lives in
+    // a [data-stat-value] child and the label is a separate sibling. The old bug
+    // wrote textContent on the wrapper, destroying both — and a separate latent
+    // bug smeared the label into the number ("5 5+ Years shipping"). Assert the
+    // value is a clean "N+" and the label still exists with real text.
+    const firstTile = page.locator('#about [data-count]').first();
+    const value = firstTile.locator('[data-stat-value]');
+    await expect(value).toHaveCount(1);
+    await expect(value).toHaveText(/^\s*\d+\+?\s*$/); // e.g. "5+", not "5 5+ Years shipping"
+    const label = firstTile.locator('[data-i18n]');
+    await expect(label).toHaveCount(1);
+    await expect(label).not.toHaveText('');
   });
 });
 

@@ -86,6 +86,9 @@ export const I18N = {
     test_label: 'TESTIMONIALS',
     test_h2: 'What people say.',
     test_sub: 'Real quotes from clients & teammates coming soon.',
+    test_ph_quote: 'Real testimonial coming soon — Alexis, send over your client quotes.',
+    test_ph_name: 'Client Name',
+    test_ph_role: 'Role · Company',
 
     // ── Contact ───────────────────────────────────────────────────────────
     contact_label: 'CONTACT',
@@ -180,6 +183,9 @@ export const I18N = {
     test_label: 'TESTIMONIOS',
     test_h2: 'Lo que dicen de mí.',
     test_sub: 'Testimonios reales de clientes y colegas — próximamente.',
+    test_ph_quote: 'Testimonio real próximamente — Alexis, mandá las citas de tus clientes.',
+    test_ph_name: 'Nombre del Cliente',
+    test_ph_role: 'Rol · Empresa',
 
     // ── Contact ───────────────────────────────────────────────────────────
     contact_label: 'CONTACTO',

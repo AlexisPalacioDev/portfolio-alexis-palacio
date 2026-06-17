@@ -70,14 +70,15 @@ const placeholders = [
           <p
             class="text-ink"
             style="font-size: 16px; line-height: 1.6; margin: 0; flex: 1; color: #D4D4CC;"
+            data-i18n="test_ph_quote"
           >
             {q.quote}
           </p>
 
           <!-- Attribution -->
           <div>
-            <div class="font-bold text-ink" style="font-size: 14px;">{q.name}</div>
-            <div class="font-mono text-faint" style="font-size: 11px;">{q.role}</div>
+            <div class="font-bold text-ink" style="font-size: 14px;" data-i18n="test_ph_name">{q.name}</div>
+            <div class="font-mono text-faint" style="font-size: 11px;" data-i18n="test_ph_role">{q.role}</div>
           </div>
         </div>
       ))}
