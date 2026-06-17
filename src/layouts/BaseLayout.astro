@@ -6,6 +6,12 @@ import '@fontsource/space-grotesk/700.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import '@fontsource/jetbrains-mono/700.css';
+// Above-the-fold fonts (hero headline 700 = the LCP, and body 400). Imported as
+// assets so we get the hashed URL to <link rel=preload> — the browser fetches
+// them in parallel with the CSS instead of only after parsing it, cutting the
+// first-paint font swap. Same hashed file the @font-face uses → no double load.
+import sgBody from '@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff2';
+import sgHead from '@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2';
 import '../styles/global.css';
 import LangToggle from '../components/islands/LangToggle.astro';
 import { t } from '../lib/i18n/store';
@@ -102,6 +108,12 @@ const navItems = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Preload above-the-fold fonts so the hero/body text paints with the real
+         font immediately (cuts FCP/LCP). crossorigin required even same-origin
+         for font fetches. -->
+    <link rel="preload" href={sgHead} as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href={sgBody} as="font" type="font/woff2" crossorigin="anonymous" />
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
     <meta name="author" content="Alexis Palacio" />
