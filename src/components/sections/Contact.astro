@@ -1,14 +1,19 @@
 ---
 import { t } from '../../lib/i18n/store';
 import Eyebrow from '../ui/Eyebrow.astro';
+import Footer from './Footer.astro';
 ---
 
+<!-- Contact is the last section; the footer lives INSIDE it (pinned to the
+     bottom) so the snap lands on contact + footer together as one screen,
+     instead of leaving the footer as an orphan you must scroll to. -->
 <section
   id="contact"
   class="min-h-screen"
-  style="padding: 120px 40px; border-top: 1px solid #23252D;"
+  style="border-top: 1px solid #23252D; display: flex; flex-direction: column;"
 >
-  <div style="max-width: 1180px; margin: 0 auto;">
+  <div style="flex: 1; display: flex; align-items: center; padding: clamp(84px, 10vh, 120px) 40px clamp(28px, 4vh, 44px);">
+  <div style="width: 100%; max-width: 1180px; margin: 0 auto;">
 
     <!-- Eyebrow 06 -->
     <div class="rev" style="margin-bottom: 22px;">
@@ -176,4 +181,8 @@ import Eyebrow from '../ui/Eyebrow.astro';
     </div>
 
   </div>
+  </div>
+  <!-- /content area -->
+
+  <Footer />
 </section>
