@@ -20,7 +20,7 @@ const activeItem = work[ACTIVE];
 <section
   id="projects"
   class="min-h-screen bg-panel"
-  style="padding: 110px 40px; border-top: 1px solid #23252D;"
+  style="padding: 80px 40px; border-top: 1px solid #23252D;"
 >
   <div style="width: 100%; max-width: 1280px; margin: 0 auto;">
 
@@ -115,7 +115,7 @@ const activeItem = work[ACTIVE];
           style="margin: 0 0 24px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px;"
           id="detail-bullets"
         >
-          {pick(activeItem.bullets, LANG).map((bullet) => (
+          {pick(activeItem.bullets, LANG).slice(0, 3).map((bullet) => (
             <li
               class="text-muted"
               style="display: flex; gap: 12px; font-size: 15px; line-height: 1.55;"
