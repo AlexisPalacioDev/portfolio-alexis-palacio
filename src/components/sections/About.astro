@@ -60,9 +60,10 @@ import alexisPhoto from '../../assets/alexis-photo.jpg';
           class="rev rg-3"
           style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 44px;"
         >
-          <StatTile value="4+" label={t('en', 'stat_years')} data-count="4" data-i18n-label="stat_years" valueColor="#C6F24E" />
-          <StatTile value="10+" label={t('en', 'stat_projects')} data-count="10" data-i18n-label="stat_projects" valueColor="#F2F2EE" />
-          <StatTile value="∞" label={t('en', 'stat_tech')} data-count="0" data-i18n-label="stat_tech" valueColor="#3D5BFF" />
+          <StatTile value="5+" label={t('en', 'stat_years')} data-count="5" data-i18n-label="stat_years" valueColor="#C6F24E" />
+          <StatTile value="7" label={t('en', 'stat_projects')} data-count="7" data-i18n-label="stat_projects" valueColor="#F2F2EE" />
+          {/* "1K+" stays static (data-count="0"): the count-up can't format a "K" suffix without rendering "1000K+". */}
+          <StatTile value="1K+" label={t('en', 'stat_tech')} data-count="0" data-i18n-label="stat_tech" valueColor="#3D5BFF" />
         </div>
       </div>
 
