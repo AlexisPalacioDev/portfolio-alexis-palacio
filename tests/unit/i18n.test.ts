@@ -22,11 +22,11 @@ describe('i18n dictionary', () => {
 
   describe('t() helper', () => {
     it('returns the correct EN string for hero_h1', () => {
-      expect(t(LANG.EN, 'hero_h1')).toBe('Give me the hard problem.');
+      expect(t(LANG.EN, 'hero_h1')).toBe('Hi, I’m Alexis.');
     });
 
     it('returns the correct ES string for hero_h1', () => {
-      expect(t(LANG.ES, 'hero_h1')).toBe('Dame el problema difícil.');
+      expect(t(LANG.ES, 'hero_h1')).toBe('Hola, soy Alexis.');
     });
 
     it('returns the correct EN string for hero_status', () => {

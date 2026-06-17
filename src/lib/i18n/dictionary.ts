@@ -9,6 +9,9 @@
 //   2. Add the same key to `es`.
 //   3. The compile-time AssertParity check in types.ts will catch any drift.
 //   4. The Vitest key-parity test is the runtime safety net.
+//
+// VOICE: first-person, plain, conversational — like Alexis talking to you in
+// person. No taglines, no jargon, no marketing-speak. ES is Colombian neutral (tú).
 
 export const I18N = {
   en: {
@@ -22,10 +25,10 @@ export const I18N = {
 
     // ── Hero ─────────────────────────────────────────────────────────────
     hero_status: 'FULL-STACK · AI ENGINEER · REMOTE · FREELANCE',
-    hero_h1: 'Give me the hard problem.',
-    hero_h1_accent: 'I hand it back working.',
+    hero_h1: 'Hi, I’m Alexis.',
+    hero_h1_accent: 'I make ideas actually work.',
     hero_sub:
-      'Full-stack developer who actually ships. Give me a half-baked idea and I figure it out, build it, and explain every step in plain words — no jargon, no hand-holding. Web apps, AI, automation: whatever it takes, I learn it fast and own it to the finish line.',
+      'Full-stack developer. Tell me what you need and I build it — web apps, AI, whatever it takes — and I explain it all without the jargon. No runaround, and I won’t vanish halfway through.',
     hero_cta_hire: 'Hire me',
     hero_cta_cv: 'Download CV',
     hero_scroll: 'Scroll',
@@ -33,25 +36,25 @@ export const I18N = {
 
     // ── About ─────────────────────────────────────────────────────────────
     about_label: 'ABOUT',
-    about_h2: 'The developer you don’t have to babysit.',
+    about_h2: 'Here’s how I work.',
     about_p1:
-      'I’m a full-stack developer with 5+ years building real products — but my real edge isn’t a language or a framework. It’s that I don’t get stuck. Hand me a fuzzy, half-defined problem and I come back with something working, plus a clear explanation of how it works.',
+      'I’m Alexis, a full-stack developer. I’ve spent 5+ years building web products from start to finish. What I’m best at is taking a messy, half-defined problem and carrying it through until it actually works — without anyone having to look over my shoulder.',
     about_p2:
-      'I move fast across the whole stack (React, Next.js, Node, Python) and over the last couple of years I’ve gone deep into AI. New tool, new domain, weird legacy codebase? I pick it up quickly and run with it — honestly, that’s the part I enjoy most.',
+      'These last couple of years I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). A new tool or language shows up? I pick it up fast — honestly, that’s the part I enjoy most.',
     about_p3:
-      'Right now I’m building AI-powered content generation at anai. I work remote, I step up to lead when something needs leading, and I care about the people on the other side of the screen as much as the code. Hungry — in every sense of the word.',
+      'Right now I’m at anai, building AI content generation. I work remotely, I ship fast, and I care about the person on the other side of the screen as much as the code. And I’m hungry to keep growing — for real.',
     stat_years: 'Years shipping',
     stat_projects: 'Projects delivered',
     stat_tech: 'Any stack, fast',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
     skills_label: 'THE STACK',
-    skills_h2: 'It’s not the tools. It’s what I do with them.',
+    skills_h2: 'The tools I work with.',
     skills_sub:
-      'Deep where it matters, broad enough to connect the dots — and quick to pick up whatever’s missing.',
+      'I know my own tools well, and I pick up whatever a project needs — fast.',
     skills_ai_title: 'AI Agents & Automation',
     skills_ai_desc:
-      'I build AI that actually gets the job done in the real world — not slick demos that fall apart the moment a real user shows up.',
+      'I build AI that does something real — not demos that look great and then fall apart the moment a real person uses them.',
     skills_core: 'Core focus',
     skills_loop: 'A typical agent loop',
     cat_backend: 'Backend',
@@ -60,27 +63,27 @@ export const I18N = {
 
     // ── Work & Projects ───────────────────────────────────────────────────
     projects_label: 'SELECTED WORK',
-    projects_h2: 'Stuff I actually shipped.',
+    projects_h2: 'A few things I’ve built.',
     projects_sub:
-      'Real products with real users — from marketplaces to AI content engines. No tutorials, no toys.',
+      'Real products with real users — not tutorial exercises.',
     projects_view: 'Open',
     projects_code: 'Code',
     work_earlier: 'Earlier — Frontend Developer @ K Gumi & Wiptool (2020–2024)',
 
     // ── Services ──────────────────────────────────────────────────────────
     services_label: 'FREELANCE',
-    services_h2: 'Hire me for the part nobody wants to touch.',
+    services_h2: 'How I can help.',
     services_sub:
-      'Freelance full-stack developer for hire — fully remote, full-time or by project. You bring the problem; I bring a working solution and straight talk the whole way. Let’s build.',
+      'I’m available for remote work, full-time or by project. Tell me what you need and we’ll figure out how to make it happen.',
     svc1_title: 'AI Agents & Automation',
     svc1_desc:
-      'Bots and automations that quietly handle the boring, repetitive work for you — on WhatsApp, Telegram, or wherever your people already are.',
+      'Bots and automations that handle the boring, repetitive work for you — on WhatsApp, Telegram, or wherever your people already are.',
     svc2_title: 'Full-Stack Development',
     svc2_desc:
-      'Web apps from zero to live — fast to launch, solid under the hood, and built so they don’t crack the moment you start growing.',
+      'Web apps from start to finish: quick to launch, solid underneath, and built so they don’t break the moment you start growing.',
     svc3_title: 'AI Strategy & Consulting',
     svc3_desc:
-      'Not sure where AI actually fits your business? I help you skip the hype and ship the parts that genuinely move the needle.',
+      'Not sure where AI fits in your business? I’ll help you tell the useful part from the hype and ship what actually helps.',
     svc_cta: 'Start a project',
 
     // ── Testimonials ──────────────────────────────────────────────────────
@@ -93,9 +96,9 @@ export const I18N = {
 
     // ── Contact ───────────────────────────────────────────────────────────
     contact_label: 'CONTACT',
-    contact_h2: 'Let’s build something.',
+    contact_h2: 'Want to work together?',
     contact_sub:
-      'Open to remote roles, contracts and consulting — anywhere in the world. Tell me what you need in plain words; I usually reply the same day.',
+      'Open to remote roles, contracts or consulting — anywhere in the world. Drop me a line and I’ll usually get back to you the same day.',
     contact_email: 'Email',
     contact_whats: 'WhatsApp',
     contact_linkedin: 'LinkedIn',
@@ -106,7 +109,7 @@ export const I18N = {
     available: 'Available for remote work',
     cv: 'Download CV',
     footer_rights: 'All rights reserved.',
-    footer_built: 'Designed & built with intent.',
+    footer_built: 'Made with care.',
   },
 
   es: {
@@ -120,10 +123,10 @@ export const I18N = {
 
     // ── Hero ─────────────────────────────────────────────────────────────
     hero_status: 'FULL-STACK · INGENIERO IA · REMOTO · FREELANCE',
-    hero_h1: 'Dame el problema difícil.',
-    hero_h1_accent: 'te lo devuelvo funcionando.',
+    hero_h1: 'Hola, soy Alexis.',
+    hero_h1_accent: 'Hago que las ideas funcionen.',
     hero_sub:
-      'Desarrollador full-stack que de verdad entrega. Dame una idea a medio cocinar y la resuelvo, la construyo y te explico cada paso en palabras simples — sin jerga y sin que tengas que estar encima. Apps web, IA, automatización: lo que haga falta, lo aprendo rápido y lo llevo hasta el final.',
+      'Desarrollador full-stack. Me cuentas qué necesitas y lo construyo — apps web, IA, lo que sea — y te explico todo sin tecnicismos. Sin vueltas y sin desaparecer a mitad del proyecto.',
     hero_cta_hire: 'Contrátame',
     hero_cta_cv: 'Descargar CV',
     hero_scroll: 'Baja',
@@ -131,25 +134,25 @@ export const I18N = {
 
     // ── About ─────────────────────────────────────────────────────────────
     about_label: 'SOBRE MÍ',
-    about_h2: 'El desarrollador que no tienes que estar vigilando.',
+    about_h2: 'Te cuento cómo trabajo.',
     about_p1:
-      'Soy desarrollador full-stack con 5+ años construyendo productos reales — pero mi verdadero fuerte no es un lenguaje ni un framework. Es que no me trabo. Dame un problema difuso, a medio definir, y vuelvo con algo funcionando y una explicación clara de cómo funciona.',
+      'Soy Alexis, desarrollador full-stack. Llevo más de 5 años construyendo productos web de principio a fin. Lo que mejor se me da es agarrar un problema enredado, a medio definir, y sacarlo adelante hasta que funcione — sin que nadie tenga que estar encima mío.',
     about_p2:
-      'Me muevo rápido en todo el stack (React, Next.js, Node, Python) y en los últimos años me metí de lleno en la IA. ¿Herramienta nueva, dominio nuevo, código heredado raro? Lo agarro rápido y lo saco adelante — la verdad, esa es la parte que más disfruto.',
+      'Estos últimos años me metí de lleno en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). ¿Aparece una herramienta o un lenguaje nuevo? Lo aprendo rápido — y la verdad, esa es la parte que más disfruto.',
     about_p3:
-      'Hoy construyo generación de contenido con IA en anai. Trabajo remoto, doy un paso al frente para liderar cuando algo lo necesita, y me importan tanto las personas del otro lado de la pantalla como el código. Con hambre — en todos los sentidos de la palabra.',
+      'Hoy estoy en anai, construyendo generación de contenido con IA. Trabajo remoto, entrego rápido y me importa la persona del otro lado de la pantalla tanto como el código. Y tengo ganas de seguir creciendo — en serio.',
     stat_years: 'Años entregando',
     stat_projects: 'Proyectos entregados',
     stat_tech: 'Cualquier stack, rápido',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
     skills_label: 'EL STACK',
-    skills_h2: 'No son las herramientas. Es lo que hago con ellas.',
+    skills_h2: 'Con esto trabajo.',
     skills_sub:
-      'Profundidad donde importa, amplitud para conectar los puntos — y rapidez para aprender lo que falte.',
+      'Conozco bien mis herramientas y aprendo rápido lo que el proyecto pida.',
     skills_ai_title: 'Agentes de IA y Automatización',
     skills_ai_desc:
-      'Construyo IA que de verdad resuelve en el mundo real — no demos vistosas que se caen apenas aparece un usuario de carne y hueso.',
+      'Construyo IA que sirve para algo de verdad — no demos bonitas que se caen apenas la usa una persona real.',
     skills_core: 'Foco principal',
     skills_loop: 'Un loop de agente típico',
     cat_backend: 'Backend',
@@ -158,27 +161,27 @@ export const I18N = {
 
     // ── Work & Projects ───────────────────────────────────────────────────
     projects_label: 'TRABAJO SELECCIONADO',
-    projects_h2: 'Cosas que de verdad entregué.',
+    projects_h2: 'Algunas cosas que construí.',
     projects_sub:
-      'Productos reales, con usuarios reales — desde marketplaces hasta motores de contenido con IA. Nada de tutoriales ni juguetes.',
+      'Productos de verdad, con usuarios de verdad — no ejercicios de tutorial.',
     projects_view: 'Abrir',
     projects_code: 'Código',
     work_earlier: 'Antes — Frontend Developer en K Gumi y Wiptool (2020–2024)',
 
     // ── Services ──────────────────────────────────────────────────────────
     services_label: 'FREELANCE',
-    services_h2: 'Contrátame para la parte que nadie quiere tocar.',
+    services_h2: 'En qué te puedo ayudar.',
     services_sub:
-      'Desarrollador full-stack freelance disponible — 100% remoto, full-time o por proyecto. Tú traes el problema; yo traigo una solución que funciona y te hablo claro en todo el camino. Construyamos.',
+      'Estoy disponible para trabajar remoto, full-time o por proyecto. Cuéntame qué necesitas y vemos cómo lo resolvemos.',
     svc1_title: 'Agentes de IA y Automatización',
     svc1_desc:
-      'Bots y automatizaciones que hacen por ti, sin ruido, el trabajo aburrido y repetitivo — en WhatsApp, Telegram o donde ya está tu gente.',
+      'Bots y automatizaciones que hacen por ti el trabajo aburrido y repetitivo — en WhatsApp, Telegram o donde ya tengas a tu gente.',
     svc2_title: 'Desarrollo Full-Stack',
     svc2_desc:
-      'Apps web de cero a producción — rápidas de lanzar, sólidas por dentro y hechas para que no se rompan cuando empieces a crecer.',
+      'Apps web de principio a fin: rápidas de lanzar, sólidas por dentro y pensadas para que no se rompan cuando empieces a crecer.',
     svc3_title: 'Estrategia y Consultoría IA',
     svc3_desc:
-      '¿No sabes dónde encaja la IA en tu negocio? Te ayudo a saltarte el humo y lanzar lo que de verdad mueve la aguja.',
+      '¿No sabes por dónde meterle IA a tu negocio? Te ayudo a separar lo útil del humo y lanzar lo que de verdad suma.',
     svc_cta: 'Empezar un proyecto',
 
     // ── Testimonials ──────────────────────────────────────────────────────
@@ -191,19 +194,19 @@ export const I18N = {
 
     // ── Contact ───────────────────────────────────────────────────────────
     contact_label: 'CONTACTO',
-    contact_h2: 'Construyamos algo.',
+    contact_h2: '¿Trabajamos juntos?',
     contact_sub:
-      'Abierto a roles remotos, contratos y consultoría — en cualquier parte del mundo. Cuéntame qué necesitas en palabras simples; suelo responder el mismo día.',
+      'Estoy abierto a roles remotos, contratos o consultoría, en cualquier parte del mundo. Escríbeme y casi siempre te respondo el mismo día.',
     contact_email: 'Correo',
     contact_whats: 'WhatsApp',
     contact_linkedin: 'LinkedIn',
     contact_github: 'GitHub',
-    contact_cta: 'Hablemos',
+    contact_cta: 'Escríbeme',
 
     // ── Shared / Footer ───────────────────────────────────────────────────
     available: 'Disponible para trabajo remoto',
     cv: 'Descargar CV',
     footer_rights: 'Todos los derechos reservados.',
-    footer_built: 'Diseñado y construido con intención.',
+    footer_built: 'Hecho con cuidado.',
   },
 } as const;
