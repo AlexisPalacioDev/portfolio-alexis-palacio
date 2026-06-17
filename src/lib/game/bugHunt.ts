@@ -20,7 +20,7 @@
  * BaseLayout.astro alongside the other src/lib/dom modules.
  */
 
-import { bugSprite, hammerSprite, spraySprite, BUG_ASPECT } from './sprites';
+import { bugSprite, hammerSprite, spraySprite, bugCell, PX } from './sprites';
 import {
   harvestTargets,
   liveChars,
@@ -33,11 +33,10 @@ import {
 // ── Tunables ────────────────────────────────────────────────────────────────
 const IDLE_MS = 9000; // inactivity before the bug appears
 const COOLDOWN_MS = 12000; // quiet period after a round before it can return
-const SPRITE_W = 54; // bug sprite width in px (height derived from aspect)
-const SPRITE_H = Math.round(SPRITE_W / BUG_ASPECT);
 const FLIGHT_MS = 520; // glide duration between letters
 const EAT_PAUSE_MS = 230; // pause on a letter before moving on
-const LETTERS_PER_STAGE = 3; // letters eaten per fatness bump
+const LETTERS_PER_STAGE = 6; // letters eaten per fatness bump (slow, deliberate)
+const HAMMER_CHARGE_MS = 700; // hold-to-charge: time to reach a full-power swing
 const MAX_STAGE = 5; // cap on fatness
 const HARVEST_BATCH = 6; // elements split per refill
 const MENU_DELAY_MS = 1600; // delay before the weapons menu slides in
@@ -77,7 +76,14 @@ export function initBugHunt(): void {
   let cursorOffset = { x: 8, y: 36 }; // pointer→sprite offset, set per weapon
   let lastPointer = { x: 0, y: 0 }; // last cursor position (for the spray aim loop)
   let aimRaf = 0; // rAF handle for the spray-aiming loop
+  let knockRaf = 0; // rAF handle for the knockout ragdoll physics loop
   let sprayHold = 0; // setInterval handle while the spray trigger is held
+  // Hammer hold-to-charge state.
+  let charging = false;
+  let chargeStart = 0;
+  let hammerFacing = 1; // 1 = hammer faces right, -1 = faces left (toward the fly)
+  let hammerAngle = -8; // resting tilt of the hammer head
+  let hammerScale = 1;
   // Once exterminated with the insecticide, the fly never returns this session.
   let exterminated = false;
 
@@ -138,9 +144,7 @@ export function initBugHunt(): void {
     chompEl.className = 'bh-chomp';
     const sprite = document.createElement('div');
     sprite.className = 'bh-sprite';
-    sprite.style.width = `${SPRITE_W}px`;
-    sprite.style.height = `${SPRITE_H}px`;
-    sprite.innerHTML = bugSprite();
+    sprite.innerHTML = bugSprite(0);
     chompEl.appendChild(sprite);
     bob.appendChild(chompEl);
     bug.appendChild(bob);
@@ -157,7 +161,7 @@ export function initBugHunt(): void {
 
     // Fly in from a random side, a little below the top nav.
     const fromLeft = Math.random() < 0.5;
-    const startX = fromLeft ? -SPRITE_W : window.innerWidth + SPRITE_W;
+    const startX = fromLeft ? -bugW() : window.innerWidth + bugW();
     const startY = 120 + Math.random() * (window.innerHeight * 0.4);
     placeBug(startX, startY, false);
     facing = fromLeft ? 1 : -1;
@@ -172,7 +176,7 @@ export function initBugHunt(): void {
   function placeBug(x: number, y: number, animate: boolean): void {
     if (!bug) return;
     bug.style.transition = animate ? `transform ${FLIGHT_MS}ms cubic-bezier(.45,.05,.3,1)` : 'none';
-    bugCenter = { x: x + SPRITE_W / 2, y: y + SPRITE_H / 2 };
+    bugCenter = { x: x + bugW() / 2, y: y + bugH() / 2 };
     bug.dataset.x = String(x);
     bug.dataset.y = String(y);
     applyTransform();
@@ -185,8 +189,13 @@ export function initBugHunt(): void {
     bug.style.transform = `translate3d(${x}px, ${y}px, 0) scaleX(${facing})`;
   }
 
-  function currentScale(): number {
-    return 1 + stage * 0.28;
+  // Current sprite footprint in CSS px. The bug grows by gaining grid cells, not
+  // by enlarging pixels — PX (per-pixel size) is constant across every stage.
+  function bugW(): number {
+    return bugCell(stage).w * PX;
+  }
+  function bugH(): number {
+    return bugCell(stage).h * PX;
   }
 
   // ── Eating loop ─────────────────────────────────────────────────────────
@@ -209,7 +218,7 @@ export function initBugHunt(): void {
     const target = nearest(targets, bugCenter);
     const c = charCenter(target);
     facing = c.x >= bugCenter.x ? 1 : -1;
-    placeBug(c.x - SPRITE_W / 2 - facing * SPRITE_W * 0.32, c.y - SPRITE_H * 0.45, true);
+    placeBug(c.x - bugW() / 2 - facing * bugW() * 0.32, c.y - bugH() * 0.45, true);
 
     eatTimer = window.setTimeout(() => {
       if (state !== 'active') return;
@@ -241,12 +250,22 @@ export function initBugHunt(): void {
   function maybeFatten(): void {
     const target = Math.min(MAX_STAGE, Math.floor(eatenCount / LETTERS_PER_STAGE));
     if (target === stage) return;
+    const prevCenter = { ...bugCenter };
     stage = target;
     const spriteEl = bug?.querySelector<HTMLElement>('.bh-sprite');
     if (spriteEl) {
-      const s = currentScale();
-      // Belly widens faster than it grows tall → reads as a round, fat bug.
-      spriteEl.style.transform = `scale(${s * (1 + stage * 0.07)}, ${s})`;
+      // Regenerate the bug on a DENSER grid — it gains pixels, not pixel size.
+      spriteEl.innerHTML = bugSprite(stage);
+      // Keep the bug centered now that its footprint grew, then a quick swell pop.
+      placeBug(prevCenter.x - bugW() / 2, prevCenter.y - bugH() / 2, false);
+      bug?.querySelector<HTMLElement>('.bh-chomp')?.animate(
+        [
+          { transform: 'scale(1, 1)' },
+          { transform: 'scale(1.12, 1.12)', offset: 0.4 },
+          { transform: 'scale(1, 1)' },
+        ],
+        { duration: 300, easing: 'cubic-bezier(.3,1.4,.5,1)' }
+      );
     }
   }
 
@@ -256,7 +275,7 @@ export function initBugHunt(): void {
 
     const curX = Number(bug.dataset.x ?? 0);
     const curY = Number(bug.dataset.y ?? 0);
-    const maxX = window.innerWidth - SPRITE_W - 60;
+    const maxX = window.innerWidth - bugW() - 60;
     const maxY = window.innerHeight * 0.6;
 
     // Pick a landing spot that is meaningfully far from the current one.
@@ -296,7 +315,7 @@ export function initBugHunt(): void {
       sprayJet(cx, cy + 44, cx, cy); // mist rising into the bug
       explode(true); // lethal
     } else {
-      explode(false);
+      knockOut(cx, cy + 60); // hit from below → vomits and is launched up and away
     }
   }
 
@@ -459,15 +478,29 @@ export function initBugHunt(): void {
       lastPointer = { x: bugCenter.x, y: bugCenter.y + 90 };
       aimRaf = requestAnimationFrame(aimSpray);
     } else {
-      catcher.addEventListener('click', onSwing);
+      // Hold to charge, release to swing. mouseup on window so a release that
+      // drifts off the catcher still fires the strike. The aim loop keeps the
+      // hammer flipped toward the fly even when the cursor is still.
+      lastPointer = { x: bugCenter.x, y: bugCenter.y };
+      placeHammer();
+      catcher.addEventListener('mousedown', onHammerDown);
+      window.addEventListener('mouseup', onHammerUp);
+      aimRaf = requestAnimationFrame(aimHammer);
     }
   }
 
   function onAim(e: MouseEvent): void {
     lastPointer = { x: e.clientX, y: e.clientY };
     if (weapon === 'spray') return; // aimSpray() owns the spray transform
-    if (!weaponCursor) return;
-    weaponCursor.style.transform = `translate3d(${e.clientX - cursorOffset.x}px, ${e.clientY - cursorOffset.y}px, 0)`;
+    placeHammer();
+  }
+
+  /** Paint the hammer at the pointer, flipped toward the fly, with charge pose. */
+  function placeHammer(): void {
+    if (!weaponCursor || weapon !== 'hammer') return;
+    weaponCursor.style.transform =
+      `translate3d(${lastPointer.x - cursorOffset.x}px, ${lastPointer.y - cursorOffset.y}px, 0) ` +
+      `scaleX(${hammerFacing}) rotate(${hammerAngle}deg) scale(${hammerScale})`;
   }
 
   /** rAF loop: keep the aerosol can pointing its nozzle at the fly. */
@@ -488,25 +521,78 @@ export function initBugHunt(): void {
     aimRaf = requestAnimationFrame(aimSpray);
   }
 
-  /** Hammer swing (single click): swat at a point and explode on a hit. */
-  function onSwing(e: MouseEvent): void {
-    if (!weaponCursor) return;
-    const base = weaponCursor.style.transform;
-    weaponCursor.animate(
+  // ── Hammer: face the fly (horizontal flip) + hold to charge, release to swing ─
+  /** rAF loop while the hammer is armed: flip toward the fly, build charge if held. */
+  function aimHammer(): void {
+    if (weapon !== 'hammer' || !weaponCursor) {
+      aimRaf = 0;
+      return;
+    }
+    // Point at the fly — HORIZONTALLY ONLY (a flip), never a full aim rotation.
+    const r = bug?.getBoundingClientRect();
+    const bx = r ? r.left + r.width / 2 : bugCenter.x;
+    hammerFacing = bx >= lastPointer.x ? 1 : -1;
+
+    if (charging) {
+      const t = Math.min(1, (performance.now() - chargeStart) / HAMMER_CHARGE_MS);
+      const tremble = t * (Math.random() - 0.5) * 6; // jitter grows with power
+      hammerAngle = -8 - t * 52 + tremble; // wind up backwards
+      hammerScale = 1 + t * 0.3; // swell
+      // Lime charge glow that intensifies toward full power.
+      weaponCursor.style.filter =
+        `drop-shadow(0 2px 2px rgba(0,0,0,0.4)) ` +
+        `drop-shadow(0 0 ${4 + t * 14}px rgba(198,242,78,${0.3 + t * 0.55}))`;
+    }
+    placeHammer();
+    aimRaf = requestAnimationFrame(aimHammer);
+  }
+
+  /** Press and hold: begin charging — aimHammer() renders the wind-up. */
+  function onHammerDown(e: MouseEvent): void {
+    if (weapon !== 'hammer' || charging) return;
+    charging = true;
+    chargeStart = performance.now();
+    lastPointer = { x: e.clientX, y: e.clientY };
+  }
+
+  /** Release: slam the hammer down with power proportional to the charge. */
+  function onHammerUp(e: MouseEvent): void {
+    if (!charging) return;
+    charging = false;
+    const charge = Math.min(1, (performance.now() - chargeStart) / HAMMER_CHARGE_MS);
+    const startAngle = hammerAngle;
+    const startScale = hammerScale;
+
+    // Reset the resting visual state.
+    lastPointer = { x: e.clientX, y: e.clientY };
+    hammerAngle = -8;
+    hammerScale = 1;
+    if (weaponCursor) weaponCursor.style.filter = 'drop-shadow(0 2px 2px rgba(0,0,0,0.4))';
+
+    // Swing down from the wound-up angle, then settle back to rest — keeping the
+    // horizontal flip so the swing reads as aimed at the fly's side.
+    const base = `translate3d(${e.clientX - cursorOffset.x}px, ${e.clientY - cursorOffset.y}px, 0)`;
+    const flip = `scaleX(${hammerFacing})`;
+    const swingFwd = 46 + charge * 34; // harder charge → deeper slam
+    weaponCursor?.animate(
       [
-        { transform: base + ' rotate(-12deg)' },
-        { transform: base + ' rotate(46deg)', offset: 0.4 },
-        { transform: base + ' rotate(0deg)' },
+        { transform: `${base} ${flip} rotate(${startAngle}deg) scale(${startScale})` },
+        { transform: `${base} ${flip} rotate(${swingFwd}deg) scale(1)`, offset: 0.32 },
+        { transform: `${base} ${flip} rotate(-8deg) scale(1)` },
       ],
-      { duration: 260, easing: 'ease-out' }
+      { duration: 300, easing: 'cubic-bezier(.2,.9,.3,1)' }
     );
 
+    // Hit check: charge widens the strike radius and the knockback force.
     const r = bug?.getBoundingClientRect();
     const bcx = r ? r.left + r.width / 2 : bugCenter.x;
     const bcy = r ? r.top + r.height / 2 : bugCenter.y;
     const dist = Math.hypot(e.clientX - bcx, e.clientY - bcy);
-    if (dist <= BASE_HIT_RADIUS * (1 + stage * 0.16)) {
-      explode(false); // hammer kill — the fly respawns later
+    // Radius tracks the bug's actual on-screen size so hitting the visible body
+    // always counts; charge widens it a bit more.
+    const radius = Math.max(BASE_HIT_RADIUS, bugW() * 0.45) * (1 + charge * 0.5);
+    if (dist <= radius) {
+      knockOut(e.clientX, e.clientY, 1 + charge); // harder charge → flies farther
     } else {
       puff(e.clientX, e.clientY, false);
     }
@@ -544,6 +630,139 @@ export function initBugHunt(): void {
       onSprayStop();
       explode(true); // lethal — the fly won't come back
     }
+  }
+
+  // ── Hammer knockout (non-lethal) ──────────────────────────────────────────
+  /**
+   * Whacked with the hammer: the bug VOMITS every letter it swallowed and is
+   * launched off-screen along the swing direction, tumbling as it goes. The
+   * eaten text snaps back; the fly respawns after the cooldown.
+   */
+  function knockOut(fromX: number, fromY: number, force = 1): void {
+    if (state !== 'active' || !bug) return;
+    state = 'cooldown';
+    window.clearTimeout(eatTimer);
+    window.clearTimeout(menuTimer);
+
+    puff(bugCenter.x, bugCenter.y, false); // impact spark
+    spitLetters(bugCenter.x, bugCenter.y, eatenGlyphs()); // vomit the swallowed glyphs
+
+    // Drop the armed UI immediately so only the ragdoll is left on screen.
+    menu?.classList.remove('bh-menu--open');
+    catcher?.remove();
+    weaponCursor?.remove();
+    catcher = null;
+    weaponCursor = null;
+    weapon = null;
+    armed = false;
+
+    // Restore the eaten text on the NEXT frame: doing the (reflow-heavy) restore
+    // on the same frame as the hit is what caused the little freeze.
+    requestAnimationFrame(() => restoreAll());
+
+    // ── Ragdoll physics: knocked flying, bounces off edges + buttons, then
+    //    falls out the BOTTOM of the screen (no floor collision down there). ──
+    const dirX = bugCenter.x - fromX;
+    const dirY = bugCenter.y - fromY;
+    const dlen = Math.hypot(dirX, dirY) || 1;
+    const speed = 7 + force * 5; // px/frame — lively but watchable, not a teleport
+    let vx = (dirX / dlen) * speed;
+    let vy = (dirY / dlen) * speed - 7; // upward pop before gravity takes over
+    let px = Number(bug.dataset.x ?? 0);
+    let py = Number(bug.dataset.y ?? 0);
+    let rot = 0;
+    const spin = (vx >= 0 ? 1 : -1) * (7 + force * 5); // deg/frame tumble
+    const GRAVITY = 0.6;
+    const BOUNCE = 0.62; // energy kept per bounce
+    const obstacles = collectObstacles();
+
+    bug.style.pointerEvents = 'none';
+    bug.style.transition = 'none';
+
+    const w = bugW();
+    const h = bugH();
+    let frames = 0;
+
+    const finish = (): void => {
+      if (knockRaf) {
+        cancelAnimationFrame(knockRaf);
+        knockRaf = 0;
+      }
+      teardown();
+      state = 'idle';
+      scheduleIdle();
+    };
+
+    const step = (): void => {
+      if (state !== 'cooldown' || !bug) return; // killed mid-flight
+      frames += 1;
+      vy += GRAVITY;
+      px += vx;
+      py += vy;
+      rot += spin;
+
+      // Screen walls: bounce off left / right / top. The bottom is OPEN — that
+      // is the only way out, so the bug always eventually falls through it.
+      if (px < 0) {
+        px = 0;
+        vx = Math.abs(vx) * BOUNCE;
+      } else if (px + w > window.innerWidth) {
+        px = window.innerWidth - w;
+        vx = -Math.abs(vx) * BOUNCE;
+      }
+      if (py < 0) {
+        py = 0;
+        vy = Math.abs(vy) * BOUNCE;
+      }
+
+      // Buttons / links: solid obstacles — bounce off the nearest face.
+      for (const o of obstacles) {
+        if (px < o.x + o.w && px + w > o.x && py < o.y + o.h && py + h > o.y) {
+          const penL = o.x - (px + w); // <= 0
+          const penR = o.x + o.w - px; // >= 0
+          const penT = o.y - (py + h);
+          const penB = o.y + o.h - py;
+          const mx = Math.abs(penL) < Math.abs(penR) ? penL : penR;
+          const my = Math.abs(penT) < Math.abs(penB) ? penT : penB;
+          if (Math.abs(mx) < Math.abs(my)) {
+            px += mx;
+            vx = -vx * BOUNCE;
+          } else {
+            py += my;
+            vy = -vy * BOUNCE;
+          }
+        }
+      }
+
+      bug.dataset.x = String(px);
+      bug.dataset.y = String(py);
+      bug.style.transform = `translate3d(${px}px, ${py}px, 0) scaleX(${facing}) rotate(${rot}deg)`;
+
+      // Gone out the bottom (or a safety cap so it can never get stuck).
+      if (py > window.innerHeight + 20 || frames > 300) {
+        finish();
+        return;
+      }
+      knockRaf = requestAnimationFrame(step);
+    };
+
+    knockRaf = requestAnimationFrame(step);
+  }
+
+  /** Snapshot of on-screen buttons/links the ragdoll can bounce off. */
+  function collectObstacles(): { x: number; y: number; w: number; h: number }[] {
+    const els = document.querySelectorAll<HTMLElement>('button, a, [role="button"]');
+    const out: { x: number; y: number; w: number; h: number }[] = [];
+    els.forEach((el) => {
+      if (el.closest('.bh-root')) return; // ignore the game's own UI
+      const r = el.getBoundingClientRect();
+      if (r.width < 12 || r.height < 12) return;
+      if (r.bottom < 0 || r.top > window.innerHeight || r.right < 0 || r.left > window.innerWidth) {
+        return; // off-screen
+      }
+      out.push({ x: r.left, y: r.top, w: r.width, h: r.height });
+    });
+    return out.slice(0, 40);
   }
 
   // ── Explosion + restore ───────────────────────────────────────────────────
@@ -676,9 +895,15 @@ export function initBugHunt(): void {
     window.clearTimeout(menuTimer);
     onSprayStop();
     window.removeEventListener('mouseup', onSprayStop);
+    window.removeEventListener('mouseup', onHammerUp);
+    charging = false;
     if (aimRaf) {
       cancelAnimationFrame(aimRaf);
       aimRaf = 0;
+    }
+    if (knockRaf) {
+      cancelAnimationFrame(knockRaf);
+      knockRaf = 0;
     }
     if (state === 'active' || state === 'cooldown') {
       // Make sure no letters are left half-eaten if we bailed mid-round.
@@ -734,6 +959,9 @@ export function initBugHunt(): void {
       exterminated = false; // dev: allow re-triggering even after a lethal kill
       if (state === 'idle') start();
     };
+    // dev: render any fatness stage to eyeball the sprite without eating 30 letters
+    (window as unknown as { __bugSprite?: (s: number) => string }).__bugSprite = (s) =>
+      bugSprite(s);
   }
 }
 
@@ -743,31 +971,45 @@ function injectStyles(): void {
   const style = document.createElement('style');
   style.id = 'bh-styles';
   style.textContent = `
-    .bh-root { position: fixed; inset: 0; pointer-events: none; }
+    /* High z-index on the ROOT itself: position:fixed makes .bh-root its own
+       stacking context, so without this it sits at level auto(0) and any page
+       element with z-index >= 1 (e.g. the hero content at z-index 3) paints
+       over the whole game. Lift the root above everything. */
+    .bh-root { position: fixed; inset: 0; pointer-events: none; z-index: 2147483000; }
 
     .bh-char { will-change: transform, opacity; }
 
     .bh-bug {
-      position: fixed; left: 0; top: 0; width: ${SPRITE_W}px; height: ${SPRITE_H}px;
+      position: fixed; left: 0; top: 0;
       z-index: 9996; will-change: transform; pointer-events: auto; cursor: pointer;
     }
     .bh-bob { animation: bh-bob 0.42s ease-in-out infinite; }
     .bh-chomp { transform-origin: center bottom; }
     .bh-sprite {
+      display: inline-block; line-height: 0;
       transform-origin: center bottom;
-      transition: transform 0.3s cubic-bezier(.2,.8,.2,1);
       filter: drop-shadow(0 3px 2px rgba(0,0,0,0.35));
     }
     @keyframes bh-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
+    /* Three body segments throbbing out of phase → the bug reads as having WEIGHT.
+       The abdomen (most mass) swings slowest and widest; the head barely moves.
+       transform-box:fill-box pins each segment's pivot to its own bounding box. */
+    .bh-seg { transform-box: fill-box; }
+    .bh-abdomen { transform-origin: 68% 50%; animation: bh-throb-heavy 0.62s ease-in-out infinite; }
+    .bh-thorax  { transform-origin: center;  animation: bh-throb-mid 0.46s ease-in-out infinite; animation-delay: -0.09s; }
+    .bh-head    { transform-origin: 38% 55%; animation: bh-throb-light 0.42s ease-in-out infinite; animation-delay: -0.05s; }
+    @keyframes bh-throb-heavy { 0%,100% { transform: scale(1,1); } 50% { transform: scale(1.07, 0.9); } }
+    @keyframes bh-throb-mid   { 0%,100% { transform: scale(1,1); } 50% { transform: scale(1.04, 0.95); } }
+    @keyframes bh-throb-light { 0%,100% { transform: scale(1,1); } 50% { transform: scale(1.025, 0.975); } }
+
     /* Thin translucent wing, flapping fast and hinged at the thorax. */
-    .bh-wing { opacity: 0.4; transform-box: fill-box; transform-origin: right bottom; animation: bh-flutter 0.1s ease-in-out infinite; }
+    .bh-wing { opacity: 0.32; transform-box: fill-box; transform-origin: right bottom; animation: bh-flutter 0.1s ease-in-out infinite; }
     @keyframes bh-flutter { 0%,100% { transform: rotate(3deg) scaleY(1); } 50% { transform: rotate(-24deg) scaleY(0.72); } }
 
     /* Pac-Man jaws: two real jaws rotating apart on a shared hinge, baring the
-       red throat behind them. transform-box:view-box makes the px origin resolve
-       in the SVG's own 18×12 user units (the hinge at 13,6). */
-    .bh-jaw-top, .bh-jaw-bot { transform-box: view-box; transform-origin: 13px 6px; }
+       dark mouth line behind them. transform-box:view-box + the per-stage hinge
+       origin are set inline on each group (the grid grows as the bug fattens). */
     .bh-jaw-top { animation: bh-chew-top 0.26s ease-in-out infinite; }
     .bh-jaw-bot { animation: bh-chew-bot 0.26s ease-in-out infinite; }
     @keyframes bh-chew-top { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-32deg); } }
