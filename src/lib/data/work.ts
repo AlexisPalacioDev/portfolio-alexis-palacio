@@ -56,7 +56,7 @@ export interface WorkItem {
 }
 
 // ── Cover images (ESM imports → Sharp-optimized at build time) ────────────────
-import coverAnai from '../../assets/cover-anai.png';
+import coverAnai from '../../assets/preview-anai.png';
 import coverImometrics from '../../assets/cover-imometrics.png';
 import coverSticker from '../../assets/cover-sticker.png';
 import coverTripi from '../../assets/cover-tripi.png';

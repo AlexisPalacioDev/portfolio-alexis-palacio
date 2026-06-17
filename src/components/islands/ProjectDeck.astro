@@ -91,7 +91,11 @@
     const geo = computeSlot(i, active, N);
     const isVisible = !geo.hidden;
     const lifted = hovered && isVisible;
-    const lift = lifted ? 'translateY(-64px) scale(1.07) ' : '';
+    // Deeper cards (higher slot s) sit lower in the fan, so they lift MORE on
+    // hover — that way every card peeks up by a comparable, clearly-visible
+    // amount regardless of how far back it sits.
+    const liftPx = 56 + geo.s * 30;
+    const lift = lifted ? `translateY(-${liftPx}px) scale(1.07) ` : '';
 
     card.style.transform = `translate(-50%, -50%) ${lift}${buildCardTransform(geo)}`;
     // Hover only PEEKS the card up — it must NOT jump to the front. Keep the
