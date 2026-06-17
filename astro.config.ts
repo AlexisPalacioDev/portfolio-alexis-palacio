@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'static',
-  site: 'https://alexispalacio.dev',
+  site: 'https://portfolio-alexis-palacio.vercel.app',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
