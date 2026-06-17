@@ -30,6 +30,15 @@ export function applyLang(lang: string): void {
       }
     });
 
+  // Per-element EN/ES text pairs (for project-specific copy that isn't a shared
+  // dictionary key — e.g. the mobile project carousel cards). Each element holds
+  // its own translations in data-en / data-es.
+  document
+    .querySelectorAll<HTMLElement>('[data-en][data-es]')
+    .forEach((el) => {
+      el.textContent = lang === 'es' ? el.dataset.es ?? '' : el.dataset.en ?? '';
+    });
+
   // Mirror lang onto <html> for CSS/a11y consumers
   document.documentElement.lang = lang;
   document.documentElement.setAttribute('data-lang', lang);

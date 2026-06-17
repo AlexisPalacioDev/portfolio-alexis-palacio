@@ -68,6 +68,12 @@ section {
   flex-direction: column;
   justify-content: center;
 }
+/* Let flex children shrink below content size — without this, a horizontal
+   scroll container (the mobile project carousel) inflates its flex-item
+   ancestor to its full content width instead of scrolling. */
+section > * {
+  min-width: 0;
+}
 
 /* ─── Responsive: collapse multi-column layouts on smaller screens ───────── */
 /* The marker classes carry their desktop grid inline; these media queries
@@ -100,6 +106,37 @@ section {
     padding-left: 22px !important;
     padding-right: 22px !important;
   }
+}
+
+/* ─── Projects: 3D deck on desktop, swipe carousel on phones ──────────────── */
+.work-mobile {
+  display: none;
+}
+@media (max-width: 767px) {
+  .work-desktop {
+    display: none;
+  }
+  .work-mobile {
+    display: block;
+  }
+}
+
+.work-carousel {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  padding-bottom: 6px;
+}
+.work-carousel::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+.work-slide {
+  scroll-snap-align: start;
+  flex: 0 0 86%;
+  max-width: 86%;
 }
 
 /* ─── Project deck navigation arrows ─────────────────────────────────────── */
