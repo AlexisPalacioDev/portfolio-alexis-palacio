@@ -58,7 +58,7 @@ export interface WorkItem {
 // ── Cover images (ESM imports → Sharp-optimized at build time) ────────────────
 import coverAnai from '../../assets/preview-anai.png';
 import coverImometrics from '../../assets/cover-imometrics.png';
-import coverSticker from '../../assets/cover-sticker.png';
+import coverSticker from '../../assets/preview-sticker.png';
 import coverTripi from '../../assets/cover-tripi.png';
 import coverCarljung from '../../assets/cover-carljung.png';
 import coverBunny from '../../assets/cover-bunny.png';
@@ -145,32 +145,32 @@ export const work: readonly WorkItem[] = [
     name: 'Sticker Drops',
     accent: '#FF5CA8',
     cover: coverSticker,
-    links: { link: null, code: null },
+    links: { link: 'https://sticker-drops.vercel.app', code: null },
     period: { en: '2023', es: '2023' },
     role: {
       en: 'Full-Stack Developer',
       es: 'Desarrollador Full-Stack',
     },
-    kind: { en: 'E-commerce Platform', es: 'Plataforma de Comercio Electrónico' },
-    status: { en: 'Archived', es: 'Archivado' },
-    statusKey: WORK_STATUS.ARCHIVED,
+    kind: { en: 'Collectible Drops Platform', es: 'Plataforma de Drops Coleccionables' },
+    status: { en: 'Live', es: 'En vivo' },
+    statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: '[Placeholder — description and stack pending confirmation from Alexis. This is a sticker marketplace / drop platform with e-commerce capabilities.]',
-      es: '[Placeholder — descripción y stack pendientes de confirmación con Alexis. Marketplace de stickers / plataforma de drops con capacidades de e-commerce.]',
+      en: 'A collectible "drops" platform — limited runs of numbered tickets where users pick a number to win prizes, with a Next.js 16 storefront, Supabase backend and fal.ai-generated artwork.',
+      es: 'Plataforma de "drops" coleccionables — tiradas limitadas de talonarios numerados donde el usuario elige su número para ganar premios, con storefront Next.js 16, backend Supabase y arte generado con fal.ai.',
     },
     bullets: {
       en: [
-        'Placeholder bullet — awaiting confirmation from Alexis',
-        'Full-stack implementation with e-commerce flow',
-        'Integrated payment processing',
+        'Built the Next.js 16 storefront with live drops, numbered ticket selection and pricing',
+        'Backed it with Supabase for data, auth and real-time drop availability',
+        'Integrated fal.ai to generate the drop artwork',
       ],
       es: [
-        'Placeholder — pendiente de confirmación con Alexis',
-        'Implementación full-stack con flujo de e-commerce',
-        'Integración de procesamiento de pagos',
+        'Construí el storefront Next.js 16 con drops en vivo, selección de talonario numerado y precios',
+        'Lo respaldé con Supabase para datos, auth y disponibilidad de drops en tiempo real',
+        'Integré fal.ai para generar el arte de los drops',
       ],
     },
-    tags: ['Next.js', 'TypeScript', 'Stripe', 'Supabase'],
+    tags: ['Next.js 16', 'TypeScript', 'Supabase', 'fal.ai', 'Tailwind'],
   },
 
   // 3 — Tripi

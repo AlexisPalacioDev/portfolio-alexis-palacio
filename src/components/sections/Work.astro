@@ -46,7 +46,10 @@ const activeItem = work[ACTIVE];
     </p>
 
     <!-- Main two-column layout: detail panel (left) + deck (right) -->
-    <div style="display: grid; grid-template-columns: 1fr 600px; gap: 48px; align-items: center;">
+    <!-- align-items: start keeps the two columns INDEPENDENT — the deck (right)
+         no longer re-centers when the left detail panel changes height between
+         projects, so the cards / arrows / dots stay put. -->
+    <div style="display: grid; grid-template-columns: 1fr 600px; gap: 48px; align-items: start;">
 
       <!-- ── LEFT: Detail panel ── -->
       <div class="rev" id="work-detail">
