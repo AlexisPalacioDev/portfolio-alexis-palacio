@@ -56,9 +56,16 @@ body {
   font-family: var(--font-display);
 }
 
-/* ─── Scroll-snap sections ───────────────────────────────────────────────── */
+/* ─── Sections fill the screen and center their content ──────────────────── */
+/* Each section is at least one viewport tall. Centering the content vertically
+   means that when a section's content is SHORTER than the viewport, the empty
+   space is split evenly (balanced, no dead gap at the bottom that lets the next
+   section bleed in). When content is TALLER than the viewport the section just
+   grows and centering becomes a no-op, so nothing is clipped. */
 section {
-  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* ─── Project deck navigation arrows ─────────────────────────────────────── */
