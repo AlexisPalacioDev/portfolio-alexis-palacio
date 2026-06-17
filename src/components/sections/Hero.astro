@@ -107,12 +107,51 @@ import HeroCanvas from '../islands/HeroCanvas.astro';
   </div>
 
   <!-- Scroll cue (float-up-down animation via CSS @keyframes in global.css) -->
+  <!-- Sits just above the marquee band below. -->
   <div
     class="font-mono text-faint scroll-cue"
-    style="position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 3; font-size: 11px; letter-spacing: 2px; display: flex; flex-direction: column; align-items: center; gap: 6px;"
+    style="position: absolute; bottom: 78px; left: 50%; transform: translateX(-50%); z-index: 3; font-size: 11px; letter-spacing: 2px; display: flex; flex-direction: column; align-items: center; gap: 6px;"
     aria-hidden="true"
   >
     <span data-i18n="hero_scroll">{t('en', 'hero_scroll')}</span>
     <span>↓</span>
+  </div>
+
+  <!-- Tech marquee band — pinned to the bottom of the hero screen so it's
+       always visible inside the Hero section. (Was previously an orphan band
+       between Hero and About that the section-snap scrolled straight past.) -->
+  <div
+    style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; background: #C6F24E; color: #0C0D10; border-top: 1px solid #0C0D10; overflow: hidden; padding: 13px 0;"
+    aria-hidden="true"
+  >
+    <div
+      class="marquee-inner"
+      style="display: flex; width: max-content; white-space: nowrap; font-family: var(--font-mono); font-size: 20px; font-weight: 600; letter-spacing: 1px;"
+    >
+      <span style="display: inline-flex; gap: 34px; padding-right: 34px;">
+        <span>AI Agents</span><span style="opacity:0.45;">✳</span>
+        <span>LLM Orchestration</span><span style="opacity:0.45;">✳</span>
+        <span>MCP</span><span style="opacity:0.45;">✳</span>
+        <span>n8n</span><span style="opacity:0.45;">✳</span>
+        <span>Next.js</span><span style="opacity:0.45;">✳</span>
+        <span>NestJS</span><span style="opacity:0.45;">✳</span>
+        <span>Python</span><span style="opacity:0.45;">✳</span>
+        <span>Node.js</span><span style="opacity:0.45;">✳</span>
+        <span>PHP</span><span style="opacity:0.45;">✳</span>
+        <span>AWS</span><span style="opacity:0.45;">✳</span>
+      </span>
+      <span style="display: inline-flex; gap: 34px; padding-right: 34px;" aria-hidden="true">
+        <span>AI Agents</span><span style="opacity:0.45;">✳</span>
+        <span>LLM Orchestration</span><span style="opacity:0.45;">✳</span>
+        <span>MCP</span><span style="opacity:0.45;">✳</span>
+        <span>n8n</span><span style="opacity:0.45;">✳</span>
+        <span>Next.js</span><span style="opacity:0.45;">✳</span>
+        <span>NestJS</span><span style="opacity:0.45;">✳</span>
+        <span>Python</span><span style="opacity:0.45;">✳</span>
+        <span>Node.js</span><span style="opacity:0.45;">✳</span>
+        <span>PHP</span><span style="opacity:0.45;">✳</span>
+        <span>AWS</span><span style="opacity:0.45;">✳</span>
+      </span>
+    </div>
   </div>
 </section>

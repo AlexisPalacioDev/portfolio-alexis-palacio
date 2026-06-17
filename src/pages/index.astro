@@ -19,45 +19,6 @@ import Footer from '../components/sections/Footer.astro';
     #home → marquee → #about → #skills → #projects → #services → #testimonials → #contact → footer
   -->
   <Hero />
-
-  <!-- Marquee tech band — between Hero and About (from design) -->
-  <div
-    style="background: #C6F24E; color: #0C0D10; border-top: 1px solid #0C0D10; border-bottom: 1px solid #0C0D10; overflow: hidden; padding: 15px 0;"
-    aria-hidden="true"
-  >
-    <div
-      class="marquee-inner"
-      style="display: flex; width: max-content; white-space: nowrap; font-family: var(--font-mono); font-size: 22px; font-weight: 600; letter-spacing: 1px;"
-    >
-      <!-- Two identical spans for seamless marquee loop (animation wired in WU-4) -->
-      <span style="display: inline-flex; gap: 34px; padding-right: 34px;">
-        <span>AI Agents</span><span style="opacity:0.45;">✳</span>
-        <span>LLM Orchestration</span><span style="opacity:0.45;">✳</span>
-        <span>MCP</span><span style="opacity:0.45;">✳</span>
-        <span>n8n</span><span style="opacity:0.45;">✳</span>
-        <span>Next.js</span><span style="opacity:0.45;">✳</span>
-        <span>Supabase</span><span style="opacity:0.45;">✳</span>
-        <span>Python</span><span style="opacity:0.45;">✳</span>
-        <span>Node.js</span><span style="opacity:0.45;">✳</span>
-        <span>PHP</span><span style="opacity:0.45;">✳</span>
-        <span>AWS</span><span style="opacity:0.45;">✳</span>
-      </span>
-      <!-- Duplicate for seamless infinite scroll -->
-      <span style="display: inline-flex; gap: 34px; padding-right: 34px;" aria-hidden="true">
-        <span>AI Agents</span><span style="opacity:0.45;">✳</span>
-        <span>LLM Orchestration</span><span style="opacity:0.45;">✳</span>
-        <span>MCP</span><span style="opacity:0.45;">✳</span>
-        <span>n8n</span><span style="opacity:0.45;">✳</span>
-        <span>Next.js</span><span style="opacity:0.45;">✳</span>
-        <span>Supabase</span><span style="opacity:0.45;">✳</span>
-        <span>Python</span><span style="opacity:0.45;">✳</span>
-        <span>Node.js</span><span style="opacity:0.45;">✳</span>
-        <span>PHP</span><span style="opacity:0.45;">✳</span>
-        <span>AWS</span><span style="opacity:0.45;">✳</span>
-      </span>
-    </div>
-  </div>
-
   <About />
   <Stack />
   <Work />

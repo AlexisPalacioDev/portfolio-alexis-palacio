@@ -13,7 +13,7 @@
  *   keep their natural momentum scrolling).
  */
 
-const NAV_OFFSET = 67; // fixed nav height
+const NAV_OFFSET = 0; // sections snap flush; the fixed nav overlays each section's own top padding
 const DURATION = 900; // ms — deliberately slow & smooth
 const COOLDOWN = 160; // ms lock after a snap so trackpad momentum can't double-fire
 

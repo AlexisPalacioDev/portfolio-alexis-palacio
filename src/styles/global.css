@@ -43,7 +43,10 @@
    apply to nav anchor clicks (which use the hash, not the wheel controller). */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 67px; /* fixed nav height — keeps anchored section titles visible */
+  /* No scroll-padding-top: sections snap flush to the top and fill the viewport
+     exactly (the fixed nav overlays the section's own top padding, so titles
+     stay clear of it). This is what makes one wheel gesture = one full section
+     and keeps each section's bottom content on-screen. */
 }
 
 /* ─── Base body defaults ─────────────────────────────────────────────────── */
