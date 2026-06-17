@@ -59,7 +59,7 @@ export interface WorkItem {
 import coverAnai from '../../assets/preview-anai.png';
 import coverImometrics from '../../assets/preview-imometrics.png';
 import coverSticker from '../../assets/preview-sticker.png';
-import coverTripi from '../../assets/cover-tripi.png';
+import coverApptreeking from '../../assets/preview-apptreeking.png';
 import coverCarljung from '../../assets/cover-carljung.png';
 import coverBunny from '../../assets/preview-bunny.png';
 import coverTodo from '../../assets/preview-todo.png';
@@ -175,39 +175,37 @@ export const work: readonly WorkItem[] = [
 
   // 3 — Tripi
   {
-    id: 'tripi',
-    company: 'Tripi',
-    name: 'Tripi',
+    id: 'apptreeking',
+    company: 'AppTreeking',
+    name: 'AppTreeking',
     accent: '#46C97E',
-    cover: coverTripi,
+    cover: coverApptreeking,
     links: { link: null, code: 'https://github.com/AlexisPalacioDev/apptreeking' },
-    period: { en: '2022 — 2023', es: '2022 — 2023' },
+    period: { en: '2025 — 2026', es: '2025 — 2026' },
     role: {
-      en: 'Full-Stack Developer',
-      es: 'Desarrollador Full-Stack',
+      en: 'Full-Stack Mobile Developer',
+      es: 'Desarrollador Full-Stack Mobile',
     },
-    kind: { en: 'Marketplace with Escrow', es: 'Marketplace con Escrow' },
-    status: { en: 'Delivered', es: 'Entregado' },
-    statusKey: WORK_STATUS.ARCHIVED,
+    kind: { en: 'Trekking Experiences Marketplace', es: 'Marketplace de Experiencias de Trekking' },
+    status: { en: 'In progress', es: 'En curso' },
+    statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'Full-stack development of Tripi, an app-based treeking and adventure activities marketplace with integrated escrow payments, provider management and booking flows.',
-      es: 'Desarrollo full-stack de Tripi, un marketplace de actividades de trekking y aventura con pagos escrow integrados, gestión de proveedores y flujos de reserva.',
+      en: 'A mobile marketplace connecting Colombian travelers with certified local trekking guides — guides publish routes by biome; travelers book spots with escrow-protected payments via Wompi. Built solo: mobile app, Supabase backend and a Next.js admin panel.',
+      es: 'Marketplace móvil que conecta viajeros colombianos con guías de trekking locales certificados — los guías publican rutas por bioma; los viajeros reservan cupos con pago en custodia vía Wompi. Hecho en solitario: app móvil, backend Supabase y panel admin Next.js.',
     },
     bullets: {
       en: [
-        'Built end-to-end marketplace with escrow payment system protecting both buyers and providers',
-        'Designed provider onboarding flow and activity listing management system',
-        'Implemented booking, scheduling and review system with real-time notifications',
-        'Delivered responsive web app and integration with payment provider for Colombia market',
+        'Built a full-stack Expo / React Native marketplace on Supabase — RLS policies, Postgres RPCs and Deno Edge Functions for escrow booking and payment webhooks',
+        'Integrated Wompi (Colombia) behind a port/adapter pattern with webhook signature verification and checkout integrity signing',
+        'Designed a role-based system (traveler / guide / admin) with a guide-verification flow and a Next.js admin panel for moderation and disputes',
       ],
       es: [
-        'Construí marketplace completo con sistema de pagos escrow que protege compradores y proveedores',
-        'Diseñé flujo de onboarding de proveedores y sistema de gestión de listados de actividades',
-        'Implementé sistema de reservas, agenda y reseñas con notificaciones en tiempo real',
-        'Entregué app web responsive con integración a proveedor de pagos para el mercado colombiano',
+        'Construí un marketplace full-stack Expo / React Native sobre Supabase — políticas RLS, RPCs de Postgres y Deno Edge Functions para reservas en custodia y webhooks de pago',
+        'Integré Wompi (Colombia) con patrón port/adapter, verificación de firma de webhooks y firma de integridad del checkout',
+        'Diseñé un sistema por roles (viajero / guía / admin) con flujo de verificación de guías y un panel admin Next.js para moderación y disputas',
       ],
     },
-    tags: ['Next.js', 'Node.js', 'PostgreSQL', 'Stripe', 'TypeScript'],
+    tags: ['Expo / React Native', 'TypeScript', 'Supabase', 'Wompi', 'Next.js'],
   },
 
   // 4 — Carl Jung AI

@@ -224,8 +224,8 @@ test.describe('ProjectDeck lang-switch with non-default active project', () => {
     const detailDesc = page.locator('#detail-desc');
     const esDesc = await detailDesc.textContent();
     expect(esDesc).toBeTruthy();
-    // ES desc for Tripi should start with 'Desarrollo full-stack'
-    expect(esDesc).toContain('Desarrollo full-stack');
+    // ES desc for AppTreeking (card 3) should be the Spanish copy
+    expect(esDesc).toContain('Marketplace móvil');
   });
 
   test('switching back to EN after non-default project restores EN text', async ({ page }) => {

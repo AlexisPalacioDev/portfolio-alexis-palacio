@@ -6,7 +6,7 @@ const EXPECTED_IDS = [
   'anai',
   'imometrics',
   'sticker-drops',
-  'tripi',
+  'apptreeking',
   'carljung',
   'bunnygymwear',
   'todo-automation',

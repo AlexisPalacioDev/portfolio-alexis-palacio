@@ -25,7 +25,7 @@ export const I18N = {
     hero_h1: 'I orchestrate AI',
     hero_h1_accent: 'to ship real outcomes.',
     hero_sub:
-      'Full-stack developer specialized in AI agents, automation harnesses and LLM orchestration — agents, loops, MCP, n8n. 5 years turning ideas into products that actually run in production.',
+      'Full-stack developer specialized in AI agents, automation harnesses and LLM orchestration — agents, loops, MCP. 4 years turning ideas into products that actually run in production, adapting to whatever stack the job needs.',
     hero_cta_hire: 'Hire me',
     hero_cta_cv: 'Download CV',
     hero_scroll: 'Scroll',
@@ -37,7 +37,7 @@ export const I18N = {
     about_p1:
       'Full-stack developer with 5+ years building web products end to end. Over the last two years I pivoted hard into AI orchestration: my edge is not a single language — it\'s wiring models, tools and data into systems that hit a goal on their own.',
     about_p2:
-      "I've built voice agents connected to external sources through MCP, automation harnesses with n8n, and LLM pipelines running both in the cloud and locally (Ollama, OpenRouter). Solid backend foundations in PHP/CakePHP, Node and Python, with a modern frontend (React, Next.js, Tailwind).",
+      "I've built voice agents connected to external sources through MCP, automation harnesses, and LLM pipelines running both in the cloud and locally (Ollama, OpenRouter). Solid backend foundations in PHP, Node and Python, with a modern frontend (React, React Native, Next.js, Tailwind).",
     about_p3:
       "Right now I'm engineering AI content generation at anai. I work remote, ship fast, and I'm hungry — in every sense of the word.",
     stat_years: 'Years shipping',
@@ -73,7 +73,7 @@ export const I18N = {
     services_sub: 'Available for full-time remote, contracts and AI consulting. Let\'s build.',
     svc1_title: 'AI Agents & Automation',
     svc1_desc:
-      'Custom agents, n8n harnesses, MCP integrations and bots on WhatsApp / Telegram that actually move the needle.',
+      'Custom agents, automation harnesses, MCP integrations and bots on WhatsApp / Telegram that actually move the needle.',
     svc2_title: 'Full-Stack Development',
     svc2_desc:
       'Web apps end to end — Next.js, React, Supabase, Node, payments and clean APIs that scale.',
@@ -122,7 +122,7 @@ export const I18N = {
     hero_h1: 'Orquesto IA',
     hero_h1_accent: 'para entregar resultados reales.',
     hero_sub:
-      'Desarrollador full-stack especializado en agentes de IA, harnesses de automatización y orquestación de LLMs — agentes, loops, MCP, n8n. 5 años convirtiendo ideas en productos que de verdad corren en producción.',
+      'Desarrollador full-stack especializado en agentes de IA, harnesses de automatización y orquestación de LLMs — agentes, loops, MCP. 4 años convirtiendo ideas en productos que de verdad corren en producción, adaptándome a la tecnología que el proyecto necesite.',
     hero_cta_hire: 'Contratame',
     hero_cta_cv: 'Descargar CV',
     hero_scroll: 'Baja',
@@ -134,7 +134,7 @@ export const I18N = {
     about_p1:
       "Desarrollador full-stack con 5+ años construyendo productos web de punta a punta. En los últimos dos años me volqué a la orquestación de IA: mi fuerte no es un solo lenguaje — es conectar modelos, herramientas y datos en sistemas que logran una meta por sí solos.",
     about_p2:
-      "He construido agentes de voz conectados a fuentes externas vía MCP, harnesses de automatización con n8n y pipelines de LLM corriendo en la nube y en local (Ollama, OpenRouter). Base sólida en PHP/CakePHP, Node y Python, con frontend moderno (React, Next.js, Tailwind).",
+      "He construido agentes de voz conectados a fuentes externas vía MCP, harnesses de automatización y pipelines de LLM corriendo en la nube y en local (Ollama, OpenRouter). Base sólida en PHP, Node y Python, con frontend moderno (React, React Native, Next.js, Tailwind).",
     about_p3:
       "Hoy estoy desarrollando generación de contenido con IA en anai. Trabajo remoto, entrego rápido y tengo hambre — en todos los sentidos de la palabra.",
     stat_years: 'Años entregando',
@@ -170,7 +170,7 @@ export const I18N = {
     services_sub: 'Disponible para remoto full-time, contratos y consultoría en IA. Construyamos.',
     svc1_title: 'Agentes de IA y Automatización',
     svc1_desc:
-      'Agentes a medida, harnesses con n8n, integraciones MCP y bots en WhatsApp / Telegram que mueven la aguja.',
+      'Agentes a medida, harnesses de automatización, integraciones MCP y bots en WhatsApp / Telegram que mueven la aguja.',
     svc2_title: 'Desarrollo Full-Stack',
     svc2_desc:
       'Apps web de punta a punta — Next.js, React, Supabase, Node, pagos y APIs limpias que escalan.',
