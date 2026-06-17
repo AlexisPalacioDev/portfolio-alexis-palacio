@@ -139,6 +139,46 @@ section > * {
   max-width: 86%;
 }
 
+/* Single carousel action button — animates between "Open" (live, lime) and
+   "Code" (repo only, outline) as the front slide changes. */
+.work-open-btn {
+  border: 1px solid transparent;
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.work-open-btn.is-view {
+  background: var(--color-lime);
+  color: var(--color-bg);
+  box-shadow: 4px 4px 0 var(--color-blue);
+}
+.work-open-btn.is-code {
+  background: transparent;
+  color: var(--color-ink);
+  box-shadow: none;
+  border-color: #34373f;
+}
+.work-open-btn #work-open-label {
+  display: inline-block;
+}
+.work-open-btn.swapping #work-open-label {
+  animation: open-label-swap 0.3s ease;
+}
+@keyframes open-label-swap {
+  0% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .work-open-btn.swapping #work-open-label {
+    animation: none;
+  }
+}
+
 /* ─── Project deck navigation arrows ─────────────────────────────────────── */
 .work-arrow:hover {
   border-color: var(--color-lime);

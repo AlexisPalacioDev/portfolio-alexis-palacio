@@ -286,7 +286,7 @@ const activeItem = work[ACTIVE];
     <div class="work-mobile">
       <div class="work-carousel">
         {work.map((item) => (
-          <article class="work-slide">
+          <article class="work-slide" data-link={item.links.link ?? ''} data-code={item.links.code ?? ''}>
             <!-- Preview -->
             <div style="position: relative; aspect-ratio: 5 / 3; overflow: hidden; border: 1px solid #2C2F38; background: #14151A;">
               <Image
@@ -338,44 +338,32 @@ const activeItem = work[ACTIVE];
             </p>
 
             <!-- Tags -->
-            <div style="display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 7px;">
               {item.tags.slice(0, 5).map((tag) => (
                 <span class="font-mono" style="padding: 4px 9px; border: 1px solid #34373F; color: #C8C8C0; font-size: 10.5px;">{tag}</span>
               ))}
             </div>
-
-            <!-- Link -->
-            {item.links.link ? (
-              <a
-                href={item.links.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-display font-bold text-bg bg-lime shadow-hard-sm"
-                style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; font-size: 14px;"
-                data-i18n="projects_view"
-              >
-                {t('en', 'projects_view')}
-                <span class="font-mono" aria-hidden="true">↗</span>
-              </a>
-            ) : item.links.code ? (
-              <a
-                href={item.links.code}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-display font-bold text-ink"
-                style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; font-size: 14px; border: 1px solid #34373F;"
-                data-i18n="projects_code"
-              >
-                {t('en', 'projects_code')}
-                <span class="font-mono" aria-hidden="true">↗</span>
-              </a>
-            ) : null}
           </article>
         ))}
       </div>
-      <!-- Swipe hint -->
-      <div class="font-mono text-faint" style="text-align: center; font-size: 11px; margin-top: 14px; letter-spacing: 1px;">
-        ‹ <span data-en="swipe" data-es="deslizá">swipe</span> ›
+
+      <!-- Single action button — its target follows whichever slide is in front,
+           so it stays in one place instead of one button per card. -->
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 20px; min-height: 46px;">
+        <a
+          id="work-open"
+          href={work[0].links.link ?? '#'}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-display font-bold work-open-btn is-view"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; font-size: 14px;"
+        >
+          <span id="work-open-label">{t('en', 'projects_view')}</span>
+          <span class="font-mono" aria-hidden="true">↗</span>
+        </a>
+        <span class="font-mono text-faint" style="font-size: 11px; letter-spacing: 1px;">
+          ‹ <span data-en="swipe" data-es="deslizá">swipe</span> ›
+        </span>
       </div>
     </div>
     <!-- /work-mobile -->
@@ -432,3 +420,65 @@ const activeItem = work[ACTIVE];
     tags: item.tags,
   })))}
 ></script>
+
+<script>
+  // Mobile carousel: a single action button whose target + state follow the
+  // slide currently in front. Switches between "Open" (live link, lime) and
+  // "Code" (repo only, outline) with an animated transition.
+  import { $lang } from '../../lib/i18n/store';
+  import { I18N } from '../../lib/i18n/dictionary';
+
+  const carousel = document.querySelector<HTMLElement>('.work-carousel');
+  const openBtn = document.getElementById('work-open') as HTMLAnchorElement | null;
+  const openLabel = document.getElementById('work-open-label');
+
+  if (carousel && openBtn && openLabel) {
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>('.work-slide'));
+    let active: HTMLElement | null = slides[0] ?? null;
+    let lastKey = '';
+
+    function render(animate: boolean): void {
+      if (!active || !openBtn || !openLabel) return;
+      const link = active.dataset.link || '';
+      const code = active.dataset.code || '';
+      const href = link || code;
+      const isCode = !link && !!code;
+      const dict = $lang.get() === 'es' ? I18N.es : I18N.en;
+
+      if (!href) {
+        openBtn.style.visibility = 'hidden';
+        return;
+      }
+      openBtn.style.visibility = 'visible';
+      openBtn.href = href;
+      openBtn.classList.toggle('is-code', isCode);
+      openBtn.classList.toggle('is-view', !isCode);
+      openLabel.textContent = isCode ? dict.projects_code : dict.projects_view;
+
+      // Re-trigger the label swap animation only when the state actually changed.
+      const key = `${href}|${$lang.get()}`;
+      if (animate && key !== lastKey) {
+        openBtn.classList.remove('swapping');
+        void openBtn.offsetWidth; // force reflow so the animation restarts
+        openBtn.classList.add('swapping');
+      }
+      lastKey = key;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+            active = entry.target as HTMLElement;
+            render(true);
+          }
+        }
+      },
+      { root: carousel, threshold: [0.6] }
+    );
+    slides.forEach((s) => observer.observe(s));
+
+    $lang.subscribe(() => render(false));
+    render(false);
+  }
+</script>
