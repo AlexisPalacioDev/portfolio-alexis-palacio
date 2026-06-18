@@ -45,7 +45,6 @@ export const I18N = {
       'Right now I lead development at anai, an AI content-generation product. I care about my team as much as the person on the other side of the screen: I keep the team unblocked, communicate clearly, and sweat the details so the work actually lands.',
     stat_years: 'Years shipping to production',
     stat_projects: 'Products in production',
-    stat_tech: 'Units monitored at iMometrics',
 
     // ── Harness method ─────────────────────────────────────────────────────
     harness_label: 'THE METHOD',
@@ -163,7 +162,6 @@ export const I18N = {
       'Hoy lidero el desarrollo en anai, un producto de generación de contenido con IA. Me importa tanto mi equipo como la persona del otro lado de la pantalla: mantengo al equipo sin bloqueos, comunico con claridad y cuido los detalles para que el trabajo de verdad aterrice.',
     stat_years: 'Años entregando a producción',
     stat_projects: 'Productos en producción',
-    stat_tech: 'Unidades monitoreadas en iMometrics',
 
     // ── Harness method ─────────────────────────────────────────────────────
     harness_label: 'EL MÉTODO',
