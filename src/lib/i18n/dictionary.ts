@@ -24,7 +24,7 @@ export const I18N = {
     nav_contact: 'Contact',
 
     // ── Hero ─────────────────────────────────────────────────────────────
-    hero_status: 'AI ENGINEER · HARNESS ENGINEERING · REMOTE',
+    hero_status: 'AI ENGINEER · HARNESS ENGINEERING',
     hero_h1: 'Hi, I’m Alexis.',
     hero_h1_accent: 'I lead products from idea to production.',
     hero_sub:
@@ -42,7 +42,7 @@ export const I18N = {
     about_p2:
       'These last couple of years I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). A new tool or language shows up? I pick it up fast — honestly, that’s the part I enjoy most.',
     about_p3:
-      'Right now I’m leading development at anai, building AI content generation. I work remotely, I ship fast, and I care about the people around me — both my teammates and the person on the other side of the screen. I lead by keeping the team unblocked, communicating clearly, and sweating the details so the work actually lands.',
+      'Right now I lead development at anai, an AI content-generation product. I care about my team as much as the person on the other side of the screen: I keep the team unblocked, communicate clearly, and sweat the details so the work actually lands.',
     stat_years: 'Years shipping to production',
     stat_projects: 'Products in production',
     stat_tech: 'Units monitored at iMometrics',
@@ -94,7 +94,7 @@ export const I18N = {
     services_label: 'FREELANCE',
     services_h2: 'How I can help.',
     services_sub:
-      'I’m available for remote work, full-time or by project. Tell me what you need and we’ll figure out the best way to make it happen — together.',
+      'I’m available for full-time or project work. Tell me what you need and we’ll figure out the best way to make it happen — together.',
     svc1_title: 'AI Agents & Automation',
     svc1_desc:
       'Bots and automations that handle the boring, repetitive work for you — on WhatsApp, Telegram, or wherever your people already are.',
@@ -118,7 +118,7 @@ export const I18N = {
     contact_label: 'CONTACT',
     contact_h2: 'Want to work together?',
     contact_sub:
-      'Open to remote roles, contracts or consulting — anywhere in the world. Drop me a line and I’ll usually get back to you the same day.',
+      'Open to roles, contracts or consulting — anywhere in the world. Drop me a line and I’ll usually get back to you the same day.',
     contact_email: 'Email',
     contact_whats: 'WhatsApp',
     contact_linkedin: 'LinkedIn',
@@ -126,7 +126,7 @@ export const I18N = {
     contact_cta: 'Get in touch',
 
     // ── Shared / Footer ───────────────────────────────────────────────────
-    available: 'Available for remote work',
+    available: 'Available for new projects',
     cv: 'Download CV',
     footer_rights: 'All rights reserved.',
     footer_built: 'Made with care.',
@@ -142,7 +142,7 @@ export const I18N = {
     nav_contact: 'Contacto',
 
     // ── Hero ─────────────────────────────────────────────────────────────
-    hero_status: 'AI ENGINEER · HARNESS ENGINEERING · REMOTO',
+    hero_status: 'AI ENGINEER · HARNESS ENGINEERING',
     hero_h1: 'Hola, soy Alexis.',
     hero_h1_accent: 'Llevo productos de la idea a producción.',
     hero_sub:
@@ -160,7 +160,7 @@ export const I18N = {
     about_p2:
       'Estos últimos años me metí a fondo en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). ¿Aparece una herramienta o lenguaje nuevo? Lo agarro rápido — la verdad, esa es la parte que más disfruto.',
     about_p3:
-      'Ahora lidero el desarrollo en anai, construyendo generación de contenido con IA. Trabajo remoto, entrego rápido y me importa la gente alrededor — tanto mi equipo como la persona del otro lado de la pantalla. Lidero manteniendo al equipo sin bloqueos, comunicando con claridad y cuidando los detalles para que el trabajo de verdad aterrice.',
+      'Hoy lidero el desarrollo en anai, un producto de generación de contenido con IA. Me importa tanto mi equipo como la persona del otro lado de la pantalla: mantengo al equipo sin bloqueos, comunico con claridad y cuido los detalles para que el trabajo de verdad aterrice.',
     stat_years: 'Años entregando a producción',
     stat_projects: 'Productos en producción',
     stat_tech: 'Unidades monitoreadas en iMometrics',
@@ -212,7 +212,7 @@ export const I18N = {
     services_label: 'FREELANCE',
     services_h2: 'En qué te puedo ayudar.',
     services_sub:
-      'Estoy disponible para trabajo remoto, full-time o por proyecto. Contame qué necesitás y encontramos juntos la mejor forma de lograrlo.',
+      'Estoy disponible para trabajo full-time o por proyecto. Contame qué necesitás y encontramos juntos la mejor forma de lograrlo.',
     svc1_title: 'Agentes de IA & Automatización',
     svc1_desc:
       'Bots y automatizaciones que se encargan del trabajo repetitivo y aburrido por vos — en WhatsApp, Telegram o donde ya está tu gente.',
@@ -236,7 +236,7 @@ export const I18N = {
     contact_label: 'CONTACTO',
     contact_h2: '¿Trabajamos juntos?',
     contact_sub:
-      'Abierto a roles remotos, contratos o consultoría — en cualquier parte del mundo. Escribime y casi siempre te respondo el mismo día.',
+      'Abierto a roles, contratos o consultoría — en cualquier parte del mundo. Escribime y casi siempre te respondo el mismo día.',
     contact_email: 'Correo',
     contact_whats: 'WhatsApp',
     contact_linkedin: 'LinkedIn',
@@ -244,7 +244,7 @@ export const I18N = {
     contact_cta: 'Escríbeme',
 
     // ── Shared / Footer ───────────────────────────────────────────────────
-    available: 'Disponible para trabajo remoto',
+    available: 'Disponible para nuevos proyectos',
     cv: 'Descargar CV',
     footer_rights: 'Todos los derechos reservados.',
     footer_built: 'Hecho con cuidado.',

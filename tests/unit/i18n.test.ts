@@ -30,7 +30,7 @@ describe('i18n dictionary', () => {
     });
 
     it('returns the correct EN string for hero_status', () => {
-      expect(t(LANG.EN, 'hero_status')).toBe('AI ENGINEER · HARNESS ENGINEERING · REMOTE');
+      expect(t(LANG.EN, 'hero_status')).toBe('AI ENGINEER · HARNESS ENGINEERING');
     });
 
     it('returns the correct ES string for hero_cta_hire', () => {
