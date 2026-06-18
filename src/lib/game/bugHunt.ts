@@ -20,7 +20,7 @@
  * BaseLayout.astro alongside the other src/lib/dom modules.
  */
 
-import { bugSprite, hammerSprite, spraySprite, bugCell, PX } from './sprites';
+import { bugSprite, hammerSprite, spraySprite, handSprite, bugCell, PX } from './sprites';
 import {
   harvestTargets,
   liveChars,
@@ -85,6 +85,18 @@ export function initBugHunt(): void {
   let hammerFacing = 1; // 1 = hammer faces right, -1 = faces left (toward the fly)
   let hammerAngle = -8; // resting tilt of the hammer head
   let hammerScale = 1;
+  // Grab / choke / shake-to-vomit (desktop direct manipulation).
+  let hand: HTMLElement | null = null;
+  let grabbed = false;
+  let dragVX = 0; // cursor velocity while dragging (px per move event)
+  let dragVY = 0;
+  let lastDragX = 0;
+  let lastDragY = 0;
+  let shakeDir = 0; // last horizontal shake direction (-1 / 0 / 1)
+  let shakeCount = 0; // consecutive quick reversals
+  let lastShakeT = 0;
+  let vomited = false; // already spat its letters during this grab
+
   // Once exterminated with the insecticide, the fly never returns this session.
   let exterminated = false;
 
@@ -151,14 +163,20 @@ export function initBugHunt(): void {
     bug.appendChild(bob);
     root.appendChild(bug);
 
-    // Tap/click the fly: unarmed → it darts away (skittish); armed → strike it.
-    // On desktop+armed the catcher intercepts instead (bug pointer-events: none),
-    // so this path only strikes on touch, where there is no catcher.
+    // Touch + armed: tap the fly to strike it (no catcher on touch).
     bug.addEventListener('click', (e) => {
       e.stopPropagation();
       if (armed && weapon) strikeBug();
-      else dodge();
     });
+
+    // Desktop, unarmed: hover shows a big hand; press-hold grabs and chokes it,
+    // drag to fling it, shake to make it spit out the letters it ate.
+    if (!isTouch()) {
+      bug.addEventListener('mouseenter', onBugEnter);
+      bug.addEventListener('mousemove', onBugHoverMove);
+      bug.addEventListener('mouseleave', onBugLeave);
+      bug.addEventListener('mousedown', onGrabStart);
+    }
 
     // Fly in from a random side, a little below the top nav.
     const fromLeft = Math.random() < 0.5;
@@ -270,41 +288,158 @@ export function initBugHunt(): void {
     }
   }
 
-  /** Startled dart to a new spot — triggered by clicking the unarmed fly. */
-  function dodge(): void {
-    if (state !== 'active' || armed || !bug) return;
+  // ── Grab / choke / shake (desktop direct manipulation) ────────────────────
+  function handSize(): number {
+    return Math.max(60, bugW() * 0.85);
+  }
 
-    const curX = Number(bug.dataset.x ?? 0);
-    const curY = Number(bug.dataset.y ?? 0);
-    const maxX = window.innerWidth - bugW() - 60;
-    const maxY = window.innerHeight * 0.6;
+  /** Create/update the hand cursor and show it (open hand or clenched fist). */
+  function showHand(grab: boolean): void {
+    if (!root) return;
+    if (!hand) {
+      hand = document.createElement('div');
+      hand.className = 'bh-hand';
+      root.appendChild(hand);
+    }
+    const s = handSize();
+    hand.style.width = `${s}px`;
+    hand.style.height = `${s}px`;
+    hand.innerHTML = handSprite(grab);
+    hand.classList.toggle('bh-hand--grab', grab);
+    hand.style.opacity = '1';
+  }
 
-    // Pick a landing spot that is meaningfully far from the current one.
-    let nx = curX;
-    let ny = curY;
-    for (let tries = 0; tries < 8; tries++) {
-      nx = 60 + Math.random() * Math.max(1, maxX - 60);
-      ny = 120 + Math.random() * Math.max(1, maxY - 120);
-      if (Math.hypot(nx - curX, ny - curY) > 240) break;
+  function positionHand(cx: number, cy: number): void {
+    if (!hand) return;
+    hand.style.left = `${cx}px`;
+    hand.style.top = `${cy}px`;
+  }
+
+  function hideHand(): void {
+    if (!hand) return;
+    const h = hand;
+    hand = null;
+    h.style.opacity = '0';
+    window.setTimeout(() => h.remove(), 160);
+  }
+
+  function onBugEnter(e: MouseEvent): void {
+    if (state !== 'active' || armed || grabbed) return;
+    showHand(false);
+    positionHand(e.clientX, e.clientY);
+  }
+
+  function onBugHoverMove(e: MouseEvent): void {
+    if (state !== 'active' || armed || grabbed || !hand) return;
+    positionHand(e.clientX, e.clientY);
+  }
+
+  function onBugLeave(): void {
+    if (grabbed) return;
+    hideHand();
+  }
+
+  /** Press-hold on the fly: the hand clenches and chokes it. */
+  function onGrabStart(e: MouseEvent): void {
+    if (state !== 'active' || armed || grabbed || !bug) return;
+    e.preventDefault();
+    e.stopPropagation();
+    grabbed = true;
+    vomited = false;
+    shakeCount = 0;
+    shakeDir = 0;
+    lastShakeT = performance.now();
+    window.clearTimeout(eatTimer); // stop eating while held
+    window.clearTimeout(menuTimer);
+    bug.style.transition = 'none';
+    bug.classList.add('bh-bug--grabbed');
+    showHand(true);
+    lastDragX = e.clientX;
+    lastDragY = e.clientY;
+    dragVX = 0;
+    dragVY = 0;
+    moveGrabbed(e.clientX, e.clientY);
+    window.addEventListener('mousemove', onGrabMove);
+    window.addEventListener('mouseup', onGrabEnd);
+  }
+
+  /** Drag the fly around + detect a shake (rapid horizontal reversals). */
+  function onGrabMove(e: MouseEvent): void {
+    if (!grabbed) return;
+    dragVX = e.clientX - lastDragX;
+    dragVY = e.clientY - lastDragY;
+    lastDragX = e.clientX;
+    lastDragY = e.clientY;
+
+    const dir = dragVX > 3 ? 1 : dragVX < -3 ? -1 : 0;
+    if (dir !== 0 && dir !== shakeDir) {
+      const now = performance.now();
+      shakeCount = now - lastShakeT < 450 ? shakeCount + 1 : 1;
+      lastShakeT = now;
+      shakeDir = dir;
+      if (shakeCount >= 4 && !vomited && eatenGlyphs().length > 0) vomitFromGrab();
     }
 
-    facing = nx >= curX ? 1 : -1;
-    placeBug(nx, ny, true);
+    moveGrabbed(e.clientX, e.clientY);
+  }
 
-    // A quick startled wobble.
-    const chompEl = bug.querySelector<HTMLElement>('.bh-chomp');
-    chompEl?.animate(
+  /** Keep the fly hanging just below the grabbing hand. */
+  function moveGrabbed(cx: number, cy: number): void {
+    if (!bug) return;
+    const bugCx = cx;
+    const bugCy = cy + bugH() * 0.3;
+    const x = bugCx - bugW() / 2;
+    const y = bugCy - bugH() / 2;
+    bug.dataset.x = String(x);
+    bug.dataset.y = String(y);
+    bugCenter = { x: bugCx, y: bugCy };
+    bug.style.transform = `translate3d(${x}px, ${y}px, 0) scaleX(${facing})`;
+    positionHand(cx, cy);
+  }
+
+  /** Shaken hard enough: the fly throws up everything it swallowed. */
+  function vomitFromGrab(): void {
+    vomited = true;
+    spitLetters(bugCenter.x, bugCenter.y, eatenGlyphs());
+    restoreAll();
+    eatenCount = 0;
+    if (stage !== 0) {
+      stage = 0;
+      const spriteEl = bug?.querySelector<HTMLElement>('.bh-sprite');
+      if (spriteEl) spriteEl.innerHTML = bugSprite(0);
+    }
+    bug?.querySelector<HTMLElement>('.bh-chomp')?.animate(
       [
-        { transform: 'scale(1, 1)' },
-        { transform: 'scale(0.8, 1.2)', offset: 0.3 },
-        { transform: 'scale(1, 1)' },
+        { transform: 'scale(1,1)' },
+        { transform: 'scale(1.2, 0.78)', offset: 0.4 }, // heave
+        { transform: 'scale(0.92, 1.08)', offset: 0.7 },
+        { transform: 'scale(1,1)' },
       ],
-      { duration: 320, easing: 'ease-out' }
+      { duration: 360, easing: 'ease-out' }
     );
+  }
 
-    // Interrupt the current bite so it doesn't immediately fly back to a letter.
-    window.clearTimeout(eatTimer);
-    eatTimer = window.setTimeout(nextBite, FLIGHT_MS + 280);
+  /** Release: a flick throws the fly across the screen; a gentle let-go resumes. */
+  function onGrabEnd(): void {
+    if (!grabbed) return;
+    grabbed = false;
+    window.removeEventListener('mousemove', onGrabMove);
+    window.removeEventListener('mouseup', onGrabEnd);
+    bug?.classList.remove('bh-bug--grabbed');
+    hideHand();
+
+    const speed = Math.hypot(dragVX, dragVY);
+    if (speed > 6) {
+      if (!vomited && eatenGlyphs().length > 0) {
+        spitLetters(bugCenter.x, bugCenter.y, eatenGlyphs());
+      }
+      const spin = (dragVX >= 0 ? 1 : -1) * (6 + speed * 0.5);
+      flingRagdoll(dragVX, dragVY, spin);
+    } else if (state === 'active') {
+      // Gentle drop — get back to eating from where it landed.
+      if (bug) bug.style.transition = 'none';
+      eatTimer = window.setTimeout(nextBite, 400);
+    }
   }
 
   /** Touch strike: tap the armed fly to hit it right where it sits. */
@@ -641,14 +776,31 @@ export function initBugHunt(): void {
    */
   function knockOut(fromX: number, fromY: number, force = 1): void {
     if (state !== 'active' || !bug) return;
+    puff(bugCenter.x, bugCenter.y, false); // impact spark
+    spitLetters(bugCenter.x, bugCenter.y, eatenGlyphs()); // vomit the swallowed glyphs
+
+    const dirX = bugCenter.x - fromX;
+    const dirY = bugCenter.y - fromY;
+    const dlen = Math.hypot(dirX, dirY) || 1;
+    const speed = 7 + force * 5; // px/frame — lively but watchable, not a teleport
+    const vx = (dirX / dlen) * speed;
+    const vy = (dirY / dlen) * speed - 7; // upward pop before gravity takes over
+    const spin = (vx >= 0 ? 1 : -1) * (7 + force * 5);
+    flingRagdoll(vx, vy, spin);
+  }
+
+  /**
+   * Ragdoll flight shared by the hammer knockout and the grab-and-throw: the fly
+   * sails off with (vx, vy), bounces off the screen edges + buttons, tumbling,
+   * then falls out the OPEN bottom. Restores the eaten text and respawns later.
+   */
+  function flingRagdoll(vx: number, vy: number, spin: number): void {
+    if (!bug || state !== 'active') return;
     state = 'cooldown';
     window.clearTimeout(eatTimer);
     window.clearTimeout(menuTimer);
 
-    puff(bugCenter.x, bugCenter.y, false); // impact spark
-    spitLetters(bugCenter.x, bugCenter.y, eatenGlyphs()); // vomit the swallowed glyphs
-
-    // Drop the armed UI immediately so only the ragdoll is left on screen.
+    // Drop any armed / grab UI so only the ragdoll is left on screen.
     menu?.classList.remove('bh-menu--open');
     catcher?.remove();
     weaponCursor?.remove();
@@ -656,23 +808,16 @@ export function initBugHunt(): void {
     weaponCursor = null;
     weapon = null;
     armed = false;
+    bug.classList.remove('bh-bug--grabbed');
+    hideHand();
 
     // Restore the eaten text on the NEXT frame: doing the (reflow-heavy) restore
-    // on the same frame as the hit is what caused the little freeze.
+    // on the same frame is what caused the little freeze.
     requestAnimationFrame(() => restoreAll());
 
-    // ── Ragdoll physics: knocked flying, bounces off edges + buttons, then
-    //    falls out the BOTTOM of the screen (no floor collision down there). ──
-    const dirX = bugCenter.x - fromX;
-    const dirY = bugCenter.y - fromY;
-    const dlen = Math.hypot(dirX, dirY) || 1;
-    const speed = 7 + force * 5; // px/frame — lively but watchable, not a teleport
-    let vx = (dirX / dlen) * speed;
-    let vy = (dirY / dlen) * speed - 7; // upward pop before gravity takes over
     let px = Number(bug.dataset.x ?? 0);
     let py = Number(bug.dataset.y ?? 0);
     let rot = 0;
-    const spin = (vx >= 0 ? 1 : -1) * (7 + force * 5); // deg/frame tumble
     const GRAVITY = 0.6;
     const BOUNCE = 0.62; // energy kept per bounce
     const obstacles = collectObstacles();
@@ -897,7 +1042,14 @@ export function initBugHunt(): void {
     onSprayStop();
     window.removeEventListener('mouseup', onSprayStop);
     window.removeEventListener('mouseup', onHammerUp);
+    window.removeEventListener('mousemove', onGrabMove);
+    window.removeEventListener('mouseup', onGrabEnd);
     charging = false;
+    grabbed = false;
+    if (hand) {
+      hand.remove();
+      hand = null;
+    }
     if (aimRaf) {
       cancelAnimationFrame(aimRaf);
       aimRaf = 0;
@@ -969,6 +1121,9 @@ export function initBugHunt(): void {
     // dev: render any fatness stage to eyeball the sprite without eating 30 letters
     (window as unknown as { __bugSprite?: (s: number) => string }).__bugSprite = (s) =>
       bugSprite(s);
+    // dev: render the grabbing hand (open / fist) to eyeball the sprite
+    (window as unknown as { __handSprite?: (g: boolean) => string }).__handSprite = (g) =>
+      handSprite(g);
   }
 }
 
@@ -998,6 +1153,26 @@ function injectStyles(): void {
       filter: drop-shadow(0 3px 2px rgba(0,0,0,0.35));
     }
     @keyframes bh-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+    /* Big grabbing hand: open on hover, a clenched fist squeezing while held. */
+    .bh-hand {
+      position: fixed; left: 0; top: 0; z-index: 9998; pointer-events: none;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 3px 3px rgba(0,0,0,0.45));
+      transition: opacity 0.15s ease;
+    }
+    .bh-hand--grab { animation: bh-squeeze 0.5s ease-in-out infinite; }
+    @keyframes bh-squeeze {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(0.9); }
+    }
+    /* The fly stops bobbing and struggles/chokes while it's in the grip. */
+    .bh-bug--grabbed .bh-bob { animation: none; }
+    .bh-bug--grabbed .bh-sprite { animation: bh-struggle 0.16s ease-in-out infinite; }
+    @keyframes bh-struggle {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
 
     /* Three body segments throbbing out of phase → the bug reads as having WEIGHT.
        The abdomen (most mass) swings slowest and widest; the head barely moves.

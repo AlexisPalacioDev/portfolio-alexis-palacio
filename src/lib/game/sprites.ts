@@ -53,6 +53,10 @@ const PALETTE: Record<string, string> = {
   c: '#2F6F6B', // can shadow
   N: '#2A2C33', // nozzle / cap
   l: '#EDEDE7', // label band
+  // grabbing hand
+  K: '#E8B98C', // skin
+  k: '#CE9A6E', // skin shadow
+  n: '#9C6B42', // knuckle crease
 };
 
 // ── Constant on-screen pixel size ────────────────────────────────────────────
@@ -416,6 +420,39 @@ export function hammerSprite(): string {
 /** Aerosol can — the lethal weapon icon/cursor. */
 export function spraySprite(): string {
   return spriteOf(SPRAY_ROWS);
+}
+
+// Big grabbing hand — open while hovering the fly, a clenched fist while it
+// chokes/holds it. Fingers point down so it reads as grabbing from above.
+const HAND_OPEN_ROWS = [
+  '....KKKK....',
+  '...KKKKKK...',
+  '..KKKKKKKK..',
+  '.KKKKKKKKKK.',
+  'KKKKKKKKKKKK',
+  'KKKKKKKKKKKK',
+  'KK.KK.KK.KK.',
+  'KK.KK.KK.KK.',
+  'KK.KK.KK.KK.',
+  'Kk.Kk.Kk.Kk.',
+];
+
+const HAND_GRAB_ROWS = [
+  '..KKKKKKKK...',
+  '.KKKKKKKKKK..',
+  'KKKKKKKKKKKK.',
+  'KnKKnKKnKKnK.',
+  'KKKKKKKKKKKK.',
+  'KKKKKKKKKKKKk',
+  'KKKKKKKKKKKKk',
+  'KKKKKKKKKKKK.',
+  '.KKKKKKKKKK..',
+  '..KKKKKKKK...',
+];
+
+/** Grabbing hand cursor — open (hover) or clenched fist (gripping the fly). */
+export function handSprite(grab = false): string {
+  return spriteOf(grab ? HAND_GRAB_ROWS : HAND_OPEN_ROWS);
 }
 
 /** Natural aspect ratio (width / height) of the stage-0 bug, for sizing. */
