@@ -50,7 +50,7 @@ export const I18N = {
     harness_label: 'THE METHOD',
     harness_h2: 'How I make AI reliable.',
     harness_sub:
-      'Prompting alone is a coin flip. What makes AI dependable is how you set it up — four things, and none of them is writing code.',
+      'Prompting alone is a coin flip. What makes AI dependable is how you set it up — four things.',
     harness_p1_title: 'Fewer tools, better results',
     harness_p1_desc:
       'I give it only what the task needs — fewer tools, fewer ways to mess up. Sometimes leaving an agent with a single tool is what takes it from “usually works” to “always works.”',
@@ -167,7 +167,7 @@ export const I18N = {
     harness_label: 'EL MÉTODO',
     harness_h2: 'Cómo hago que la IA sea confiable.',
     harness_sub:
-      'Solo con prompts es jugar a la suerte. Lo que hace confiable a la IA es cómo la preparas — cuatro cosas, y ninguna es escribir código.',
+      'Solo con prompts es jugar a la suerte. Lo que hace confiable a la IA es cómo la preparas — cuatro cosas.',
     harness_p1_title: 'Menos herramientas, mejores resultados',
     harness_p1_desc:
       'Le doy solo lo que la tarea necesita — menos herramientas, menos formas de equivocarse. A veces dejarle una sola herramienta es lo que lo lleva de “casi siempre funciona” a “siempre funciona”.',
