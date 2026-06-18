@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/sections/Hero.astro';
 import About from '../components/sections/About.astro';
+import HarnessMethod from '../components/sections/HarnessMethod.astro';
 import Stack from '../components/sections/Stack.astro';
 import Work from '../components/sections/Work.astro';
 import Services from '../components/sections/Services.astro';
@@ -13,10 +14,11 @@ import Contact from '../components/sections/Contact.astro';
 <BaseLayout>
   <!--
     Sections compose in scroll order:
-    #home → marquee → #about → #skills → #projects → #services → #testimonials → #contact → footer
+    #home → marquee → #about → #method → #skills → #projects → #services → #testimonials → #contact → footer
   -->
   <Hero />
   <About />
+  <HarnessMethod />
   <Stack />
   <Work />
   <Services />

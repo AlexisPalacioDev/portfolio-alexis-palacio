@@ -29,6 +29,7 @@ import {
   restoreAll,
   eatenGlyphs,
 } from './letters';
+import { applyLang } from '../i18n/apply';
 
 // ── Tunables ────────────────────────────────────────────────────────────────
 const IDLE_MS = 9000; // inactivity before the bug appears
@@ -943,7 +944,13 @@ export function initBugHunt(): void {
   });
 
   // A language switch flips html[lang]; our text snapshots would be stale, so bail.
-  const langObserver = new MutationObserver(() => kill());
+  // restoreAll() puts back the ORIGINAL (pre-switch-language) HTML for any text
+  // we'd split, which would clobber the just-applied translation — so re-apply
+  // the current language right after, fixing any element we had eaten.
+  const langObserver = new MutationObserver(() => {
+    kill();
+    applyLang(document.documentElement.lang);
+  });
   langObserver.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['lang'],

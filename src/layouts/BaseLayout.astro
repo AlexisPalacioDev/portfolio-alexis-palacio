@@ -28,8 +28,8 @@ interface Props {
 const SITE = 'https://portfolio-alexis-palacio.vercel.app';
 
 const {
-  title = 'Alexis Palacio — AI Engineer & Lead Fullstack Developer',
-  description = 'Alexis Palacio — freelance full-stack developer & AI engineer in Medellín, Colombia. Available for remote work, full-time or by project: Next.js, React, TypeScript, NestJS and AI orchestration. Hire me to ship real products.',
+  title = 'Alexis Palacio — AI Engineer & Harness Engineer',
+  description = 'Alexis Palacio — AI Engineer in Medellín, Colombia. I set AI up so it actually works: the right tools, the right context, and a way for it to check its own work — so it ships reliable results you can trust, not lucky guesses. Full-stack underneath (Next.js, React, TypeScript, NestJS). Available for remote work.',
   ogImage = '/og-image.png',
   canonical = `${SITE}/`,
 } = Astro.props;
@@ -40,7 +40,8 @@ const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${SITE}${ogImage
 
 const keywords = [
   // identity + role
-  'Alexis Palacio', 'AI Engineer', 'Lead Fullstack Developer', 'Full-Stack Developer',
+  'Alexis Palacio', 'AI Engineer', 'Harness Engineer', 'Harness Engineering',
+  'AI agents', 'reliable AI', 'Lead Fullstack Developer', 'Full-Stack Developer',
   // recruiter searches (EN)
   'freelance full-stack developer', 'remote full-stack developer', 'hire full-stack developer',
   'freelance developer', 'remote developer', 'full-stack engineer for hire',
@@ -64,16 +65,17 @@ const structuredData = {
       alternateName: 'AlexisPalacioDev',
       url: `${SITE}/`,
       image: ogImageAbsolute,
-      jobTitle: 'AI Engineer & Lead Fullstack Developer',
-      description: 'AI orchestration, agents, automation and full-stack development.',
+      jobTitle: 'AI Engineer & Harness Engineer',
+      description: 'I make AI reliable — the right tools, context and self-checks — and build full-stack web products end to end.',
       // TODO: reemplazar por email profesional (ej: alexis@midominio.com)
       email: 'mailto:alexis26-93@live.com',
       telephone: '+573206088114',
       address: { '@type': 'PostalAddress', addressLocality: 'Medellín', addressCountry: 'CO' },
       worksFor: { '@type': 'Organization', name: 'anai', url: 'https://anaiapp.ai' },
       knowsAbout: [
-        'AI orchestration', 'LLM agents', 'Automation', 'Next.js', 'React',
-        'React Native', 'TypeScript', 'NestJS', 'Full-stack development',
+        'Harness Engineering', 'AI agents', 'AI orchestration', 'LLM evaluation',
+        'Automation', 'Next.js', 'React', 'React Native', 'TypeScript', 'NestJS',
+        'Full-stack development',
       ],
       sameAs: [
         'https://github.com/AlexisPalacioDev',
@@ -136,7 +138,7 @@ const navItems = [
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Alexis Palacio — AI Engineer & Lead Fullstack Developer" />
+    <meta property="og:image:alt" content="Alexis Palacio — AI Engineer & Harness Engineer" />
     <meta property="og:site_name" content="Alexis Palacio" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="es_ES" />
@@ -146,7 +148,7 @@ const navItems = [
     <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImageAbsolute} />
-    <meta name="twitter:image:alt" content="Alexis Palacio — AI Engineer & Lead Fullstack Developer" />
+    <meta name="twitter:image:alt" content="Alexis Palacio — AI Engineer & Harness Engineer" />
     <meta name="twitter:creator" content="@AlexisPalacioDev" />
 
     <!-- Favicon -->

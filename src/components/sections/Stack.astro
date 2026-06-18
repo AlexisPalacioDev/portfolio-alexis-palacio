@@ -3,8 +3,9 @@ import { t } from '../../lib/i18n/store';
 import Eyebrow from '../ui/Eyebrow.astro';
 
 const aiChips = [
-  'OpenAI', 'Anthropic', 'Ollama', 'OpenRouter',
-  'LangChain', 'MCP', 'RAG', 'Structured Output', 'LLM Fine-tuning',
+  'Claude Code', 'MCP', 'Subagents', 'Evals & Verification',
+  'RAG', 'Structured Output', 'OpenAI', 'Anthropic', 'OpenRouter',
+  'Ollama', 'LangChain',
 ];
 
 const backendSkills = [
@@ -29,9 +30,9 @@ const infraSkills = [
 >
   <div style="max-width: 1280px; margin: 0 auto;">
 
-    <!-- Eyebrow 02 -->
+    <!-- Eyebrow 03 -->
     <div class="rev" style="margin-bottom: 22px;">
-      <Eyebrow index="02" data-i18n="skills_label">{t('en', 'skills_label')}</Eyebrow>
+      <Eyebrow index="03" data-i18n="skills_label">{t('en', 'skills_label')}</Eyebrow>
     </div>
 
     <h2
@@ -89,9 +90,10 @@ const infraSkills = [
             // <span data-i18n="skills_loop">{t('en', 'skills_loop')}</span>
           </div>
           user → agent<br />
-          &nbsp;&nbsp;↳ tool · plan<br />
-          &nbsp;&nbsp;↳ loop · verify<br />
-          <span class="text-ink">→ outcome ✓</span>
+          &nbsp;&nbsp;↳ context · tools<br />
+          &nbsp;&nbsp;↳ act · verify<br />
+          &nbsp;&nbsp;↳ iterate ↻<br />
+          <span class="text-ink">→ shipped ✓</span>
         </div>
       </div>
 

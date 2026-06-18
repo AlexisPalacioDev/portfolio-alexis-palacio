@@ -24,11 +24,11 @@ export const I18N = {
     nav_contact: 'Contact',
 
     // ── Hero ─────────────────────────────────────────────────────────────
-    hero_status: 'FULL-STACK · AI ENGINEER · REMOTE · FREELANCE',
+    hero_status: 'AI ENGINEER · HARNESS ENGINEERING · REMOTE',
     hero_h1: 'Hi, I’m Alexis.',
-    hero_h1_accent: 'I lead products from idea to production.',
+    hero_h1_accent: 'I make AI you can actually trust.',
     hero_sub:
-      'Lead full-stack developer specializing in AI. I architect and ship web platforms end to end — from the Next.js frontend to the AI orchestration underneath — and I explain the hard parts without the jargon.',
+      'I’m an AI engineer. The real skill isn’t writing prompts — it’s setting AI up so it does the job right instead of guessing. I give it the right tools, the right context, and a way to check its own work, so what comes out is something you can ship with confidence. Full-stack underneath: Next.js, Node, Python.',
     hero_cta_hire: 'Hire me',
     hero_cta_cv: 'Download CV',
     hero_scroll: 'Scroll',
@@ -38,23 +38,43 @@ export const I18N = {
     about_label: 'ABOUT',
     about_h2: 'Here’s how I work.',
     about_p1:
-      'I’m Alexis, a lead full-stack developer with 5+ years building web products from start to finish. What I’m best at is taking a messy, half-defined problem and owning it end to end — scoping it, building it, and shipping it to production.',
+      'I’m Alexis, an AI engineer with 5+ years shipping web products from start to finish. What I’m best at is taking a messy, half-defined problem and owning it end to end — scoping it, building it, and getting it to production.',
     about_p2:
-      'These last couple of years I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). A new tool or language shows up? I pick it up fast — honestly, that’s the part I enjoy most.',
+      'These last couple of years I went all-in on AI — but not the “throw a prompt and hope” kind. I treat an AI agent like a new teammate: I’m clear about what it should do, what to leave alone, and how it checks its own work before it gets to me. That’s why what I hand over is dependable, not a gamble.',
     about_p3:
-      'Right now I lead the frontend at anai, an AI content-generation SaaS. I work remotely and care about the person on the other side of the screen as much as the code. I ship fast, I sweat the details, and I keep teams moving.',
+      'Right now I lead the frontend at anai, an AI content-generation SaaS. I work remotely, ship fast, sweat the details, and care about the person on the other side of the screen as much as the code.',
     stat_years: 'Years shipping to production',
     stat_projects: 'Products in production',
     stat_tech: 'Units monitored at iMometrics',
+
+    // ── Harness method ─────────────────────────────────────────────────────
+    harness_label: 'THE METHOD',
+    harness_h2: 'How I make AI reliable.',
+    harness_sub:
+      'Prompting alone is a coin flip. What makes AI dependable is how you set it up — four things, and none of them is writing code.',
+    harness_p1_title: 'Fewer tools, better results',
+    harness_p1_desc:
+      'I give it only what the task needs — fewer tools, fewer ways to mess up. Sometimes leaving an agent with a single tool is what takes it from “usually works” to “always works.”',
+    harness_p2_title: 'Context, like a new hire',
+    harness_p2_desc:
+      'I explain it like I would to someone new on the team: what to do, where to look, what to leave alone. No guessing, no making up its own path.',
+    harness_p3_title: 'It checks its own work',
+    harness_p3_desc:
+      'Before anything reaches me, it runs the tests, reads the logs, tries the endpoints — and fixes itself until everything passes.',
+    harness_p4_title: 'Step by step, not all at once',
+    harness_p4_desc:
+      'No “just build the whole thing.” I break it into steps and check each one — not at the end, after it has touched a hundred files.',
+    harness_close:
+      'So I’m the one steering, not the one cleaning up after the AI.',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
     skills_label: 'THE STACK',
     skills_h2: 'The tools I work with.',
     skills_sub:
-      'I know my own tools well, and I pick up whatever a project needs — fast.',
-    skills_ai_title: 'AI Agents & Automation',
+      'I know my tools well, and I pick up whatever a project needs — fast.',
+    skills_ai_title: 'Reliable AI agents',
     skills_ai_desc:
-      'I build AI that holds up in production — agents and pipelines that real users depend on every day.',
+      'I build agents that hold up in production — set up with the right tools, context and a way to check themselves — so real people can depend on them every day.',
     skills_core: 'Core focus',
     skills_loop: 'A typical agent loop',
     cat_backend: 'Backend',
@@ -75,15 +95,15 @@ export const I18N = {
     services_h2: 'How I can help.',
     services_sub:
       'I’m available for remote work, full-time or by project. Tell me what you need and we’ll figure out how to make it happen.',
-    svc1_title: 'AI Agents & Automation',
+    svc1_title: 'AI agents you can rely on',
     svc1_desc:
-      'Bots and automations that handle the boring, repetitive work for you — on WhatsApp, Telegram, or wherever your people already are.',
-    svc2_title: 'Full-Stack Development',
+      'Agents and automations set up properly — the right tools, the right context, and real checks — so they’re solid enough to put in front of real users.',
+    svc2_title: 'Make your AI dependable',
     svc2_desc:
-      'Web apps from start to finish: quick to launch, solid underneath, and built to scale as your users grow.',
-    svc3_title: 'AI Strategy & Consulting',
+      'Your AI works sometimes and you don’t know why? I set it up the right way — tools, context, tests and checks at every step — so it goes from “sometimes” to something your team can count on.',
+    svc3_title: 'Full-stack AI products',
     svc3_desc:
-      'Not sure where AI fits in your business? I’ll help you tell the useful part from the hype and ship what actually helps.',
+      'Web apps end to end with AI built in properly — quick to launch, solid underneath, and made so the AI parts don’t fall apart as you grow.',
     svc_cta: 'Start a project',
 
     // ── Testimonials ──────────────────────────────────────────────────────
@@ -122,11 +142,11 @@ export const I18N = {
     nav_contact: 'Contacto',
 
     // ── Hero ─────────────────────────────────────────────────────────────
-    hero_status: 'FULL-STACK · INGENIERO IA · REMOTO · FREELANCE',
+    hero_status: 'AI ENGINEER · HARNESS ENGINEERING · REMOTO',
     hero_h1: 'Hola, soy Alexis.',
-    hero_h1_accent: 'Llevo productos de la idea a producción.',
+    hero_h1_accent: 'Hago que la IA sea confiable de verdad.',
     hero_sub:
-      'Lead full-stack developer especializado en IA. Diseño y construyo plataformas web de punta a punta — del frontend en Next.js a la orquestación de IA que va por debajo — y explico lo complejo sin tecnicismos.',
+      'Soy AI engineer. Lo que de verdad importa no es escribir prompts — es preparar bien la IA para que haga el trabajo como toca, sin adivinar. Le doy las herramientas y el contexto que necesita, y una forma de revisar su propio trabajo, para que lo que entrega sea algo que puedas usar con confianza. Full-stack por debajo: Next.js, Node, Python.',
     hero_cta_hire: 'Contrátame',
     hero_cta_cv: 'Descargar CV',
     hero_scroll: 'Baja',
@@ -136,23 +156,43 @@ export const I18N = {
     about_label: 'SOBRE MÍ',
     about_h2: 'Te cuento cómo trabajo.',
     about_p1:
-      'Soy Alexis, lead full-stack developer. Llevo 5+ años construyendo productos web de principio a fin. En lo que mejor me muevo es en tomar un problema desordenado y a medio definir, apropiármelo de punta a punta — definirlo, construirlo y llevarlo a producción.',
+      'Soy Alexis, AI engineer con 5+ años entregando productos web de principio a fin. En lo que mejor me muevo es en tomar un problema desordenado y a medio definir, apropiármelo de punta a punta — definirlo, construirlo y llevarlo a producción.',
     about_p2:
-      'Estos últimos años me metí de lleno en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). ¿Aparece una herramienta o un lenguaje nuevo? Lo aprendo rápido — y la verdad, esa es la parte que más disfruto.',
+      'Estos últimos años me metí de lleno en la IA — pero no del tipo “tiro un prompt y a ver qué sale”. Trato a un agente de IA como a alguien nuevo en el equipo: le dejo claro qué hacer, qué no tocar y cómo revisar su propio trabajo antes de que llegue a mí. Por eso lo que entrego es confiable, no una lotería.',
     about_p3:
-      'Hoy lidero el frontend en anai, un SaaS de generación de contenido con IA. Trabajo remoto y me importa la persona del otro lado de la pantalla tanto como el código. Entrego rápido, cuido los detalles y mantengo al equipo avanzando.',
+      'Hoy lidero el frontend en anai, un SaaS de generación de contenido con IA. Trabajo remoto, entrego rápido, cuido los detalles y me importa la persona del otro lado de la pantalla tanto como el código.',
     stat_years: 'Años entregando a producción',
     stat_projects: 'Productos en producción',
     stat_tech: 'Unidades monitoreadas en iMometrics',
+
+    // ── Harness method ─────────────────────────────────────────────────────
+    harness_label: 'EL MÉTODO',
+    harness_h2: 'Cómo hago que la IA sea confiable.',
+    harness_sub:
+      'Solo con prompts es jugar a la suerte. Lo que hace confiable a la IA es cómo la preparas — cuatro cosas, y ninguna es escribir código.',
+    harness_p1_title: 'Menos herramientas, mejores resultados',
+    harness_p1_desc:
+      'Le doy solo lo que la tarea necesita — menos herramientas, menos formas de equivocarse. A veces dejarle una sola herramienta es lo que lo lleva de “casi siempre funciona” a “siempre funciona”.',
+    harness_p2_title: 'Contexto, como a alguien nuevo',
+    harness_p2_desc:
+      'Se lo explico como a alguien que recién entra al equipo: qué hacer, dónde mirar, qué no tocar. Sin adivinar ni inventarse el camino.',
+    harness_p3_title: 'Revisa su propio trabajo',
+    harness_p3_desc:
+      'Antes de que algo llegue a mí, corre las pruebas, lee los logs, prueba los endpoints — y se corrige solo hasta que todo pasa.',
+    harness_p4_title: 'Paso a paso, no todo de una',
+    harness_p4_desc:
+      'Nada de “hazme todo de una”. Lo divido en pasos y reviso cada uno — no al final, cuando ya tocó cien archivos.',
+    harness_close:
+      'Así soy yo el que va al mando, no el que limpia lo que la IA dejó roto.',
 
     // ── Stack (Skills) ────────────────────────────────────────────────────
     skills_label: 'EL STACK',
     skills_h2: 'Con esto trabajo.',
     skills_sub:
       'Conozco bien mis herramientas y aprendo rápido lo que el proyecto pida.',
-    skills_ai_title: 'Agentes de IA y Automatización',
+    skills_ai_title: 'Agentes de IA confiables',
     skills_ai_desc:
-      'Construyo IA que aguanta en producción — agentes y pipelines de los que usuarios reales dependen a diario.',
+      'Construyo agentes que aguantan en producción — con las herramientas y el contexto correctos y una forma de revisarse a sí mismos — para que la gente pueda depender de ellos todos los días.',
     skills_core: 'Foco principal',
     skills_loop: 'Un loop de agente típico',
     cat_backend: 'Backend',
@@ -173,15 +213,15 @@ export const I18N = {
     services_h2: 'En qué te puedo ayudar.',
     services_sub:
       'Estoy disponible para trabajar remoto, full-time o por proyecto. Cuéntame qué necesitas y vemos cómo lo resolvemos.',
-    svc1_title: 'Agentes de IA y Automatización',
+    svc1_title: 'Agentes de IA en los que puedes confiar',
     svc1_desc:
-      'Bots y automatizaciones que hacen por ti el trabajo aburrido y repetitivo — en WhatsApp, Telegram o donde ya tengas a tu gente.',
-    svc2_title: 'Desarrollo Full-Stack',
+      'Agentes y automatizaciones bien armados — las herramientas justas, el contexto correcto y verificaciones de verdad — sólidos para ponerlos frente a usuarios reales.',
+    svc2_title: 'Que tu IA sea confiable',
     svc2_desc:
-      'Apps web de principio a fin: rápidas de lanzar, sólidas por debajo y construidas para escalar a medida que crecen tus usuarios.',
-    svc3_title: 'Estrategia y Consultoría IA',
+      '¿Tu IA funciona a veces y no sabes por qué? La preparo como toca — herramientas, contexto, pruebas y revisión en cada paso — para que pase de “a veces” a algo con lo que tu equipo pueda contar.',
+    svc3_title: 'Productos full-stack con IA',
     svc3_desc:
-      '¿No sabes por dónde meterle IA a tu negocio? Te ayudo a separar lo útil del humo y lanzar lo que de verdad suma.',
+      'Apps web de punta a punta con IA bien integrada — rápidas de lanzar, sólidas por debajo y hechas para que la parte de IA no se caiga a medida que creces.',
     svc_cta: 'Empezar un proyecto',
 
     // ── Testimonials ──────────────────────────────────────────────────────
