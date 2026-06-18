@@ -155,14 +155,22 @@ const navItems = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!--
-      No-FOUC: read persisted lang from localStorage before first paint
-      and set html[lang] + data-lang so apply.ts can swap on load.
+      No-FOUC + first-visit language detection, before first paint:
+        1. If the visitor already has a saved choice ('lang'), honor it.
+        2. Otherwise (first visit) follow the browser's language — Spanish
+           browsers get ES, everyone else EN — and persist it so $lang and
+           the toggle agree. A manual toggle later overrides this for good.
       $lang (persistentAtom) uses the key 'lang' — must match here.
     -->
     <script is:inline>
       (function () {
         try {
           var lang = localStorage.getItem('lang');
+          if (lang !== 'en' && lang !== 'es') {
+            var nav = (navigator.language || '').toLowerCase();
+            lang = nav.indexOf('es') === 0 ? 'es' : 'en';
+            localStorage.setItem('lang', lang);
+          }
           if (lang === 'es') {
             document.documentElement.lang = 'es';
             document.documentElement.setAttribute('data-lang', 'es');
