@@ -40,7 +40,7 @@ export const I18N = {
     about_p1:
       'I’m Alexis, a full-stack developer with 5+ years building web products from start to finish. What I’m best at is taking a messy, half-defined problem, using good judgment to shape it, and owning it end to end — scoping it, building it, and shipping it to production.',
     about_p2:
-      'These last couple of years I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). A new tool or language shows up? I pick it up fast — honestly, that’s the part I enjoy most.',
+      'These last couple of years I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). And I’m always up for learning whatever tech a project needs — honestly, that’s the part I enjoy most.',
     about_p3:
       'Right now I lead development at anai, an AI content-generation product. I care about my team as much as the person on the other side of the screen: I keep the team unblocked, communicate clearly, and sweat the details so the work actually lands.',
     stat_years: 'Years shipping to production',
@@ -158,7 +158,7 @@ export const I18N = {
     about_p1:
       'Soy Alexis, full-stack developer con 5+ años construyendo productos web de principio a fin. En lo que mejor me muevo es en tomar un problema desordenado y a medio definir, usar buen criterio para darle forma, y apropiármelo de punta a punta — definirlo, construirlo y llevarlo a producción.',
     about_p2:
-      'Estos últimos años me metí a fondo en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). ¿Aparece una herramienta o lenguaje nuevo? Lo agarro rápido — la verdad, esa es la parte que más disfruto.',
+      'Estos últimos años me metí a fondo en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). Y estoy abierto a aprender cualquier tecnología que el proyecto necesite — la verdad, esa es la parte que más disfruto.',
     about_p3:
       'Hoy lidero el desarrollo en anai, un producto de generación de contenido con IA. Me importa tanto mi equipo como la persona del otro lado de la pantalla: mantengo al equipo sin bloqueos, comunico con claridad y cuido los detalles para que el trabajo de verdad aterrice.',
     stat_years: 'Años entregando a producción',
