@@ -4,6 +4,7 @@ import type { WorkItem } from '../../src/lib/data/work';
 
 const EXPECTED_IDS = [
   'anai',
+  'extraction-survivors',
   'imometrics',
   'sticker-drops',
   'apptreeking',
@@ -26,8 +27,8 @@ const VALID_STATUS_KEYS = Object.values(WORK_STATUS);
 const HEX_RE = /^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$/;
 
 describe('work[] data model', () => {
-  it('has exactly 7 items', () => {
-    expect(work.length).toBe(7);
+  it('has exactly 8 items', () => {
+    expect(work.length).toBe(8);
   });
 
   it('has items in expected order (most-recent first)', () => {
