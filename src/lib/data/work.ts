@@ -119,18 +119,18 @@ export const work: readonly WorkItem[] = [
     status: { en: 'Live', es: 'En vivo' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'A 2D browser multiplayer extraction-looter with Vampire-Survivors-style hordes — up to 4 players over WebRTC. Built from scratch: a hand-written ECS and fixed-timestep simulation, PixiJS (WebGL) rendering, and procedural pixel creatures (a descendant of this portfolio’s Bug Hunt fly).',
-      es: 'Looter-extraction multijugador 2D en el browser con hordas estilo Vampire Survivors — hasta 4 jugadores por WebRTC. Hecho desde cero: ECS y simulación de timestep fijo escritos a mano, render con PixiJS (WebGL) y criaturas pixel procedurales (descendientes de la mosca del Bug Hunt de este portafolio).',
+      en: 'A 2D browser multiplayer extraction-looter with Vampire-Survivors-style hordes — up to 4 players over WebRTC. Built from scratch with no game engine: a custom ECS and fixed-timestep simulation, PixiJS (WebGL) only for rendering, and procedural pixel creatures (a descendant of this portfolio’s Bug Hunt fly).',
+      es: 'Looter-extraction multijugador 2D en el browser con hordas estilo Vampire Survivors — hasta 4 jugadores por WebRTC. Hecho desde cero, sin motor de juego: ECS y simulación de timestep fijo propios, PixiJS (WebGL) solo para el render, y criaturas pixel procedurales (descendientes de la mosca del Bug Hunt de este portafolio).',
     },
     bullets: {
       en: [
-        'Hand-wrote the simulation core — fixed-timestep loop, ECS, spatial-grid collisions — framework-free so it runs identically on host and clients',
+        'Designed the simulation core from scratch with no game engine — fixed-timestep loop, ECS, spatial-grid collisions — so it runs identically on host and clients',
         'Built host-client netcode over WebRTC DataChannels (+ a signaling server) with snapshot streaming and interpolation for up to 4 players',
         'Rendered hundreds of enemies on the GPU with PixiJS by rasterizing procedural pixel creatures to cached textures',
         'Shipped a full loop: Vampire-Survivors auto-combat, ground loot, hold-to-extract zones, death-drops and between-run meta-progression',
       ],
       es: [
-        'Escribí a mano el core de simulación — loop de timestep fijo, ECS, colisiones por grilla espacial — libre de frameworks para que corra igual en host y clientes',
+        'Diseñé el core de simulación desde cero, sin motor de juego — loop de timestep fijo, ECS, colisiones por grilla espacial — para que corra igual en host y clientes',
         'Construí el netcode host-cliente sobre WebRTC DataChannels (+ servidor de signaling) con streaming de snapshots e interpolación para hasta 4 jugadores',
         'Rendericé cientos de enemigos en la GPU con PixiJS rasterizando criaturas pixel procedurales a texturas cacheadas',
         'Entregué el loop completo: auto-combate estilo Vampire Survivors, loot, zonas de extracción (mantener para extraer), drop al morir y meta-progresión entre partidas',
