@@ -226,6 +226,20 @@ const activeItem = work[ACTIVE];
                 <div
                   style={`position: absolute; left: 0; bottom: 0; width: 100%; height: 4px; background: ${item.accent};`}
                 ></div>
+                <!-- Hover-reveal "Open" banner — opens the live project from the card -->
+                {item.links.link && (
+                  <a
+                    class="work-card-open"
+                    href={item.links.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    tabindex={isVisible ? '0' : '-1'}
+                    aria-label={`Open ${item.name}`}
+                  >
+                    <span data-i18n="projects_view">{t('en', 'projects_view')}</span>
+                    <span class="font-mono" aria-hidden="true">↗</span>
+                  </a>
+                )}
               </div>
             );
           })}

@@ -279,6 +279,35 @@ section > * {
   color: var(--color-bg);
 }
 
+/* ─── Hover-reveal "Open" banner on each deck card ───────────────────────── */
+/* Slides up from the bottom of a card on hover (clipped by the card's
+   overflow:hidden) so you can open a project's live link straight from the deck. */
+.work-card-open {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px;
+  background: var(--color-lime);
+  color: var(--color-bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  transform: translateY(101%);
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 2;
+}
+.work-card:hover .work-card-open,
+.work-card:focus-within .work-card-open {
+  transform: translateY(0);
+}
+
 /* ─── Marquee animation — tech band between Hero and About ──────────────── */
 /* The band uses two identical <span> children; the animation scrolls the
    outer flex container left by exactly 50% so the loop is seamless. */

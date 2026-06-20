@@ -207,7 +207,12 @@
 
   // ── Attach card click + hover-lift handlers ───────────────────────────────
   cards.forEach((card, i) => {
-    card.addEventListener('click', () => activate(i));
+    card.addEventListener('click', (e) => {
+      // The hover "Open" banner is a real link — let it navigate without also
+      // re-activating the deck.
+      if ((e.target as HTMLElement).closest('.work-card-open')) return;
+      activate(i);
+    });
     // Keyboard: Enter/Space should also activate
     card.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Enter' || e.key === ' ') {
