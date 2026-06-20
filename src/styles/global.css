@@ -279,33 +279,36 @@ section > * {
   color: var(--color-bg);
 }
 
-/* ─── Hover-reveal "Open" banner on each deck card ───────────────────────── */
-/* Slides up from the bottom of a card on hover (clipped by the card's
-   overflow:hidden) so you can open a project's live link straight from the deck. */
+/* ─── Hover-reveal "Open" tab on each deck card ──────────────────────────── */
+/* A little tab that drops out of the TOP-RIGHT corner on hover (clipped by the
+   card's overflow:hidden) — click it to open the project's live link. */
 .work-card-open {
   position: absolute;
-  left: 0;
+  top: 0;
   right: 0;
-  bottom: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 11px;
+  gap: 6px;
+  padding: 8px 13px;
   background: var(--color-lime);
   color: var(--color-bg);
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0.3px;
   text-decoration: none;
-  transform: translateY(101%);
-  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
-  z-index: 2;
+  box-shadow: -3px 3px 0 rgba(0, 0, 0, 0.35);
+  transform: translateY(-110%);
+  opacity: 0;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.22s ease;
+  pointer-events: none;
+  z-index: 3;
 }
 .work-card:hover .work-card-open,
 .work-card:focus-within .work-card-open {
   transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ─── Marquee animation — tech band between Hero and About ──────────────── */
