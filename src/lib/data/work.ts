@@ -64,6 +64,9 @@ import coverCarljung from '../../assets/cover-carljung.png';
 import coverBunny from '../../assets/preview-bunny.png';
 import coverTodo from '../../assets/preview-todo.png';
 import coverExtraction from '../../assets/preview-extraction-survivors.png';
+import coverPoisonflix from '../../assets/preview-poisonflix.png';
+import coverPoisonos from '../../assets/preview-poisonos.png';
+import coverHermes from '../../assets/preview-hermes.png';
 
 // ── Work array — most-recent first ───────────────────────────────────────────
 export const work: readonly WorkItem[] = [
@@ -75,7 +78,7 @@ export const work: readonly WorkItem[] = [
     accent: '#5B8DEF',
     cover: coverAnai,
     links: { link: 'https://anaiapp.ai', code: null },
-    period: { en: '2024 — Present', es: '2024 — Hoy' },
+    period: { en: '2026 — Present', es: '2026 — Hoy' },
     role: {
       en: 'Lead Fullstack Developer · Frontend',
       es: 'Líder de Desarrollo Fullstack · Frontend',
@@ -84,17 +87,17 @@ export const work: readonly WorkItem[] = [
     status: { en: 'Current', es: 'Actual' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'I lead the Next.js 16 / React 19 platform at anai (anaiapp.ai) — an AI SaaS that turns social content into viral short-form videos through AI scripting, voice synthesis and a browser-native video editor.',
-      es: 'Lidero la plataforma Next.js 16 / React 19 de anai (anaiapp.ai) — un SaaS de IA que convierte contenido social en videos cortos virales mediante scripting con IA, síntesis de voz y un editor de video nativo en el browser.',
+      en: 'I lead the Next.js 16 / React 19 platform at anai (anaiapp.ai) — an AI SaaS that turns social content into viral short-form videos through AI scripting, voice synthesis and a browser-native video editor. Leading a team of 5 developers.',
+      es: 'Lidero la plataforma Next.js 16 / React 19 de anai (anaiapp.ai) — un SaaS de IA que convierte contenido social en videos cortos virales mediante scripting con IA, síntesis de voz y un editor de video nativo en el browser. Lidero un equipo de 5 desarrolladores.',
     },
     bullets: {
       en: [
-        'Lead the Next.js 16 / React 19 frontend and the BFF architecture (Route Handlers → NestJS, Google OAuth, HttpOnly cookies)',
+        'Lead the Next.js 16 / React 19 frontend and the BFF architecture (Route Handlers → NestJS, Google OAuth, HttpOnly cookies) — managing 5 developers and coordinating sprint delivery',
         'Built a browser-native video editor with WebCodecs, WebGL and WASM subtitle rendering',
         'Integrated Claude, GPT, Gemini, Veo 3.1 and ElevenLabs into an AI-assisted creation studio',
       ],
       es: [
-        'Lidero el frontend Next.js 16 / React 19 y la arquitectura BFF (Route Handlers → NestJS, Google OAuth, cookies HttpOnly)',
+        'Lidero el frontend Next.js 16 / React 19 y la arquitectura BFF (Route Handlers → NestJS, Google OAuth, cookies HttpOnly) — gestionando 5 desarrolladores y coordinando la entrega de sprints',
         'Construí un editor de video nativo en el browser con WebCodecs, WebGL y renderizado de subtítulos por WASM',
         'Integré Claude, GPT, Gemini, Veo 3.1 y ElevenLabs en un estudio de creación asistido por IA',
       ],
@@ -147,7 +150,7 @@ export const work: readonly WorkItem[] = [
     accent: '#8B7CF6',
     cover: coverImometrics,
     links: { link: 'https://www.imometrics.com', code: null },
-    period: { en: '2023 — 2024', es: '2023 — 2024' },
+    period: { en: '2024 — 2026', es: '2024 — 2026' },
     role: {
       en: 'Backend Developer',
       es: 'Desarrollador Backend',
@@ -156,24 +159,24 @@ export const work: readonly WorkItem[] = [
     status: { en: 'Live', es: 'En vivo' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'Backend architecture and APIs for iMometrics, a cold-chain monitoring platform that turns sensor data from refrigeration fleets into real-time metrics and dashboards across 1 to 1,000+ units.',
-      es: 'Arquitectura backend y APIs para iMometrics, una plataforma de monitoreo de cadena de frío que convierte datos de sensores de equipos de refrigeración en métricas y dashboards en tiempo real, de 1 a 1.000+ equipos.',
+      en: 'Backend architecture and real-time alerting system for iMometrics, a cold-chain monitoring platform that processes sensor data from refrigeration fleets of 1 to 1,000+ units — delivering real-time metrics, dashboards and audible alerts.',
+      es: 'Arquitectura backend y sistema de alertamiento en tiempo real para iMometrics, plataforma de monitoreo de cadena de frío que procesa datos de sensores de flotas de refrigeración de 1 a 1,000+ equipos — entregando métricas, dashboards y alertas sonoras en tiempo real.',
     },
     bullets: {
       en: [
-        'Designed and built RESTful APIs with Node.js / PHP serving hundreds of concurrent clients',
-        'Implemented data ingestion pipelines and aggregation logic for real-time dashboards',
-        'Optimized database queries reducing average response time by 60%',
-        'Delivered comprehensive API documentation and integration guides for enterprise partners',
+        'Built a real-time audio alerting system ("sound alarm") that notifies users when temperature measurements deviate from parameters — eliminating the need for constant dashboard monitoring and reducing response time on critical refrigeration assets',
+        'Designed a device control panel for diagnosing sensors that stop reporting data, enabling companies to trace failure root causes, view historical logs and generate automatic support tickets — improving incident traceability across 1,000+ device fleets',
+        'Optimized SQL queries and implemented Redis caching, reducing average API response time by 60%',
+        'Built data ingestion pipelines and aggregation logic processing sensor temperature readings at scale',
       ],
       es: [
-        'Diseñé y construí APIs RESTful con Node.js / PHP sirviendo cientos de clientes concurrentes',
-        'Implementé pipelines de ingesta de datos y lógica de agregación para dashboards en tiempo real',
-        'Optimicé consultas de base de datos reduciendo el tiempo de respuesta promedio en un 60%',
-        'Entregué documentación de API completa y guías de integración para partners enterprise',
+        'Construí un sistema de alertamiento sonoro en tiempo real que notifica a los usuarios cuando las mediciones de temperatura se salen de los parámetros — eliminando la necesidad de monitoreo constante del dashboard y reduciendo el tiempo de respuesta en equipos críticos de refrigeración',
+        'Diseñé un panel de control de equipos para diagnosticar sensores que dejan de reportar datos, permitiendo a las empresas rastrear causas raíz de fallos, ver históricos y generar tickets de soporte automáticos — mejorando la trazabilidad de incidencias en flotas de 1,000+ equipos',
+        'Optimicé consultas SQL e implementé caché con Redis, reduciendo el tiempo de respuesta promedio de las APIs en un 60%',
+        'Construí pipelines de ingesta de datos y lógica de agregación procesando lecturas de sensores de temperatura a escala',
       ],
     },
-    tags: ['Node.js', 'PHP', 'MySQL', 'Redis', 'AWS'],
+    tags: ['PHP', 'CakePHP', 'MySQL', 'Redis', 'Docker', 'AWS'],
   },
 
   // 2 — Sticker Drops
@@ -253,34 +256,34 @@ export const work: readonly WorkItem[] = [
     name: 'Carl Jung AI',
     accent: '#C6F24E',
     cover: coverCarljung,
-    links: { link: null, code: null },
+    links: { link: 'https://carljung.app', code: null },
     period: { en: '2023', es: '2023' },
     role: {
-      en: 'AI Engineer & Developer',
-      es: 'Ingeniero IA & Desarrollador',
+      en: 'AI Engineer & Full-Stack Developer',
+      es: 'Ingeniero IA & Desarrollador Full-Stack',
     },
-    kind: { en: 'AI Persona / Chatbot', es: 'Persona IA / Chatbot' },
+    kind: { en: 'Educational Platform with AI', es: 'Plataforma Educativa con IA' },
     status: { en: 'Archived', es: 'Archivado' },
     statusKey: WORK_STATUS.ARCHIVED,
     desc: {
-      en: 'An AI-powered persona chatbot channeling the personality, writings and philosophy of Carl Jung — built with fine-tuned prompting, RAG over primary texts and a character-consistent response pipeline.',
-      es: 'Chatbot con personalidad IA que encarna a Carl Jung — construido con prompting afinado, RAG sobre textos primarios y un pipeline de respuestas con coherencia de personaje.',
+      en: 'An AI-powered educational platform with 10,000+ registered users that generates formative content based on Carl Jung\'s archetypes. Built from scratch with Next.js/React frontend, Supabase backend and real Stripe/PayPal payment processing.',
+      es: 'Plataforma educativa con IA con 10,000+ usuarios registrados que genera contenido formativo basado en los arquetipos de Carl Jung. Construida desde cero con frontend Next.js/React, backend Supabase y procesamiento de pagos reales con Stripe y PayPal.',
     },
     bullets: {
       en: [
-        'Built RAG pipeline ingesting primary Jungian texts (archetypes, collective unconscious, shadow work)',
-        'Designed character-consistent prompting with guardrails to maintain philosophical accuracy',
-        'Implemented conversation memory and context window management for long sessions',
-        'Deployed conversational interface accessible via web with session persistence',
+        'Architected and built the full Next.js/React frontend with server-side rendering, auth flows and responsive design serving 10,000+ users',
+        'Implemented real payment processing with Stripe and PayPal — integrated webhooks, subscription management and payment lifecycle handling',
+        'Built an AI content generation pipeline using ChatGPT API with structured prompting and RAG over primary Jungian texts for philosophical accuracy',
+        'Designed Supabase database schema, Row Level Security policies and real-time features for user content delivery',
       ],
       es: [
-        'Construí pipeline RAG ingiriendo textos jungianos primarios (arquetipos, inconsciente colectivo, trabajo con la sombra)',
-        'Diseñé prompting coherente con el personaje y guardrails para mantener precisión filosófica',
-        'Implementé memoria de conversación y gestión de ventana de contexto para sesiones largas',
-        'Desplegué interfaz conversacional accesible vía web con persistencia de sesión',
+        'Arquitecté y construí el frontend completo en Next.js/React con renderizado server-side, flujos de autenticación y diseño responsivo sirviendo a 10,000+ usuarios',
+        'Implementé procesamiento de pagos reales con Stripe y PayPal — integré webhooks, gestión de suscripciones y manejo del ciclo de vida de pagos',
+        'Construí un pipeline de generación de contenido con IA usando ChatGPT API con prompting estructurado y RAG sobre textos jungianos primarios para precisión filosófica',
+        'Diseñé el esquema de base de datos en Supabase, políticas de seguridad Row Level Security y funcionalidades en tiempo real para entrega de contenido',
       ],
     },
-    tags: ['OpenAI', 'RAG', 'LangChain', 'Python', 'pgvector'],
+    tags: ['Next.js', 'React', 'Supabase', 'Stripe', 'PayPal', 'ChatGPT API', 'RAG'],
   },
 
   // 5 — BunnyGymWear
@@ -355,5 +358,116 @@ export const work: readonly WorkItem[] = [
       ],
     },
     tags: ['n8n', 'OpenAI', 'Notion API', 'Slack', 'Node.js'],
+  },
+
+  // 7 — PoisonFlix
+  {
+    id: 'poisonflix',
+    company: 'Personal Project',
+    name: 'PoisonFlix',
+    accent: '#E50914',
+    cover: coverPoisonflix,
+    links: { link: null, code: 'https://github.com/AlexisPalacioDev/poisonflix-web' },
+    period: { en: '2025', es: '2025' },
+    role: {
+      en: 'Full-Stack Developer & DevOps',
+      es: 'Desarrollador Full-Stack & DevOps',
+    },
+    kind: { en: 'Netflix-like Streaming PWA', es: 'PWA Streaming tipo Netflix' },
+    status: { en: 'Live', es: 'En vivo' },
+    statusKey: WORK_STATUS.LIVE,
+    desc: {
+      en: 'A Netflix-like streaming PWA built on top of Jellyfin, transforming a media server into a polished streaming experience with a modern interface, search, organized catalog, automated content fetching and cross-platform playback.',
+      es: 'PWA de streaming tipo Netflix construida sobre Jellyfin, transformando un servidor de medios en una experiencia de streaming completa con interfaz moderna, búsqueda, catálogo organizado, automatización de contenido y reproducción multiplataforma.',
+    },
+    bullets: {
+      en: [
+        'Built a full-featured PWA from scratch — same-origin architecture, responsive design and offline capabilities via service workers',
+        'Integrated Jellyfin API for media catalog, search, playback and user management across devices',
+        'Automated content pipeline with Sonarr/Radarr integration — new media is fetched, organized and available for streaming without manual intervention',
+        'Containerized the full stack (Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent) with Docker Compose for one-command deployment',
+      ],
+      es: [
+        'Construí una PWA completa desde cero — arquitectura same-origin, diseño responsivo y capacidades offline via service workers',
+        'Integré la API de Jellyfin para catálogo de medios, búsqueda, reproducción y gestión de usuarios multi-dispositivo',
+        'Automaticé el pipeline de contenido con integración de Sonarr/Radarr — el contenido nuevo se descarga, organiza y está disponible para streaming sin intervención manual',
+        'Contenericé el stack completo (Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent) con Docker Compose para despliegue con un solo comando',
+      ],
+    },
+    tags: ['TypeScript', 'PWA', 'Jellyfin API', 'Docker', 'Sonarr/Radarr', 'Linux'],
+  },
+
+  // 8 — PoisonOS
+  {
+    id: 'poisonos',
+    company: 'Personal Project',
+    name: 'PoisonOS',
+    accent: '#00D4AA',
+    cover: coverPoisonos,
+    links: { link: null, code: 'https://github.com/AlexisPalacioDev/hy300-poisonos' },
+    period: { en: '2025', es: '2025' },
+    role: {
+      en: 'Android Developer & Systems Engineer',
+      es: 'Desarrollador Android & Ingeniero de Sistemas',
+    },
+    kind: { en: 'Custom Android Launcher for Projector', es: 'Launcher Android Custom para Proyector' },
+    status: { en: 'Live', es: 'En vivo' },
+    statusKey: WORK_STATUS.LIVE,
+    desc: {
+      en: 'A custom minimalist Android launcher (PoisonOS) + tooling for the HY300 Ultra projector — replacing the factory software with a clean, optimized interface, without requiring root access.',
+      es: 'Launcher Android minimalista custom (PoisonOS) + tooling para el proyector HY300 Ultra — reemplazando el software de fábrica con una interfaz limpia y optimizada, sin necesidad de root.',
+    },
+    bullets: {
+      en: [
+        'Designed and built a custom Android launcher from scratch — minimal UI, fast navigation, optimized for projector remote input',
+        'Developed tooling for no-root deployment via ADB — sideloading, permissions management and automated updates',
+        'Overcame factory software limitations (bloated UI, slow navigation, no customization) delivering a clean media-centric experience',
+        'Created comprehensive documentation and installation scripts for the open-source community',
+      ],
+      es: [
+        'Diseñé y construí un launcher Android custom desde cero — UI minimalista, navegación rápida, optimizado para entrada por control remoto del proyector',
+        'Desarrollé tooling para despliegue sin root via ADB — sideloading, gestión de permisos y actualizaciones automáticas',
+        'Superé las limitaciones del software de fábrica (UI pesada, navegación lenta, sin personalización) entregando una experiencia limpia centrada en medios',
+        'Creé documentación completa y scripts de instalación para la comunidad open-source',
+      ],
+    },
+    tags: ['Android', 'Kotlin', 'ADB', 'Launcher Custom', 'Open Source', 'Linux'],
+  },
+
+  // 9 — Mendez AI Server
+  {
+    id: 'mendez-ai',
+    company: 'Personal Project',
+    name: 'Mendez AI Server',
+    accent: '#8B5CF6',
+    cover: coverHermes,
+    links: { link: null, code: null },
+    period: { en: '2025 — Present', es: '2025 — Presente' },
+    role: {
+      en: 'AI Engineer & Systems Architect',
+      es: 'Ingeniero IA & Arquitecto de Sistemas',
+    },
+    kind: { en: 'Autonomous AI Agent Server', es: 'Servidor Autónomo de Agentes IA' },
+    status: { en: 'Live', es: 'En vivo' },
+    statusKey: WORK_STATUS.LIVE,
+    desc: {
+      en: 'An autonomous AI agent server (Hermes Agent) deployed on bare-metal Linux that executes code, browses the web, manipulates files and orchestrates complex workflows via Telegram — with speech-to-text voice interface and multi-provider AI integration.',
+      es: 'Servidor autónomo de agentes de IA (Hermes Agent) desplegado en bare-metal Linux que ejecuta código, navega la web, manipula archivos y orquesta flujos de trabajo complejos vía Telegram — con interfaz de voz speech-to-text e integración multi-provider de IA.',
+    },
+    bullets: {
+      en: [
+        'Architected and deployed a full-agent infrastructure on bare-metal Linux — multiple AI providers (OpenRouter, Anthropic), tool-calling execution environment and Telegram gateway',
+        'Built a voice interface pipeline — speech-to-text transcription, AI processing and text-to-speech response in Latin American Spanish',
+        'Implemented autonomous capabilities: code execution, web browsing, file system operations, and sub-agent delegation for parallel task execution',
+        'Configured systemd services, Docker containers and cron jobs for 24/7 production-grade autonomous operation',
+      ],
+      es: [
+        'Arquitecté y desplegué infraestructura completa de agentes en bare-metal Linux — múltiples proveedores de IA (OpenRouter, Anthropic), entorno de ejecución con tool-calling y gateway de Telegram',
+        'Construí un pipeline de interfaz de voz — transcripción speech-to-text, procesamiento con IA y respuesta text-to-speech en español latino',
+        'Implementé capacidades autónomas: ejecución de código, navegación web, operaciones de sistema de archivos y delegación de sub-agentes para ejecución paralela de tareas',
+        'Configuré servicios systemd, contenedores Docker y cron jobs para operación autónoma 24/7 a nivel producción',
+      ],
+    },
+    tags: ['Python', 'Linux', 'Docker', 'APIs IA', 'Telegram Bot', 'STT/TTS', 'systemd'],
   },
 ] as const;

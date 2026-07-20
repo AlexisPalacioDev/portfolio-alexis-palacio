@@ -149,13 +149,13 @@ import Footer from './Footer.astro';
     <!-- Bottom action row: lime CTA + outline CV + availability pill -->
     <div
       class="rev"
-      style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 28px;"
+      style="display: flex; flex-wrap: nowrap; gap: 14px; align-items: center; margin-top: 28px;"
     >
       {/* TODO: email — ver la nota completa en el bloque "Email" de arriba. NO cambiar hasta tener el correo nuevo configurado y funcionando. */}
       <a
         href="mailto:alexis26-93@live.com"
         class="font-display font-bold text-bg bg-lime shadow-hard"
-        style="display: inline-flex; align-items: center; gap: 10px; padding: 17px 32px; font-size: 17px;"
+        style="display: inline-flex; align-items: center; gap: 10px; padding: 17px 32px; font-size: 17px; white-space: nowrap; flex-shrink: 0;"
         data-i18n="contact_cta"
       >
         {t('en', 'contact_cta')}
@@ -166,7 +166,7 @@ import Footer from './Footer.astro';
         href="/Alexis-Palacio-CV.pdf"
         download="Alexis-Palacio-CV.pdf"
         class="font-display font-bold text-ink"
-        style="display: inline-flex; align-items: center; gap: 10px; padding: 17px 32px; font-size: 17px; border: 2px solid #34373F;"
+        style="display: inline-flex; align-items: center; gap: 10px; padding: 17px 32px; font-size: 17px; border: 2px solid #34373F; white-space: nowrap; flex-shrink: 0;"
         data-i18n="cv"
       >
         {t('en', 'cv')}
@@ -176,7 +176,7 @@ import Footer from './Footer.astro';
       <!-- Availability pill -->
       <span
         class="font-mono text-lime"
-        style="display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px;"
+        style="display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; white-space: nowrap; flex-shrink: 0;"
       >
         <span
           class="bg-lime"

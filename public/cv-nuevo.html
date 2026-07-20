@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexis Palacio — AI Engineer & Full-Stack Leader</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #f5f5f5;
+    color: #1a1a1a;
+    line-height: 1.5;
+    padding: 40px 20px;
+  }
+  .page {
+    max-width: 850px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    overflow: hidden;
+  }
+  .header {
+    padding: 40px 48px 28px;
+    border-bottom: 3px solid #2563eb;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #111;
+  }
+  .header .title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2563eb;
+    margin-top: 4px;
+  }
+  .header .tagline {
+    font-size: 13px;
+    color: #666;
+    margin-top: 6px;
+    font-style: italic;
+  }
+  .header .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #555;
+  }
+  .header .contact a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .header .contact a:hover { text-decoration: underline; }
+  .body { padding: 28px 48px 36px; }
+  .section { margin-bottom: 26px; }
+  .section:last-child { margin-bottom: 0; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #2563eb;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .summary {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+  }
+  .summary strong { color: #111; }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 700px) {
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 450px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .header { padding: 28px 24px 20px; }
+    .body { padding: 20px 24px 28px; }
+  }
+  .skill-group h4 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .skill-tag {
+    display: inline-block;
+    background: #f0f4ff;
+    color: #2563eb;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .exp-item {
+    margin-bottom: 18px;
+  }
+  .exp-item:last-child { margin-bottom: 0; }
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 2px 12px;
+    margin-bottom: 3px;
+  }
+  .exp-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+  }
+  .exp-header .company {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2563eb;
+  }
+  .exp-header .date {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+  }
+  .exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 4px 0 6px;
+  }
+  .exp-tag {
+    display: inline-block;
+    background: #e8e8e8;
+    color: #555;
+    padding: 1px 7px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .exp-bullets {
+    list-style: none;
+    padding: 0;
+  }
+  .exp-bullets li {
+    font-size: 13px;
+    color: #444;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .exp-bullets li::before {
+    content: "•";
+    position: absolute;
+    left: 2px;
+    color: #2563eb;
+    font-weight: 700;
+  }
+  .project-item {
+    margin-bottom: 14px;
+  }
+  .project-item:last-child { margin-bottom: 0; }
+  .project-item h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+  }
+  .project-item .proj-meta {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 3px;
+  }
+  .project-item p {
+    font-size: 12.5px;
+    color: #555;
+    line-height: 1.5;
+  }
+  .project-item .proj-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 4px;
+  }
+  .proj-tag {
+    display: inline-block;
+    background: #f5f5f5;
+    color: #666;
+    padding: 1px 7px;
+    border-radius: 8px;
+    font-size: 10px;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+  .edu-item { font-size: 13.5px; color: #444; }
+  .edu-item strong { color: #111; }
+  .cert-list {
+    list-style: none;
+    padding: 0;
+  }
+  .cert-list li {
+    font-size: 12.5px;
+    color: #555;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .cert-list li::before {
+    content: "•";
+    position: absolute;
+    left: 2px;
+    color: #2563eb;
+  }
+  .lang-item { font-size: 13.5px; color: #444; }
+  .lang-item strong { color: #111; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Alexis Palacio</h1>
+    <div class="title">AI Engineer & Full-Stack Development Leader</div>
+    <div class="tagline">6 años construyendo productos con IA, desde la idea hasta producción — liderando equipos, integrando agentes inteligentes y entregando a escala real.</div>
+    <div class="contact">
+      <span>📧 <a href="mailto:alexis26-93@live.com">alexis26-93@live.com</a></span>
+      <span>📱 <a href="tel:+573206088114">+57 320 608 8114</a></span>
+      <span>📍 Medellín, Colombia · GMT-5</span>
+      <span>🔗 <a href="https://linkedin.com/in/poisoneddog" target="_blank">linkedin.com/in/poisoneddog</a></span>
+      <span>💻 <a href="https://github.com/AlexisPalacioDev" target="_blank">github.com/AlexisPalacioDev</a></span>
+      <span>🌐 <a href="https://alexispalacio.dev" target="_blank">alexispalacio.dev</a></span>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- PROFESSIONAL SUMMARY (Prompt 5: Market Positioning) -->
+    <div class="section">
+      <div class="section-title">Perfil Profesional</div>
+      <div class="summary">
+        Ingeniero de IA y líder de desarrollo full-stack con <strong>6 años de experiencia</strong> construyendo productos digitales de punta a punta. En mi rol actual lidero el frontend de <strong>anai</strong> (SaaS de video con IA, 10,000+ usuarios), gestionando un equipo de 5 desarrolladores y orquestando entregas por sprint. 
+        <br><br>
+        Mi valor diferencial: combino <strong>ingeniería de software sólida</strong> (Next.js, React, PHP, Node.js, arquitectura backend) con <strong>integración profunda de IA</strong> (agentes autónomos, RAG, pipelines de generación, múltiples proveedores de LLM) — y lo llevo a producción con <strong>resultados medibles</strong>: 60% de mejora en tiempos de respuesta, 10,000+ usuarios registrados, pagos reales procesados con Stripe/PayPal.
+        <br><br>
+        <strong>Disponible para:</strong> roles de AI Engineer, Full-Stack Lead, o Backend Engineer en empresas que construyen producto con IA en producción.
+      </div>
+    </div>
+
+    <!-- SKILLS (Prompt 3: ATS Optimization) -->
+    <div class="section">
+      <div class="section-title">Competencias Técnicas</div>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h4>Inteligencia Artificial</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Agentes Autónomos</span>
+            <span class="skill-tag">RAG / LangChain</span>
+            <span class="skill-tag">Claude / GPT / Gemini</span>
+            <span class="skill-tag">MCP / Tool Calling</span>
+            <span class="skill-tag">n8n Automatización</span>
+            <span class="skill-tag">Structured Output</span>
+            <span class="skill-tag">STT / TTS</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Frontend</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Next.js 16</span>
+            <span class="skill-tag">React 19</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Astro</span>
+            <span class="skill-tag">Tailwind CSS</span>
+            <span class="skill-tag">PWA</span>
+            <span class="skill-tag">WebGL / WebCodecs</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Backend & APIs</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">PHP 8+ / CakePHP</span>
+            <span class="skill-tag">Node.js / NestJS</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">REST / GraphQL</span>
+            <span class="skill-tag">Stripe / PayPal</span>
+            <span class="skill-tag">JWT / OAuth</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Metodologías & Gestión</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Liderazgo de Equipos (5 pers.)</span>
+            <span class="skill-tag">Planificación por Sprint</span>
+            <span class="skill-tag">Code Review / Feedback</span>
+            <span class="skill-tag">Coordinación REMOTO</span>
+            <span class="skill-tag">Metodologías Ágiles</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Comunicación & Habilidades</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Comunicación Técnica</span>
+            <span class="skill-tag">Documentación</span>
+            <span class="skill-tag">Trabajo en Equipo</span>
+            <span class="skill-tag">Resolución de Problemas</span>
+            <span class="skill-tag">Toma de Decisiones</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Idiomas</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Español Nativo</span>
+            <span class="skill-tag">Inglés B1 Técnico</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE (Prompt 4: Impact Statements) -->
+    <div class="section">
+      <div class="section-title">Experiencia Profesional</div>
+
+      <!-- anai - Current -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <h3>Líder de Desarrollo Full Stack · Frontend</h3>
+            <span class="company">anai</span>
+          </div>
+          <span class="date">Jun 2026 — Actualidad</span>
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">Next.js 16</span>
+          <span class="exp-tag">React 19</span>
+          <span class="exp-tag">TypeScript</span>
+          <span class="exp-tag">NestJS</span>
+          <span class="exp-tag">Google Cloud</span>
+          <span class="exp-tag">Claude / Veo 3.1</span>
+        </div>
+        <ul class="exp-bullets">
+          <li><strong>Lidero el equipo frontend</strong> (5 desarrolladores) del SaaS de creación de video con IA <strong>anai</strong> (anaiapp.ai), coordinando entregas por sprint y definiendo la arquitectura técnica — Next.js 16 / React 19 con BFF, Google OAuth y cookies HttpOnly.</li>
+          <li><strong>Construí un editor de video nativo en el navegador</strong> desde cero usando WebCodecs, WebGL y renderizado WASM de subtítulos — una funcionalidad crítica que diferencia el producto en el mercado.</li>
+          <li><strong>Integré 5 proveedores de IA</strong> (Claude, GPT, Gemini, Veo 3.1, ElevenLabs) en un estudio de creación asistida, permitiendo a los usuarios generar guiones, voces y videos completos desde un prompt.</li>
+        </ul>
+      </div>
+
+      <!-- iMometrics -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <h3>Backend PHP Developer</h3>
+            <span class="company">iMometrics</span>
+          </div>
+          <span class="date">Jun 2024 — Jun 2026</span>
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">CakePHP 4.6</span>
+          <span class="exp-tag">PHP 8+</span>
+          <span class="exp-tag">MySQL</span>
+          <span class="exp-tag">Redis</span>
+          <span class="exp-tag">Docker</span>
+          <span class="exp-tag">AWS</span>
+        </div>
+        <ul class="exp-bullets">
+          <li><strong>Transformé el sistema de monitoreo de iMometrics</strong> — diseñé un sistema de alertamiento sonoro en tiempo real que notifica a los usuarios cuando las mediciones se salen de parámetros, eliminando el monitoreo manual constante y <strong>previniendo pérdidas económicas</strong> en cadenas de frío de empresas a nivel nacional.</li>
+            <li><strong>Construí un panel de control de diagnóstico</strong> para flotas de 1 a 1,000+ equipos, reduciendo el tiempo de diagnóstico de fallas de horas a minutos y generando <strong>tickets de soporte automáticos</strong>.</li>
+            <li><strong>Optimicé consultas SQL + Redis caching</strong> reduciendo el tiempo de respuesta de APIs en un 60%, mejorando dashboards en tiempo real para clientes enterprise.</li>
+            <li><strong>Diseñé pipelines de ingesta de datos</strong> procesando miles de lecturas de sensores de temperatura por minuto con agregación en tiempo real.</li>
+        </ul>
+      </div>
+
+      <!-- K Gumi -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <h3>Frontend Developer</h3>
+            <span class="company">K Gumi SAS</span>
+          </div>
+          <span class="date">Ene 2021 — May 2024</span>
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">HTML5/CSS3</span>
+          <span class="exp-tag">JavaScript</span>
+          <span class="exp-tag">Tailwind CSS</span>
+          <span class="exp-tag">Responsive Design</span>
+        </div>
+        <ul class="exp-bullets">
+          <li><strong>Entregué 15+ sitios web corporativos</strong> usando HTML, CSS, JavaScript y Tailwind CSS, cumpliendo deadlines ajustados y manteniendo estándares de calidad consistentes durante 3.5 años.</li>
+          <li><strong>Implementé diseños responsivos mobile-first</strong> con Tailwind CSS que mejoraron la experiencia en dispositivos móviles, resultando en mayor retención de usuarios y mejor posicionamiento SEO.</li>
+          <li><strong>Colaboré en proyectos web complejos</strong> coordinando con equipos de diseño y backend para entregar productos funcionales, visualmente coherentes y optimizados para rendimiento.</li>
+        </ul>
+      </div>
+
+      <!-- Wiptool -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <h3>Frontend Developer</h3>
+            <span class="company">Wiptool</span>
+          </div>
+          <span class="date">Mar 2020 — Dic 2020</span>
+        </div>
+        <div class="exp-tags">
+          <span class="exp-tag">JavaScript</span>
+          <span class="exp-tag">Mapbox API</span>
+          <span class="exp-tag">UI Development</span>
+        </div>
+        <ul class="exp-bullets">
+          <li><strong>Desarrollé la interfaz de usuario</strong> de una aplicación de mapeo geoespacial, integrando la API de Mapbox para visualización en tiempo real de datos georreferenciados.</li>
+          <li><strong>Implementé una experiencia tipo app nativa</strong> — rutas de inicio y fin sin instalación, eliminando barreras de acceso en dispositivos móviles y mejorando significativamente la adopción de la plataforma.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PROJECTS (Prompt 6: Executive Refinement) -->
+    <div class="section">
+      <div class="section-title">Proyectos Destacados</div>
+
+      <div class="two-col">
+        <div class="project-item">
+          <h4>Carl Jung AI</h4>
+          <div class="proj-meta">Plataforma Educativa con IA · 10,000+ usuarios</div>
+          <p>Plataforma que genera contenido formativo basado en los arquetipos de Carl Jung. <strong>Next.js/React</strong> con autenticación Supabase, pagos <strong>Stripe/PayPal</strong> en producción, y pipeline de generación de contenido con <strong>ChatGPT API + RAG</strong> sobre textos jungianos primarios.</p>
+          <div class="proj-stack">
+            <span class="proj-tag">Next.js</span>
+            <span class="proj-tag">React</span>
+            <span class="proj-tag">Supabase</span>
+            <span class="proj-tag">Stripe</span>
+            <span class="proj-tag">PayPal</span>
+            <span class="proj-tag">ChatGPT API</span>
+          </div>
+        </div>
+
+        <div class="project-item">
+          <h4>PoisonFlix</h4>
+          <div class="proj-meta">Streaming PWA tipo Netflix · Código abierto</div>
+          <p>Cliente web PWA para Jellyfin que transforma un servidor de medios en una experiencia de streaming completa. <strong>Arquitectura same-origin</strong>, service workers offline, y pipeline automatizado de contenido con Sonarr/Radarr. Stack completo contenerizado con Docker.</p>
+          <div class="proj-stack">
+            <span class="proj-tag">TypeScript</span>
+            <span class="proj-tag">PWA</span>
+            <span class="proj-tag">Jellyfin API</span>
+            <span class="proj-tag">Docker</span>
+            <span class="proj-tag">Sonarr/Radarr</span>
+          </div>
+        </div>
+
+        <div class="project-item">
+          <h4>PoisonOS</h4>
+          <div class="proj-meta">Launcher Android para HY300 Ultra · Sin root</div>
+          <p>Launcher Android minimalista custom que reemplaza el software de fábrica del proyector HY300 con una interfaz limpia y optimizada. <strong>Tooling de despliegue sin root</strong> vía ADB, documentación completa para la comunidad open-source.</p>
+          <div class="proj-stack">
+            <span class="proj-tag">Android</span>
+            <span class="proj-tag">Kotlin</span>
+            <span class="proj-tag">ADB</span>
+            <span class="proj-tag">Open Source</span>
+          </div>
+        </div>
+
+        <div class="project-item">
+          <h4>Mendez AI Server</h4>
+          <div class="proj-meta">Servidor Autónomo de Agentes IA · 24/7</div>
+          <p>Infraestructura completa de agentes IA desplegada en bare-metal Linux. <strong>Múltiples proveedores</strong> de IA (OpenRouter, Anthropic), ejecución autónoma de código, navegación web, sistema de archivos, y gateway Telegram con <strong>interfaz de voz</strong> STT/TTS en español latino. Servicios systemd, Docker, cron para operación 24/7.</p>
+          <div class="proj-stack">
+            <span class="proj-tag">Python</span>
+            <span class="proj-tag">Linux</span>
+            <span class="proj-tag">Docker</span>
+            <span class="proj-tag">APIs IA</span>
+            <span class="proj-tag">STT/TTS</span>
+          </div>
+        </div>
+
+        <div class="project-item">
+          <h4>Extraction Survivors</h4>
+          <div class="proj-meta">Juego 2D Multijugador en Browser</div>
+          <p>Juego de extracción multijugador 2D con hordas estilo Vampire Survivors. <strong>Motor propio</strong> desde cero sin game engine — ECS, timestep fijo, WebRTC para hasta 4 jugadores, renderizado WebGL con PixiJS.</p>
+          <div class="proj-stack">
+            <span class="proj-tag">TypeScript</span>
+            <span class="proj-tag">PixiJS/WebGL</span>
+            <span class="proj-tag">WebRTC</span>
+          </div>
+        </div>
+
+        <div class="project-item">
+          <h4>Automatización n8n</h4>
+          <div class="proj-meta">Agentes IA para Automatización Empresarial</div>
+          <p>Flujos de automatización con n8n integrando agentes de WhatsApp para atención al cliente, APIs REST, y automatización de procesos empresariales que eliminaron tareas manuales repetitivas.</p>
+          <div class="proj-stack">
+            <span class="proj-tag">n8n</span>
+            <span class="proj-tag">WhatsApp API</span>
+            <span class="proj-tag">OpenAI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDUCATION + CERTIFICATIONS + LANGUAGES -->
+    <div class="section">
+      <div class="section-title">Formación & Idiomas</div>
+      <div class="two-col">
+        <div>
+          <div class="edu-item">
+            <strong>Tecnólogo en Desarrollo de Software</strong><br>
+            Tecnológico de Antioquia · 2016 — 2020<br>
+            <span style="color:#888;font-size:12px;">8 de 10 semestres completados</span>
+          </div>
+          <div style="margin-top:10px;">
+            <div style="font-size:12px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Certificaciones</div>
+            <ul class="cert-list">
+              <li><strong>React - The Complete Guide</strong> — Udemy (2023)</li>
+              <li><strong>JavaScript Algorithms & Data Structures</strong> — freeCodeCamp (2022)</li>
+              <li><strong>Responsive Web Design</strong> — freeCodeCamp (2021)</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="lang-item"><strong>Español:</strong> Nativo</div>
+          <div class="lang-item" style="margin-top:4px;"><strong>Inglés:</strong> B1 Intermedio — lectura técnica y conversación profesional</div>
+          <div style="margin-top:14px;font-size:13px;color:#666;">
+            <strong>Disponibilidad:</strong> Inmediata · Full-time / Proyecto · Remoto / Híbrido
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

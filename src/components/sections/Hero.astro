@@ -73,12 +73,12 @@ import HeroCanvas from '../islands/HeroCanvas.astro';
       </p>
 
       <div>
-        <div style="display: flex; flex-wrap: wrap; gap: 14px;">
+        <div style="display: flex; flex-wrap: nowrap; gap: 14px; align-items: center;">
           <!-- Hire me CTA — primary lime -->
           <a
             href="#contact"
             class="font-display font-bold text-bg bg-lime shadow-hard"
-            style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; font-size: 16px;"
+            style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; font-size: 15px; white-space: nowrap; flex-shrink: 0;"
             data-i18n="hero_cta_hire"
           >
             {t('en', 'hero_cta_hire')}
@@ -89,7 +89,7 @@ import HeroCanvas from '../islands/HeroCanvas.astro';
             href="/Alexis-Palacio-CV.pdf"
             download="Alexis-Palacio-CV.pdf"
             class="font-display font-bold text-ink"
-            style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; font-size: 16px; background: transparent; border: 2px solid #34373F;"
+            style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; font-size: 15px; background: transparent; border: 2px solid #34373F; white-space: nowrap; flex-shrink: 0;"
             data-i18n="hero_cta_cv"
           >
             {t('en', 'hero_cta_cv')}
