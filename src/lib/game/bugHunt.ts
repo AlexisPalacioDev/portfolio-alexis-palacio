@@ -1099,14 +1099,25 @@ export function initBugHunt(): void {
   // restoreAll() puts back the ORIGINAL (pre-switch-language) HTML for any text
   // we'd split, which would clobber the just-applied translation — so re-apply
   // the current language right after, fixing any element we had eaten.
+  //
+  // The observer disconnects around its own re-apply: applyLang writes html[lang],
+  // and an attribute write notifies observers even when the value is unchanged,
+  // so re-entering here would loop forever and freeze the tab. apply.ts also
+  // guards the write; this belt-and-braces keeps the loop impossible even if a
+  // future caller writes the attribute unconditionally again.
+  const watchLang = (): void =>
+    langObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['lang'],
+    });
+
   const langObserver = new MutationObserver(() => {
+    langObserver.disconnect(); // also drops any records already queued
     kill();
     applyLang(document.documentElement.lang);
+    watchLang();
   });
-  langObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['lang'],
-  });
+  watchLang();
 
   // Begin the idle countdown.
   scheduleIdle();
