@@ -11,6 +11,9 @@ const EXPECTED_IDS = [
   'carljung',
   'bunnygymwear',
   'todo-automation',
+  'poisonflix',
+  'poisonos',
+  'mendez-ai',
 ] as const;
 
 const REQUIRED_LOCALIZED_FIELDS: Array<keyof WorkItem> = [
@@ -27,8 +30,8 @@ const VALID_STATUS_KEYS = Object.values(WORK_STATUS);
 const HEX_RE = /^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$/;
 
 describe('work[] data model', () => {
-  it('has exactly 8 items', () => {
-    expect(work.length).toBe(8);
+  it('has exactly 11 items', () => {
+    expect(work.length).toBe(11);
   });
 
   it('has items in expected order (most-recent first)', () => {
@@ -131,12 +134,12 @@ describe('work[] data model', () => {
   describe('pick() helper', () => {
     it('pick(period, en) returns English period for anai', () => {
       const anai = work[0];
-      expect(pick(anai.period, 'en')).toBe('2024 — Present');
+      expect(pick(anai.period, 'en')).toBe('2026 — Present');
     });
 
     it('pick(period, es) returns Spanish period for anai', () => {
       const anai = work[0];
-      expect(pick(anai.period, 'es')).toBe('2024 — Hoy');
+      expect(pick(anai.period, 'es')).toBe('2026 — Hoy');
     });
 
     it('pick(desc, en) returns English desc for anai', () => {
