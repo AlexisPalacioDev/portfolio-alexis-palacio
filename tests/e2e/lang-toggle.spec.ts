@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { I18N } from '../../src/lib/i18n/dictionary';
 
-// These are the exact EN/ES pairs for keys that appear in the page markup
+// Exact EN/ES pairs sourced from the dictionary so the tests cannot drift from copy.
 const translations = {
-  hero_h1:     { en: 'I orchestrate AI',                   es: 'Orquesto IA' },
-  hero_status: { en: 'FULL-STACK · AI ENGINEER · REMOTE · FREELANCE',  es: 'FULL-STACK · INGENIERO IA · REMOTO · FREELANCE' },
-  hero_cta_cv: { en: 'Download CV',                        es: 'Descargar CV' },
+  hero_h1:     { en: I18N.en.hero_h1,     es: I18N.es.hero_h1 },
+  hero_status: { en: I18N.en.hero_status, es: I18N.es.hero_status },
+  hero_cta_cv: { en: I18N.en.hero_cta_cv, es: I18N.es.hero_cta_cv },
 } as const;
 
 test.describe('LangToggle — EN/ES switch', () => {

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { I18N } from '../../src/lib/i18n/dictionary';
 
 /**
  * Full i18n coverage E2E tests — WU-5 (Phase 7).
@@ -11,48 +12,17 @@ import { test, expect } from '@playwright/test';
  * Tests run against `astro preview` (production static build).
  */
 
-// Representative EN/ES sentinel pairs from the dictionary
+// Representative EN/ES sentinel pairs sourced from the dictionary so the tests
+// can't drift from the live copy.
 const SENTINELS = {
-  about_h2: {
-    en: "I don't just write code. I make AI get the job done.",
-    es: 'No solo escribo código. Hago que la IA cumpla el objetivo.',
-  },
-  about_p1_start: {
-    en: 'Full-stack developer with 5+',
-    es: 'Desarrollador full-stack con 5+',
-  },
-  skills_h2: {
-    en: 'Built to orchestrate, not just to code.',
-    es: 'Hecho para orquestar, no solo para codear.',
-  },
-  skills_ai_title: {
-    en: 'AI Orchestration & Agents',
-    es: 'Orquestación de IA y Agentes',
-  },
-  services_h2: {
-    en: 'Hire me for the hard part.',
-    es: 'Contrátame para la parte difícil.',
-  },
-  svc1_title: {
-    en: 'AI Agents & Automation',
-    es: 'Agentes de IA y Automatización',
-  },
-  contact_h2: {
-    en: "Let's build something.",
-    es: 'Construyamos algo.',
-  },
-  contact_sub_start: {
-    en: 'Open to remote roles',
-    es: 'Abierto a roles remotos',
-  },
-  available: {
-    en: 'Available for remote work',
-    es: 'Disponible para trabajo remoto',
-  },
-  footer_built: {
-    en: 'Designed & built with intent.',
-    es: 'Diseñado y construido con intención.',
-  },
+  about_h2: { en: I18N.en.about_h2, es: I18N.es.about_h2 },
+  skills_h2: { en: I18N.en.skills_h2, es: I18N.es.skills_h2 },
+  skills_ai_title: { en: I18N.en.skills_ai_title, es: I18N.es.skills_ai_title },
+  services_h2: { en: I18N.en.services_h2, es: I18N.es.services_h2 },
+  svc1_title: { en: I18N.en.svc1_title, es: I18N.es.svc1_title },
+  contact_h2: { en: I18N.en.contact_h2, es: I18N.es.contact_h2 },
+  available: { en: I18N.en.available, es: I18N.es.available },
+  footer_built: { en: I18N.en.footer_built, es: I18N.es.footer_built },
 } as const;
 
 test.describe('Full i18n audit — EN/ES across all sections', () => {
@@ -165,16 +135,16 @@ test.describe('Full i18n audit — EN/ES across all sections', () => {
 
     // Verify that known-English sentinel strings are NOT present in specific data-i18n nodes
     const aboutH2Text = await page.locator('[data-i18n="about_h2"]').first().textContent();
-    expect(aboutH2Text).not.toContain("I don't just write code");
+    expect(aboutH2Text).not.toContain(SENTINELS.about_h2.en);
 
     const skillsH2Text = await page.locator('[data-i18n="skills_h2"]').first().textContent();
-    expect(skillsH2Text).not.toContain('Built to orchestrate');
+    expect(skillsH2Text).not.toContain(SENTINELS.skills_h2.en);
 
     const svcH2Text = await page.locator('[data-i18n="services_h2"]').first().textContent();
-    expect(svcH2Text).not.toContain('Hire me for the hard part');
+    expect(svcH2Text).not.toContain(SENTINELS.services_h2.en);
 
     const contactH2Text = await page.locator('[data-i18n="contact_h2"]').first().textContent();
-    expect(contactH2Text).not.toContain("Let's build something");
+    expect(contactH2Text).not.toContain(SENTINELS.contact_h2.en);
   });
 });
 

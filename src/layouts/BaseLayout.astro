@@ -31,27 +31,12 @@ const {
   title = 'Alexis Palacio — AI Engineer & Harness Engineer',
   description = 'AI Engineer in Medellín, Colombia. I set up AI so it ships reliable, verifiable results — full-stack underneath (Next.js, React, TypeScript, NestJS).',
   ogImage = '/og-image.png',
-  canonical = `${SITE}/`,
+  canonical = SITE,
 } = Astro.props;
 
 const ogTitle = title;
 const ogDescription = description;
 const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${SITE}${ogImage}`;
-
-const keywords = [
-  // identity + role
-  'Alexis Palacio', 'AI Engineer', 'Harness Engineer', 'Harness Engineering',
-  'AI agents', 'reliable AI', 'Lead Fullstack Developer', 'Full-Stack Developer',
-  // recruiter searches (EN)
-  'freelance full-stack developer', 'hire full-stack developer',
-  'freelance developer', 'full-stack engineer for hire',
-  // recruiter searches (ES)
-  'desarrollador full stack', 'desarrollador freelance',
-  'contratar desarrollador full stack', 'programador full stack',
-  // specialties + stack
-  'AI orchestration', 'LLM agents', 'automation', 'Next.js', 'React', 'React Native',
-  'TypeScript', 'NestJS', 'Medellín', 'Colombia',
-].join(', ');
 
 // JSON-LD structured data — tells Google this is Alexis Palacio's portfolio
 // (rich results + helps rank for his name and role).
@@ -101,7 +86,6 @@ const navItems = [
   { href: '#skills', key: 'nav_skills' },
   { href: '#projects', key: 'nav_projects' },
   { href: '#services', key: 'nav_services' },
-  // { href: '#testimonials', key: 'nav_testimonials' }, // hidden — see index.astro
   { href: '#contact', key: 'nav_contact' },
 ] as const;
 ---
@@ -118,7 +102,6 @@ const navItems = [
     <link rel="preload" href={sgHead} as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="preload" href={sgBody} as="font" type="font/woff2" crossorigin="anonymous" />
     <meta name="description" content={description} />
-    <meta name="keywords" content={keywords} />
     <meta name="author" content="Alexis Palacio" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="#0C0D10" />
@@ -255,7 +238,7 @@ const navItems = [
             <a
               href={item.href}
               class="nav-link hover:text-lime"
-              style="opacity: 0.7; transition: color .22s ease, opacity .22s ease; text-decoration: none; color: inherit;"
+              style="transition: color .22s ease; text-decoration: none; color: inherit;"
               data-i18n={item.key}
             >
               {t('en', item.key)}

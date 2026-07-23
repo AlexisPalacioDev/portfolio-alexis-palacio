@@ -6,15 +6,13 @@ import HarnessMethod from '../components/sections/HarnessMethod.astro';
 import Stack from '../components/sections/Stack.astro';
 import Work from '../components/sections/Work.astro';
 import Services from '../components/sections/Services.astro';
-// Testimonials hidden for now (placeholder content) — re-enable when real quotes land.
-// import Testimonials from '../components/sections/Testimonials.astro';
 import Contact from '../components/sections/Contact.astro';
 ---
 
 <BaseLayout>
   <!--
     Sections compose in scroll order:
-    #home → marquee → #about → #method → #skills → #projects → #services → #testimonials → #contact → footer
+    #home → marquee → #about → #method → #skills → #projects → #services → #contact → footer
   -->
   <Hero />
   <About />
@@ -22,6 +20,5 @@ import Contact from '../components/sections/Contact.astro';
   <Stack />
   <Work />
   <Services />
-  {/* <Testimonials /> — hidden for now (placeholder content) */}
   <Contact />
 </BaseLayout>

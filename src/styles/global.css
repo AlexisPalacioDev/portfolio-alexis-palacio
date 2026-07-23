@@ -7,7 +7,7 @@
   --color-surface: #14151A;   /* cards, stat tiles                            */
   --color-ink:     #F2F2EE;   /* primary text (off-white)                     */
   --color-muted:   #9D9D95;   /* body / secondary text                        */
-  --color-faint:   #6E6E66;   /* mono labels, captions                        */
+  --color-faint:   #8B8B84;   /* mono labels, captions (WCAG AA ≥4.5:1 on bg)  */
   --color-line:    #23252D;   /* section dividers / hairlines                 */
   --color-line-2:  #2C2F38;   /* card borders / stronger hairlines            */
   --color-lime:    #C6F24E;   /* primary accent (CTAs, active states)         */
@@ -188,15 +188,13 @@ section > * {
   #detail-tags {
     margin-bottom: clamp(12px, 2vh, 26px) !important;
   }
-  /* Skills + Services + Testimonials cards scale their padding with height */
+  /* Skills + Services cards scale their padding with height */
   #skills .rg-3,
-  #services .rg-3,
-  #testimonials .rg-3 {
+  #services .rg-3 {
     gap: clamp(8px, 1.4vh, 16px) !important;
   }
   #skills .rg-3 > *,
-  #services .rg-3 > *,
-  #testimonials .rg-3 > * {
+  #services .rg-3 > * {
     padding: clamp(14px, 2.6vh, 28px) !important;
   }
 }

@@ -20,7 +20,6 @@ export const I18N = {
     nav_skills: 'Stack',
     nav_projects: 'Work',
     nav_services: 'Hire me',
-    nav_testimonials: 'Testimonials',
     nav_contact: 'Contact',
 
     // ── Hero ─────────────────────────────────────────────────────────────
@@ -79,6 +78,14 @@ export const I18N = {
     cat_backend: 'Backend',
     cat_frontend: 'Frontend',
     cat_infra: 'Infra & Tools',
+    skills_soft_title: 'Soft Skills & Leadership',
+    soft_leadership: 'Team Leadership',
+    soft_agile: 'Agile / Sprint Methodologies',
+    soft_comm: 'Technical Communication',
+    soft_review: 'Code Review & Feedback',
+    soft_remote: 'Remote Work',
+    soft_decisions: 'Decision-Making',
+    soft_problem: 'Problem-Solving',
 
     // ── Work & Projects ───────────────────────────────────────────────────
     projects_label: 'SELECTED WORK',
@@ -105,14 +112,6 @@ export const I18N = {
       'Not sure where AI fits in your business? I’ll help you tell the useful part from the hype and ship what actually helps.',
     svc_cta: 'Start a project',
 
-    // ── Testimonials ──────────────────────────────────────────────────────
-    test_label: 'TESTIMONIALS',
-    test_h2: 'What people say.',
-    test_sub: 'Real quotes from clients & teammates coming soon.',
-    test_ph_quote: 'Real testimonial coming soon — Alexis, send over your client quotes.',
-    test_ph_name: 'Client Name',
-    test_ph_role: 'Role · Company',
-
     // ── Contact ───────────────────────────────────────────────────────────
     contact_label: 'CONTACT',
     contact_h2: 'Want to work together?',
@@ -137,7 +136,6 @@ export const I18N = {
     nav_skills: 'Stack',
     nav_projects: 'Proyectos',
     nav_services: 'Contrátame',
-    nav_testimonials: 'Testimonios',
     nav_contact: 'Contacto',
 
     // ── Hero ─────────────────────────────────────────────────────────────
@@ -196,6 +194,14 @@ export const I18N = {
     cat_backend: 'Backend',
     cat_frontend: 'Frontend',
     cat_infra: 'Infra y Herramientas',
+    skills_soft_title: 'Soft Skills & Liderazgo',
+    soft_leadership: 'Liderazgo de Equipos',
+    soft_agile: 'Metodologías Ágiles / Sprint',
+    soft_comm: 'Comunicación Técnica',
+    soft_review: 'Code Review & Feedback',
+    soft_remote: 'Trabajo Remoto',
+    soft_decisions: 'Toma de Decisiones',
+    soft_problem: 'Resolución de Problemas',
 
     // ── Work & Projects ───────────────────────────────────────────────────
     projects_label: 'TRABAJO SELECCIONADO',
@@ -221,14 +227,6 @@ export const I18N = {
     svc3_desc:
       '¿No sabés dónde encaja la IA en tu negocio? Te ayudo a separar lo útil del ruido y a lanzar lo que de verdad sirve.',
     svc_cta: 'Empezar un proyecto',
-
-    // ── Testimonials ──────────────────────────────────────────────────────
-    test_label: 'TESTIMONIOS',
-    test_h2: 'Lo que dicen de mí.',
-    test_sub: 'Testimonios reales de clientes y colegas — próximamente.',
-    test_ph_quote: 'Testimonio real próximamente — Alexis, manda las citas de tus clientes.',
-    test_ph_name: 'Nombre del Cliente',
-    test_ph_role: 'Rol · Empresa',
 
     // ── Contact ───────────────────────────────────────────────────────────
     contact_label: 'CONTACTO',
