@@ -39,7 +39,7 @@ const EAT_PAUSE_MS = 230; // pause on a letter before moving on
 const LETTERS_PER_STAGE = 6; // letters eaten per fatness bump (slow, deliberate)
 const HAMMER_CHARGE_MS = 700; // hold-to-charge: time to reach a full-power swing
 const MAX_STAGE = 5; // cap on fatness
-const HARVEST_BATCH = 6; // elements split per refill
+const HARVEST_BATCH = 2; // elements split per refill — letters.ts caps the total
 const MENU_DELAY_MS = 1600; // delay before the weapons menu slides in
 const BASE_HIT_RADIUS = 46; // px; grows with the bug's fatness
 const SPRAY_RANGE = 150; // px; how far the held aerosol reaches the fly
@@ -1137,9 +1137,16 @@ function injectStyles(): void {
        stacking context, so without this it sits at level auto(0) and any page
        element with z-index >= 1 (e.g. the hero content at z-index 3) paints
        over the whole game. Lift the root above everything. */
-    .bh-root { position: fixed; inset: 0; pointer-events: none; z-index: 2147483000; }
+    /* contain:layout keeps the game's ~150 fixed/absolute nodes out of the
+       page's own layout pass — they can move without dirtying the document. */
+    .bh-root {
+      position: fixed; inset: 0; pointer-events: none; z-index: 2147483000;
+      contain: layout style;
+    }
 
-    .bh-char { will-change: transform, opacity; }
+    /* No blanket will-change on .bh-char. Dozens of glyphs are live at once and
+       promoting every one of them to its own compositor layer costs far more
+       than it saves — letters.ts opts a glyph in only while it is being eaten. */
 
     .bh-bug {
       position: fixed; left: 0; top: 0;

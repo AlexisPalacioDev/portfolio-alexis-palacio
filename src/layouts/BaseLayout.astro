@@ -218,10 +218,17 @@ const navItems = [
       style="position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: #C6F24E; z-index: 60; box-shadow: 0 0 10px rgba(198,242,78,0.7); pointer-events: none;"
     ></div>
 
-    <!-- Fixed navigation bar -->
+    <!--
+      Fixed navigation bar.
+
+      No backdrop-filter here. The hero canvas repaints under this bar every
+      frame, which invalidates the blur and forces the compositor to re-filter
+      the whole strip 60 times a second — measured at half the frame rate on
+      this page. An opaque-enough background reads the same on a dark theme.
+    -->
     <nav
       class="fixed left-0 right-0 z-50 flex items-center justify-between"
-      style="top: 3px; padding: 14px 34px; background: rgba(12,13,16,0.78); backdrop-filter: blur(12px); border-bottom: 1px solid #23252D;"
+      style="top: 3px; padding: 14px 34px; background: rgba(12,13,16,0.94); border-bottom: 1px solid #23252D;"
       aria-label="Primary navigation"
     >
       <!-- AP monogram + logotype -->
@@ -285,7 +292,7 @@ const navItems = [
       id="mobile-menu"
       class="md:hidden"
       hidden
-      style="position: fixed; top: 72px; left: 0; right: 0; z-index: 49; background: rgba(12,13,16,0.97); backdrop-filter: blur(14px); border-bottom: 1px solid #23252D;"
+      style="position: fixed; top: 72px; left: 0; right: 0; z-index: 49; background: rgba(12,13,16,0.98); border-bottom: 1px solid #23252D;"
     >
       <ul role="list" style="list-style: none; margin: 0; padding: 8px 24px 16px;">
         {navItems.map((item) => (

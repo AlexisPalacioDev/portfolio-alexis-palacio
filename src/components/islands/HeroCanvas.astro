@@ -24,6 +24,73 @@
   // ── Node type ─────────────────────────────────────────────────────────────
   type Node = { x: number; y: number; vx: number; vy: number; r: number };
 
+  // ── Link geometry ─────────────────────────────────────────────────────────
+  const LINK_DIST = 132;
+  const LINK_DIST_SQ = LINK_DIST * LINK_DIST; // compare squared, skip the sqrt
+  const MAX_LINK_ALPHA = 0.18;
+
+  // Lines are stroked in a handful of alpha buckets rather than one
+  // beginPath/stroke per pair. With ~50 nodes that is ~300 draw calls a frame
+  // collapsed into 5, and the quantised fade is invisible at this opacity.
+  const ALPHA_BUCKETS = 5;
+  const bucketPoints: number[][] = Array.from({ length: ALPHA_BUCKETS }, () => []);
+
+  function strokeLinks(): void {
+    for (const b of bucketPoints) b.length = 0;
+
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 >= LINK_DIST_SQ) continue;
+        const t = 1 - Math.sqrt(d2) / LINK_DIST; // 0 (far) .. 1 (touching)
+        const bucket = Math.min(ALPHA_BUCKETS - 1, (t * ALPHA_BUCKETS) | 0);
+        bucketPoints[bucket].push(a.x, a.y, b.x, b.y);
+      }
+    }
+
+    ctx.strokeStyle = CANVAS_COLORS.line;
+    ctx.lineWidth = 1;
+    for (let b = 0; b < ALPHA_BUCKETS; b++) {
+      const pts = bucketPoints[b];
+      if (pts.length === 0) continue;
+      ctx.globalAlpha = ((b + 0.5) / ALPHA_BUCKETS) * MAX_LINK_ALPHA;
+      ctx.beginPath();
+      for (let k = 0; k < pts.length; k += 4) {
+        ctx.moveTo(pts[k], pts[k + 1]);
+        ctx.lineTo(pts[k + 2], pts[k + 3]);
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // Dots come in exactly two looks (near the cursor / not), so two paths cover
+  // the whole field instead of one fill per node.
+  function fillDots(highlightRadiusSq: number): void {
+    for (const pass of [0, 1]) {
+      const near = pass === 1;
+      ctx.fillStyle = near ? CANVAS_COLORS.nodeLime : CANVAS_COLORS.nodeDim;
+      ctx.globalAlpha = near ? 0.95 : 0.42;
+      ctx.beginPath();
+      let any = false;
+      for (const n of nodes) {
+        const dx = n.x - mouse.x;
+        const dy = n.y - mouse.y;
+        const isNear = dx * dx + dy * dy < highlightRadiusSq;
+        if (isNear !== near) continue;
+        ctx.moveTo(n.x + n.r, n.y); // avoid a connecting line from the previous arc
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        any = true;
+      }
+      if (any) ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
   // ── State ─────────────────────────────────────────────────────────────────
   const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
   if (!canvas) throw new Error('[HeroCanvas] #hero-canvas not found');
@@ -54,9 +121,17 @@
   // ── DPR-aware resize with <2px guard and >1px change guard ───────────────
   // Returns false when the canvas bounding box is too small (e.g., during
   // scroll-snap transitions where the hero section is mid-animation).
+  //
+  // Only runs when `dirty` is set. Measuring every frame means a forced
+  // synchronous layout 60 times a second for a value that changes maybe twice
+  // per session — a ResizeObserver tells us when it actually moved.
+  let dirty = true;
+
   function size(): boolean {
+    if (!dirty) return true;
     const r = canvas!.getBoundingClientRect();
     // <2px guard: skip resize during snap mid-transition (avoids zero-size canvas)
+    // Stay dirty so we retry once the section settles.
     if (r.width < 2 || r.height < 2) return false;
     // >1px change guard: only re-size when dimensions actually changed
     if (Math.abs(r.width - hw) > 1 || Math.abs(r.height - hh) > 1) {
@@ -70,40 +145,20 @@
     }
     // Guard: if seed wasn't called yet (first frame), seed now
     if (nodes.length < 2) seed(hw || r.width, hh || r.height);
+    dirty = false;
     return true;
   }
+
+  new ResizeObserver(() => {
+    dirty = true;
+  }).observe(canvas);
 
   // ── Single static frame (for reduced-motion) ─────────────────────────────
   function drawStatic(): void {
     if (!size()) return;
     ctx.clearRect(0, 0, hw, hh);
-    // Draw lines
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i];
-        const b = nodes[j];
-        const dist = Math.hypot(a.x - b.x, a.y - b.y);
-        if (dist < 132) {
-          ctx.globalAlpha = (1 - dist / 132) * 0.18;
-          ctx.strokeStyle = CANVAS_COLORS.line;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-        }
-      }
-    }
-    ctx.globalAlpha = 1;
-    // Draw dots
-    for (const n of nodes) {
-      ctx.fillStyle = CANVAS_COLORS.nodeDim;
-      ctx.globalAlpha = 0.42;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
+    strokeLinks();
+    fillDots(-1); // no cursor highlight in the static frame
   }
 
   // ── RAF loop (full animation) ─────────────────────────────────────────────
@@ -132,34 +187,10 @@
     }
 
     // Lines between nodes closer than 132px, alpha by distance
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i];
-        const b = nodes[j];
-        const dist = Math.hypot(a.x - b.x, a.y - b.y);
-        if (dist < 132) {
-          ctx.globalAlpha = (1 - dist / 132) * 0.18;
-          ctx.strokeStyle = CANVAS_COLORS.line;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-        }
-      }
-    }
-    ctx.globalAlpha = 1;
+    strokeLinks();
 
     // Dots — lime highlight near cursor (radius² = 12000, ≈109px)
-    for (const n of nodes) {
-      const near = (n.x - mouse.x) ** 2 + (n.y - mouse.y) ** 2 < 12000;
-      ctx.fillStyle = near ? CANVAS_COLORS.nodeLime : CANVAS_COLORS.nodeDim;
-      ctx.globalAlpha = near ? 0.95 : 0.42;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
+    fillDots(12000);
   }
 
   // ── Start / stop ──────────────────────────────────────────────────────────
@@ -183,12 +214,15 @@
   // ── IntersectionObserver: pause when hero leaves viewport ─────────────────
   // This saves CPU/battery while the user scrolls through other sections.
   // Also dodges the scroll-snap + canvas resize race (design §7).
+  let heroVisible = true;
+
   const heroSection = canvas.closest('section') ?? canvas.parentElement;
   if (heroSection) {
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
+          heroVisible = entry.isIntersecting;
+          if (heroVisible && !document.hidden) {
             start();
           } else {
             stop();
@@ -202,6 +236,13 @@
     // Fallback: just start (no section parent found)
     start();
   }
+
+  // A background tab throttles rAF but still schedules it — stopping outright
+  // means a buried tab costs nothing at all.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+    else if (heroVisible) start();
+  });
 
   // ── Cursor tracking (passive for perf) ────────────────────────────────────
   canvas.addEventListener(

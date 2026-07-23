@@ -21,11 +21,25 @@ const EATEN_ATTR = 'data-bh-eaten';
 
 // Elements we consider "text" worth eating. Headings first — they are short, so
 // splitting them into inline-block chars barely disturbs layout.
-const TARGET_SELECTOR = 'h1, h2, h3, h4, p, li, a, span, blockquote, figcaption';
+// `:not(.bh-char)` matters: without it every span we just created becomes a
+// candidate on the next harvest, so the candidate set (and the layout reads it
+// costs) grows with every round.
+const TARGET_SELECTOR =
+  'h1, h2, h3, h4, p, li, a, span:not(.bh-char), blockquote, figcaption';
 
 // Skip very long blocks: per-char inline-block spans can shift wrapping, and a
 // paragraph of 300 chars is both ugly to eat and heavier to restore.
-const MAX_TEXT_LENGTH = 90;
+const MAX_TEXT_LENGTH = 42;
+const MIN_TEXT_LENGTH = 8;
+
+// Hard ceiling on how many un-eaten glyphs may exist at once.
+//
+// Every live span is an inline-block inside a paragraph, so it takes part in
+// line layout — and the bug triggers a layout on nearly every bite. Measured on
+// this page: 122 live spans tripled the cost of a full layout pass (19ms → 57ms).
+// The bug eats roughly one glyph per 750ms, so a few dozen is already several
+// minutes of food; more than that is pure layout tax for something nobody sees.
+const MAX_LIVE_CHARS = 48;
 
 // Original innerHTML per touched element, so restore is exact. A plain Map is
 // fine: it lives only for the duration of one game and is cleared on restore.
@@ -35,19 +49,26 @@ const originals = new Map<HTMLElement, string>();
 // them back out. Cleared on restore.
 const eaten: string[] = [];
 
-/** Is this element a safe, visible, plain-text leaf we can eat? */
-function isEdible(el: HTMLElement): boolean {
+/**
+ * Cheap half of the edibility test — everything that needs no layout.
+ * Kept separate from the geometry check so `harvestTargets` can do all its
+ * layout reads in one batch instead of interleaving them with DOM writes.
+ */
+function isEdibleShape(el: HTMLElement): boolean {
   if (el.children.length > 0) return false; // not a plain-text leaf — skip
   if (originals.has(el)) return false; // already split
   if (el.closest('[data-bh-skip]')) return false; // opt-out hook
   if (el.closest('nav')) return false; // leave navigation intact
 
   const text = el.textContent?.trim() ?? '';
-  if (text.length === 0 || text.length > MAX_TEXT_LENGTH) return false;
+  // A 1-2 character label (an icon, a number) is a whole element split for
+  // almost no food — the bug runs dry while the layout still pays for it.
+  return text.length >= MIN_TEXT_LENGTH && text.length <= MAX_TEXT_LENGTH;
+}
 
-  const rect = el.getBoundingClientRect();
+/** Geometry half — needs layout, so callers must batch it. */
+function isOnScreen(rect: DOMRect): boolean {
   if (rect.width === 0 || rect.height === 0) return false;
-
   // Must be at least partially inside the viewport.
   const vh = window.innerHeight;
   const vw = window.innerWidth;
@@ -72,7 +93,10 @@ function splitElement(el: HTMLElement): void {
     span.textContent = char;
     // inline-block lets us scale the glyph to 0 when it is eaten.
     span.style.display = 'inline-block';
-    span.style.willChange = 'transform, opacity';
+    // No `will-change` here on purpose. These spans number in the hundreds and
+    // promoting every one of them to its own compositor layer costs far more
+    // than the transition it would smooth. `eatChar` opts a glyph in for the
+    // ~200 ms it actually animates, then drops it again.
     frag.appendChild(span);
   }
 
@@ -84,17 +108,33 @@ function splitElement(el: HTMLElement): void {
  * Idempotent: already-split elements are skipped. Returns how many were added.
  */
 export function harvestTargets(max: number): number {
+  // Budget check first — the cheapest way to split fewer elements is to notice
+  // there is still food on the plate.
+  const alive = document.querySelectorAll(`.${CHAR_CLASS}:not([${EATEN_ATTR}])`).length;
+  if (alive >= MAX_LIVE_CHARS) return 0;
+
   const root = document.querySelector('main') ?? document.body;
   const candidates = Array.from(root.querySelectorAll<HTMLElement>(TARGET_SELECTOR));
 
-  let added = 0;
-  for (const el of candidates) {
-    if (added >= max) break;
-    if (!isEdible(el)) continue;
-    splitElement(el);
-    added += 1;
+  // Phase 1 — cheap filter, no layout involved. DOM order is deliberate: it
+  // keeps the bug eating its way down the page the way it always did.
+  const shortlist = candidates.filter(isEdibleShape);
+
+  // Phase 2 — all layout reads together. Splitting an element invalidates
+  // layout, so a read/write/read loop forces a full reflow per candidate and
+  // turns this into a 50-120 ms long task. Batching keeps it to one reflow.
+  const picked: HTMLElement[] = [];
+  let budget = MAX_LIVE_CHARS - alive;
+  for (const el of shortlist) {
+    if (picked.length >= max || budget <= 0) break;
+    if (!isOnScreen(el.getBoundingClientRect())) continue;
+    picked.push(el);
+    budget -= el.textContent?.length ?? 0;
   }
-  return added;
+
+  // Phase 3 — writes only.
+  for (const el of picked) splitElement(el);
+  return picked.length;
 }
 
 /** All char spans that are still on the plate (visible, not yet eaten). */
@@ -121,6 +161,8 @@ export function eatChar(span: HTMLElement): void {
   eaten.push(span.textContent ?? '');
   span.style.transformOrigin = 'center';
   span.style.transition = 'transform .2s ease-in, opacity .2s ease-in';
+  // Promote just this one glyph, just while it moves.
+  span.style.willChange = 'transform, opacity';
   // Next frame so the transition actually runs.
   requestAnimationFrame(() => {
     // Sucked up toward the bug's mouth (which hovers just above) while shrinking.
@@ -129,6 +171,7 @@ export function eatChar(span: HTMLElement): void {
   });
   window.setTimeout(() => {
     span.style.display = 'none';
+    span.style.willChange = 'auto'; // give the layer back
   }, 210);
 }
 
