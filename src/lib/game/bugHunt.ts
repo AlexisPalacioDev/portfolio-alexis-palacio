@@ -87,6 +87,7 @@ export function initBugHunt(): void {
   let hammerScale = 1;
   // Grab / choke / shake-to-vomit (desktop direct manipulation).
   let hand: HTMLElement | null = null;
+  let handPx = 0; // sized once per hand instance so open→fist never resizes
   let grabbed = false;
   let dragVX = 0; // cursor velocity while dragging (px per move event)
   let dragVY = 0;
@@ -300,10 +301,12 @@ export function initBugHunt(): void {
       hand = document.createElement('div');
       hand.className = 'bh-hand';
       root.appendChild(hand);
+      // Measured only on creation: the fly can fatten mid-grab, and re-reading
+      // its width here would resize the hand the moment it closes.
+      handPx = handSize();
     }
-    const s = handSize();
-    hand.style.width = `${s}px`;
-    hand.style.height = `${s}px`;
+    hand.style.width = `${handPx}px`;
+    hand.style.height = `${handPx}px`;
     hand.innerHTML = handSprite(grab);
     hand.classList.toggle('bh-hand--grab', grab);
     hand.style.opacity = '1';
@@ -1179,11 +1182,8 @@ function injectStyles(): void {
       filter: drop-shadow(0 3px 3px rgba(0,0,0,0.45));
       transition: opacity 0.15s ease;
     }
-    .bh-hand--grab { animation: bh-squeeze 0.5s ease-in-out infinite; }
-    @keyframes bh-squeeze {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(0.9); }
-    }
+    /* The clenched fist keeps its size — the sprite already reads as a grip, and
+       pulsing the scale made the hand look like it was breathing. */
     /* The fly stops bobbing and struggles/chokes while it's in the grip. */
     .bh-bug--grabbed .bh-bob { animation: none; }
     .bh-bug--grabbed .bh-sprite { animation: bh-struggle 0.16s ease-in-out infinite; }
