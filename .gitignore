@@ -8,3 +8,5 @@ dist/
 playwright-report/
 test-results/
 .vercel
+# Local AI runtime state
+.atl/
