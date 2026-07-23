@@ -87,17 +87,17 @@ export const work: readonly WorkItem[] = [
     status: { en: 'Current', es: 'Actual' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'I lead the Next.js 16 / React 19 platform at anai (anaiapp.ai) — an AI SaaS that turns social content into viral short-form videos through AI scripting, voice synthesis and a browser-native video editor. Leading a team of 5 developers.',
-      es: 'Lidero la plataforma Next.js 16 / React 19 de anai (anaiapp.ai) — un SaaS de IA que convierte contenido social en videos cortos virales mediante scripting con IA, síntesis de voz y un editor de video nativo en el browser. Lidero un equipo de 5 desarrolladores.',
+      en: 'I lead the Next.js 16 / React 19 platform at anai (anaiapp.ai) — an AI SaaS that turns social content into viral short-form videos through AI scripting, voice synthesis and a browser-native video editor. Leading a team of 4 developers, serving 3,000+ users with billing handled through Hotmart.',
+      es: 'Lidero la plataforma Next.js 16 / React 19 de anai (anaiapp.ai) — un SaaS de IA que convierte contenido social en videos cortos virales mediante scripting con IA, síntesis de voz y un editor de video nativo en el browser. Lidero un equipo de 4 desarrolladores, con +3.000 usuarios y cobros gestionados a través de Hotmart.',
     },
     bullets: {
       en: [
-        'Lead the Next.js 16 / React 19 frontend and the BFF architecture (Route Handlers → NestJS, Google OAuth, HttpOnly cookies) — managing 5 developers and coordinating sprint delivery',
+        'Lead the Next.js 16 / React 19 frontend and the BFF architecture (Route Handlers → NestJS, Google OAuth, HttpOnly cookies) — managing 4 developers and coordinating sprint delivery',
         'Built a browser-native video editor with WebCodecs, WebGL and WASM subtitle rendering',
         'Integrated Claude, GPT, Gemini, Veo 3.1 and ElevenLabs into an AI-assisted creation studio',
       ],
       es: [
-        'Lidero el frontend Next.js 16 / React 19 y la arquitectura BFF (Route Handlers → NestJS, Google OAuth, cookies HttpOnly) — gestionando 5 desarrolladores y coordinando la entrega de sprints',
+        'Lidero el frontend Next.js 16 / React 19 y la arquitectura BFF (Route Handlers → NestJS, Google OAuth, cookies HttpOnly) — gestionando 4 desarrolladores y coordinando la entrega de sprints',
         'Construí un editor de video nativo en el browser con WebCodecs, WebGL y renderizado de subtítulos por WASM',
         'Integré Claude, GPT, Gemini, Veo 3.1 y ElevenLabs en un estudio de creación asistido por IA',
       ],
@@ -266,24 +266,24 @@ export const work: readonly WorkItem[] = [
     status: { en: 'Archived', es: 'Archivado' },
     statusKey: WORK_STATUS.ARCHIVED,
     desc: {
-      en: 'An AI-powered educational platform with 10,000+ registered users that generates formative content based on Carl Jung\'s archetypes. Built from scratch with Next.js/React frontend, Supabase backend and real Stripe/PayPal payment processing.',
-      es: 'Plataforma educativa con IA con 10,000+ usuarios registrados que genera contenido formativo basado en los arquetipos de Carl Jung. Construida desde cero con frontend Next.js/React, backend Supabase y procesamiento de pagos reales con Stripe y PayPal.',
+      en: 'An AI-powered educational platform with 10,000+ registered users that generates formative content based on Carl Jung\'s archetypes. Built from scratch with Next.js/React frontend, Supabase backend and real subscription billing and payment processing.',
+      es: 'Plataforma educativa con IA con 10,000+ usuarios registrados que genera contenido formativo basado en los arquetipos de Carl Jung. Construida desde cero con frontend Next.js/React, backend Supabase y procesamiento de pagos y suscripciones reales.',
     },
     bullets: {
       en: [
         'Architected and built the full Next.js/React frontend with server-side rendering, auth flows and responsive design serving 10,000+ users',
-        'Implemented real payment processing with Stripe and PayPal — integrated webhooks, subscription management and payment lifecycle handling',
+        'Implemented real subscription billing — webhooks, subscription management and full payment lifecycle handling',
         'Built an AI content generation pipeline using ChatGPT API with structured prompting and RAG over primary Jungian texts for philosophical accuracy',
         'Designed Supabase database schema, Row Level Security policies and real-time features for user content delivery',
       ],
       es: [
         'Arquitecté y construí el frontend completo en Next.js/React con renderizado server-side, flujos de autenticación y diseño responsivo sirviendo a 10,000+ usuarios',
-        'Implementé procesamiento de pagos reales con Stripe y PayPal — integré webhooks, gestión de suscripciones y manejo del ciclo de vida de pagos',
+        'Implementé cobros y suscripciones reales — webhooks, gestión de suscripciones y manejo completo del ciclo de vida de pagos',
         'Construí un pipeline de generación de contenido con IA usando ChatGPT API con prompting estructurado y RAG sobre textos jungianos primarios para precisión filosófica',
         'Diseñé el esquema de base de datos en Supabase, políticas de seguridad Row Level Security y funcionalidades en tiempo real para entrega de contenido',
       ],
     },
-    tags: ['Next.js', 'React', 'Supabase', 'Stripe', 'PayPal', 'ChatGPT API', 'RAG'],
+    tags: ['Next.js', 'React', 'Supabase', 'ChatGPT API', 'RAG'],
   },
 
   // 5 — BunnyGymWear
@@ -320,7 +320,7 @@ export const work: readonly WorkItem[] = [
         'Diseñé UI coherente con la marca, acorde a la estética fitness energética',
       ],
     },
-    tags: ['Next.js', 'Node.js', 'MongoDB', 'Stripe', 'TypeScript'],
+    tags: ['Next.js', 'Node.js', 'MongoDB', 'TypeScript'],
   },
 
   // 6 — To-Do Automation
