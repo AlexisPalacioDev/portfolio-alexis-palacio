@@ -232,6 +232,57 @@
   }
   .lang-item { font-size: 13.5px; color: #444; }
   .lang-item strong { color: #111; }
+
+  /* ─── PRINT / PDF ──────────────────────────────────────────────────────────
+     The on-screen layout is a single tall "card". Printed, the browser has to
+     split it across A4 pages — and with no rules it slices straight through
+     project cards, skill groups and even section titles. These rules give the
+     page real top/bottom margins and forbid breaking any atomic block, so every
+     card, badge row and job stays whole on one page. */
+  @media print {
+    @page {
+      size: A4;
+      margin: 16mm 14mm;   /* generous top/bottom, comfortable sides */
+    }
+    body {
+      background: #fff;
+      padding: 0;
+      /* Keep the blue accents, tag chips and colored text in the PDF —
+         Chrome drops backgrounds otherwise. */
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    /* Drop the screen-only card chrome; @page now owns all the margins. */
+    .page {
+      max-width: none;
+      margin: 0;
+      box-shadow: none;
+      border-radius: 0;
+      overflow: visible;
+    }
+    .header { padding: 0 0 20px; }
+    .body   { padding: 22px 0 0; }
+
+    /* Never split these across a page break. */
+    .header,
+    .skill-group,
+    .exp-item,
+    .project-item,
+    .two-col > div,
+    .exp-bullets li,
+    .cert-list li {
+      break-inside: avoid;
+    }
+    /* Keep a section/job title glued to the content that follows it. */
+    .section-title,
+    .exp-header,
+    .project-item h4 {
+      break-after: avoid;
+    }
+    /* Let a long section (Experience) flow across pages, but never orphan its
+       heading at the very bottom of a page. */
+    .section { break-inside: auto; }
+  }
 </style>
 </head>
 <body>
