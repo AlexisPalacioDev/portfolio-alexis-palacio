@@ -28,7 +28,7 @@ export const I18N = {
     hero_h1: 'Hi, I’m Alexis.',
     hero_h1_accent: 'I lead products from idea to production.',
     hero_sub:
-      'Lead full-stack developer specializing in AI. I architect and ship web platforms end to end — from the Next.js frontend to the AI orchestration underneath — and I make the complex stuff easy to follow, whoever I’m talking to.',
+      'Lead full-stack developer specializing in AI. I architect and ship web platforms end to end — from the frontend to the AI orchestration underneath — and I make the complex stuff easy to follow, whoever I’m talking to.',
     hero_cta_hire: 'Hire me',
     hero_cta_cv: 'Download CV',
     hero_scroll: 'Scroll',
@@ -38,9 +38,9 @@ export const I18N = {
     about_label: 'ABOUT',
     about_h2: 'Here’s how I work.',
     about_p1:
-      'I’m Alexis, a full-stack developer with 5+ years building web products from start to finish. What I’m best at is taking a messy, half-defined problem, using good judgment to shape it, and owning it end to end — scoping it, building it, and shipping it to production.',
+      'I’m Alexis, a full-stack developer with 5+ years building web products from start to finish. What I do best is solve problems — especially the messy, half-defined ones nobody knows where to start with. I own them end to end and I don’t let go until they’re running in production.',
     about_p2:
-      'These last couple of years I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). And I’m always up for learning whatever tech a project needs — honestly, that’s the part I enjoy most.',
+      'This past year I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). And I’m always up for learning whatever tech a project needs — honestly, that’s the part I enjoy most.',
     about_p3:
       'Right now I lead development at anai, an AI content-generation product. I care about my team as much as the person on the other side of the screen: I keep the team unblocked, communicate clearly, and sweat the details so the work actually lands.',
     stat_years: 'Years shipping to production',
@@ -145,7 +145,7 @@ export const I18N = {
     hero_h1: 'Hola, soy Alexis.',
     hero_h1_accent: 'Llevo productos de la idea a producción.',
     hero_sub:
-      'Lead full-stack developer especializado en IA. Diseño y construyo plataformas web de punta a punta — del frontend en Next.js a la orquestación de IA que va por debajo — y hago que lo complejo se entienda fácil, sea con quien sea que esté hablando.',
+      'Lead full-stack developer especializado en IA. Diseño y construyo plataformas web de punta a punta — del frontend a la orquestación de IA que va por debajo — y hago que lo complejo se entienda fácil, sea con quien sea que esté hablando.',
     hero_cta_hire: 'Contrátame',
     hero_cta_cv: 'Descargar CV',
     hero_scroll: 'Baja',
@@ -155,9 +155,9 @@ export const I18N = {
     about_label: 'SOBRE MÍ',
     about_h2: 'Así trabajo.',
     about_p1:
-      'Soy Alexis, full-stack developer con 5+ años construyendo productos web de principio a fin. En lo que mejor me muevo es en tomar un problema desordenado y a medio definir, usar buen criterio para darle forma, y apropiármelo de punta a punta — definirlo, construirlo y llevarlo a producción.',
+      'Soy Alexis, full-stack developer con 5+ años construyendo productos web de principio a fin. Lo que mejor hago es resolver problemas — sobre todo los desordenados y a medio definir, esos que nadie sabe por dónde agarrar. Me los apropio de punta a punta y no los suelto hasta verlos funcionando en producción.',
     about_p2:
-      'Estos últimos años me metí a fondo en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). Y estoy abierto a aprender cualquier tecnología que el proyecto necesite — la verdad, esa es la parte que más disfruto.',
+      'Este último año me metí a fondo en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). Y estoy abierto a aprender cualquier tecnología que el proyecto necesite — la verdad, esa es la parte que más disfruto.',
     about_p3:
       'Hoy lidero el desarrollo en anai, un producto de generación de contenido con IA. Me importa tanto mi equipo como la persona del otro lado de la pantalla: mantengo al equipo sin bloqueos, comunico con claridad y cuido los detalles para que el trabajo de verdad aterrice.',
     stat_years: 'Años entregando a producción',
