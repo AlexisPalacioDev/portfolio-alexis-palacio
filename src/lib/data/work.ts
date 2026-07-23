@@ -87,17 +87,17 @@ export const work: readonly WorkItem[] = [
     status: { en: 'Current', es: 'Actual' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'I lead the Next.js 16 / React 19 platform at anai (anaiapp.ai) — an AI SaaS that turns social content into viral short-form videos through AI scripting, voice synthesis and a browser-native video editor. Leading a team of 4 developers, serving 3,000+ users with billing handled through Hotmart.',
-      es: 'Lidero la plataforma Next.js 16 / React 19 de anai (anaiapp.ai) — un SaaS de IA que convierte contenido social en videos cortos virales mediante scripting con IA, síntesis de voz y un editor de video nativo en el browser. Lidero un equipo de 4 desarrolladores, con +3.000 usuarios y cobros gestionados a través de Hotmart.',
+      en: 'I lead the Next.js 16 / React 19 platform at anai (anaiapp.ai) — an AI SaaS that turns social content into viral short-form videos through AI scripting, voice synthesis and a browser-native video editor. Leading the engineering team, serving thousands of users with billing handled through Hotmart.',
+      es: 'Lidero la plataforma Next.js 16 / React 19 de anai (anaiapp.ai) — un SaaS de IA que convierte contenido social en videos cortos virales mediante scripting con IA, síntesis de voz y un editor de video nativo en el browser. Lidero el equipo de desarrollo, con miles de usuarios y cobros gestionados a través de Hotmart.',
     },
     bullets: {
       en: [
-        'Lead the Next.js 16 / React 19 frontend and the BFF architecture (Route Handlers → NestJS, Google OAuth, HttpOnly cookies) — managing 4 developers and coordinating sprint delivery',
+        'Lead the Next.js 16 / React 19 frontend and the BFF architecture (Route Handlers → NestJS, Google OAuth, HttpOnly cookies) — leading the engineering team and coordinating sprint delivery',
         'Built a browser-native video editor with WebCodecs, WebGL and WASM subtitle rendering',
         'Integrated Claude, GPT, Gemini, Veo 3.1 and ElevenLabs into an AI-assisted creation studio',
       ],
       es: [
-        'Lidero el frontend Next.js 16 / React 19 y la arquitectura BFF (Route Handlers → NestJS, Google OAuth, cookies HttpOnly) — gestionando 4 desarrolladores y coordinando la entrega de sprints',
+        'Lidero el frontend Next.js 16 / React 19 y la arquitectura BFF (Route Handlers → NestJS, Google OAuth, cookies HttpOnly) — liderando el equipo de desarrollo y coordinando la entrega de sprints',
         'Construí un editor de video nativo en el browser con WebCodecs, WebGL y renderizado de subtítulos por WASM',
         'Integré Claude, GPT, Gemini, Veo 3.1 y ElevenLabs en un estudio de creación asistido por IA',
       ],
