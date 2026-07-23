@@ -44,7 +44,7 @@ const MENU_DELAY_MS = 1600; // delay before the weapons menu slides in
 const BASE_HIT_RADIUS = 46; // px; grows with the bug's fatness
 const SPRAY_RANGE = 150; // px; how far the held aerosol reaches the fly
 const SPRAY_INTERVAL_MS = 70; // puff cadence while the trigger is held
-const HAND_PX = 96; // fixed cursor-hand size — deliberately NOT tied to the bug's
+const HAND_PX = 72; // fixed cursor-hand size — deliberately NOT tied to the bug's
 // fatness. It's a hand, not a glove that stretches: a fresh hand is created on
 // every hover, so deriving its size from the (growing) bug made it balloon as
 // the fly ate. Constant size, stable across stages.
