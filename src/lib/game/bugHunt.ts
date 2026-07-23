@@ -44,6 +44,10 @@ const MENU_DELAY_MS = 1600; // delay before the weapons menu slides in
 const BASE_HIT_RADIUS = 46; // px; grows with the bug's fatness
 const SPRAY_RANGE = 150; // px; how far the held aerosol reaches the fly
 const SPRAY_INTERVAL_MS = 70; // puff cadence while the trigger is held
+const HAND_PX = 96; // fixed cursor-hand size — deliberately NOT tied to the bug's
+// fatness. It's a hand, not a glove that stretches: a fresh hand is created on
+// every hover, so deriving its size from the (growing) bug made it balloon as
+// the fly ate. Constant size, stable across stages.
 
 type State = 'idle' | 'active' | 'cooldown';
 
@@ -87,7 +91,6 @@ export function initBugHunt(): void {
   let hammerScale = 1;
   // Grab / choke / shake-to-vomit (desktop direct manipulation).
   let hand: HTMLElement | null = null;
-  let handPx = 0; // sized once per hand instance so open→fist never resizes
   let grabbed = false;
   let dragVX = 0; // cursor velocity while dragging (px per move event)
   let dragVY = 0;
@@ -299,9 +302,6 @@ export function initBugHunt(): void {
   }
 
   // ── Grab / choke / shake (desktop direct manipulation) ────────────────────
-  function handSize(): number {
-    return Math.max(60, bugW() * 0.85);
-  }
 
   /** Create/update the hand cursor and show it (open hand or clenched fist). */
   function showHand(grab: boolean): void {
@@ -309,13 +309,10 @@ export function initBugHunt(): void {
     if (!hand) {
       hand = document.createElement('div');
       hand.className = 'bh-hand';
+      hand.style.width = `${HAND_PX}px`;
+      hand.style.height = `${HAND_PX}px`;
       root.appendChild(hand);
-      // Measured only on creation: the fly can fatten mid-grab, and re-reading
-      // its width here would resize the hand the moment it closes.
-      handPx = handSize();
     }
-    hand.style.width = `${handPx}px`;
-    hand.style.height = `${handPx}px`;
     hand.innerHTML = handSprite(grab);
     hand.classList.toggle('bh-hand--grab', grab);
     hand.style.opacity = '1';
