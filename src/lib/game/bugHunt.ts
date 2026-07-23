@@ -178,6 +178,15 @@ export function initBugHunt(): void {
       bug.addEventListener('mousedown', onGrabStart);
     }
 
+    // Touch: there is no hover/grab affordance, so arm the hammer by default —
+    // a single tap on the fly swats it immediately, no weapons-menu trip
+    // required. The menu still slides in as an optional upgrade to the lethal
+    // insecticide (tap it, then tap the fly to kill).
+    if (isTouch()) {
+      armed = true;
+      weapon = 'hammer';
+    }
+
     // Fly in from a random side, a little below the top nav.
     const fromLeft = Math.random() < 0.5;
     const startX = fromLeft ? -bugW() : window.innerWidth + bugW();
@@ -533,6 +542,13 @@ export function initBugHunt(): void {
   }
 
   // ── Weapons menu ──────────────────────────────────────────────────────────
+  /** Touch only: highlight the currently selected weapon in the menu. */
+  function setTouchWeaponActive(kind: 'hammer' | 'spray'): void {
+    menu?.querySelectorAll<HTMLElement>('.bh-weapon').forEach((b) =>
+      b.classList.toggle('bh-weapon--active', b.dataset.weapon === kind)
+    );
+  }
+
   function showMenu(): void {
     if (state !== 'active' || !root || menu) return;
 
@@ -558,9 +574,21 @@ export function initBugHunt(): void {
     menu.querySelectorAll<HTMLButtonElement>('.bh-weapon').forEach((btn) =>
       btn.addEventListener('click', () => {
         const kind = btn.dataset.weapon === 'spray' ? 'spray' : 'hammer';
-        arm(kind);
+        if (isTouch()) {
+          // Touch: the hammer is already armed by default; the menu just
+          // switches the active weapon. Tap the fly to strike (hammer) or
+          // kill (insecticide).
+          weapon = kind;
+          armed = true;
+          setTouchWeaponActive(kind);
+        } else {
+          arm(kind);
+        }
       })
     );
+
+    // Touch: reflect the default-armed weapon (hammer) as selected right away.
+    if (isTouch() && armed && weapon) setTouchWeaponActive(weapon);
 
     // Slide in on the next frame.
     requestAnimationFrame(() => menu?.classList.add('bh-menu--open'));
