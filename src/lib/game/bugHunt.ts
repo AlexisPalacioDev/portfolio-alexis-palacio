@@ -39,7 +39,7 @@ const EAT_PAUSE_MS = 230; // pause on a letter before moving on
 const LETTERS_PER_STAGE = 6; // letters eaten per fatness bump (slow, deliberate)
 const HAMMER_CHARGE_MS = 700; // hold-to-charge: time to reach a full-power swing
 const MAX_STAGE = 5; // cap on fatness
-const HARVEST_BATCH = 6; // elements split per refill
+const HARVEST_BATCH = 2; // elements split per refill — letters.ts caps the total
 const MENU_DELAY_MS = 1600; // delay before the weapons menu slides in
 const BASE_HIT_RADIUS = 46; // px; grows with the bug's fatness
 const SPRAY_RANGE = 150; // px; how far the held aerosol reaches the fly
@@ -87,6 +87,7 @@ export function initBugHunt(): void {
   let hammerScale = 1;
   // Grab / choke / shake-to-vomit (desktop direct manipulation).
   let hand: HTMLElement | null = null;
+  let handPx = 0; // sized once per hand instance so open→fist never resizes
   let grabbed = false;
   let dragVX = 0; // cursor velocity while dragging (px per move event)
   let dragVY = 0;
@@ -309,10 +310,12 @@ export function initBugHunt(): void {
       hand = document.createElement('div');
       hand.className = 'bh-hand';
       root.appendChild(hand);
+      // Measured only on creation: the fly can fatten mid-grab, and re-reading
+      // its width here would resize the hand the moment it closes.
+      handPx = handSize();
     }
-    const s = handSize();
-    hand.style.width = `${s}px`;
-    hand.style.height = `${s}px`;
+    hand.style.width = `${handPx}px`;
+    hand.style.height = `${handPx}px`;
     hand.innerHTML = handSprite(grab);
     hand.classList.toggle('bh-hand--grab', grab);
     hand.style.opacity = '1';
@@ -1127,14 +1130,25 @@ export function initBugHunt(): void {
   // restoreAll() puts back the ORIGINAL (pre-switch-language) HTML for any text
   // we'd split, which would clobber the just-applied translation — so re-apply
   // the current language right after, fixing any element we had eaten.
+  //
+  // The observer disconnects around its own re-apply: applyLang writes html[lang],
+  // and an attribute write notifies observers even when the value is unchanged,
+  // so re-entering here would loop forever and freeze the tab. apply.ts also
+  // guards the write; this belt-and-braces keeps the loop impossible even if a
+  // future caller writes the attribute unconditionally again.
+  const watchLang = (): void =>
+    langObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['lang'],
+    });
+
   const langObserver = new MutationObserver(() => {
+    langObserver.disconnect(); // also drops any records already queued
     kill();
     applyLang(document.documentElement.lang);
+    watchLang();
   });
-  langObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['lang'],
-  });
+  watchLang();
 
   // Begin the idle countdown.
   scheduleIdle();
@@ -1165,9 +1179,16 @@ function injectStyles(): void {
        stacking context, so without this it sits at level auto(0) and any page
        element with z-index >= 1 (e.g. the hero content at z-index 3) paints
        over the whole game. Lift the root above everything. */
-    .bh-root { position: fixed; inset: 0; pointer-events: none; z-index: 2147483000; }
+    /* contain:layout keeps the game's ~150 fixed/absolute nodes out of the
+       page's own layout pass — they can move without dirtying the document. */
+    .bh-root {
+      position: fixed; inset: 0; pointer-events: none; z-index: 2147483000;
+      contain: layout style;
+    }
 
-    .bh-char { will-change: transform, opacity; }
+    /* No blanket will-change on .bh-char. Dozens of glyphs are live at once and
+       promoting every one of them to its own compositor layer costs far more
+       than it saves — letters.ts opts a glyph in only while it is being eaten. */
 
     .bh-bug {
       position: fixed; left: 0; top: 0;
@@ -1189,11 +1210,8 @@ function injectStyles(): void {
       filter: drop-shadow(0 3px 3px rgba(0,0,0,0.45));
       transition: opacity 0.15s ease;
     }
-    .bh-hand--grab { animation: bh-squeeze 0.5s ease-in-out infinite; }
-    @keyframes bh-squeeze {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(0.9); }
-    }
+    /* The clenched fist keeps its size — the sprite already reads as a grip, and
+       pulsing the scale made the hand look like it was breathing. */
     /* The fly stops bobbing and struggles/chokes while it's in the grip. */
     .bh-bug--grabbed .bh-bob { animation: none; }
     .bh-bug--grabbed .bh-sprite { animation: bh-struggle 0.16s ease-in-out infinite; }

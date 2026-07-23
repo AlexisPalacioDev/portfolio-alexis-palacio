@@ -39,9 +39,15 @@ export function applyLang(lang: string): void {
       el.textContent = lang === 'es' ? el.dataset.es ?? '' : el.dataset.en ?? '';
     });
 
-  // Mirror lang onto <html> for CSS/a11y consumers
-  document.documentElement.lang = lang;
-  document.documentElement.setAttribute('data-lang', lang);
+  // Mirror lang onto <html> for CSS/a11y consumers.
+  //
+  // Guarded on purpose: writing an attribute notifies MutationObservers even
+  // when the value is identical. bugHunt watches html[lang] and calls back into
+  // applyLang, so an unconditional write here is an infinite loop that freezes
+  // the tab on every language switch. Only write when the value actually moves.
+  const root = document.documentElement;
+  if (root.lang !== lang) root.lang = lang;
+  if (root.getAttribute('data-lang') !== lang) root.setAttribute('data-lang', lang);
 }
 
 // Subscribe to changes. The subscriber is called immediately with the
