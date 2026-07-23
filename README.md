@@ -2,7 +2,7 @@
 
 Personal portfolio site for Alexis Palacio, AI Engineer & Full-Stack Developer.
 
-**Live:** [alexispalacio.dev](https://alexispalacio.dev)
+**Live:** [portfolio-alexis-palacio.vercel.app](https://portfolio-alexis-palacio.vercel.app)
 
 ---
 
@@ -60,7 +60,7 @@ To add a project: add an entry to the `work` array in `src/lib/data/work.ts` and
 
 1. Import the repository on [vercel.com](https://vercel.com)
 2. Vercel auto-detects the `vercel.json` — no further config needed
-3. Set domain to `alexispalacio.dev` in project settings
+3. (Optional) Assign a custom domain in project settings if/when one is purchased — the site works fine on the default Vercel URL
 
 ### Any Static Host (Netlify, Cloudflare Pages, GitHub Pages)
 
