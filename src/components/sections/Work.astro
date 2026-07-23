@@ -200,10 +200,13 @@ const activeItem = work[ACTIVE];
                   'width: var(--card-w); height: var(--card-h);',
                   `transform: translate(-50%, -50%) ${transform};`,
                   `z-index: ${geo.zIndex};`,
-                  `transition: transform .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease, box-shadow .35s ease, border-color .3s ease;`,
+                  `transition: transform .55s cubic-bezier(.2,.7,.2,1), opacity .4s ease, box-shadow .35s ease, border-color .3s ease, filter .35s ease;`,
                   `will-change: transform;`,
                   isVisible ? 'opacity: 1; pointer-events: auto;' : 'opacity: 0; pointer-events: none;',
                   `border: 1px solid ${geo.isFront ? '#C6F24E' : '#2C2F38'};`,
+                  // Non-front cards recede: darkened + desaturated so the stack reads
+                  // as depth instead of competing, half-legible cover art bleeding at the edges.
+                  `filter: ${geo.isFront ? 'none' : 'brightness(0.42) saturate(0.72)'};`,
                   `box-shadow: ${geo.isFront ? '0 24px 60px rgba(0,0,0,0.55)' : '0 12px 30px rgba(0,0,0,0.4)'};`,
                   'background: #14151A;',
                   'cursor: pointer;',
@@ -393,13 +396,6 @@ const activeItem = work[ACTIVE];
       >
         GitHub → AlexisPalacioDev <span aria-hidden="true">↗</span>
       </a>
-      <span
-        class="font-mono text-faint"
-        style="font-size: 12px;"
-        data-i18n="work_earlier"
-      >
-        {t('en', 'work_earlier')}
-      </span>
     </div>
 
   </div>

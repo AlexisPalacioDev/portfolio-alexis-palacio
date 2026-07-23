@@ -8,5 +8,10 @@ export default defineConfig({
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      // Allow reaching the dev server over any Tailscale tailnet host (MagicDNS)
+      // for on-device review. Dev-only; has no effect on the static build.
+      allowedHosts: ['.ts.net'],
+    },
   },
 });

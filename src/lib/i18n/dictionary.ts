@@ -94,7 +94,6 @@ export const I18N = {
       'Real products with real users — not tutorial exercises.',
     projects_view: 'Open',
     projects_code: 'Code',
-    work_earlier: 'Earlier — Frontend Developer @ K Gumi & Wiptool (2020–2024)',
 
     // ── Services ──────────────────────────────────────────────────────────
     services_label: 'FREELANCE',
@@ -210,7 +209,6 @@ export const I18N = {
       'Productos de verdad, con usuarios de verdad — no ejercicios de tutorial.',
     projects_view: 'Abrir',
     projects_code: 'Código',
-    work_earlier: 'Antes — Frontend Developer en K Gumi y Wiptool (2020–2024)',
 
     // ── Services ──────────────────────────────────────────────────────────
     services_label: 'FREELANCE',

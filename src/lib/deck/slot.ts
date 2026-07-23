@@ -32,9 +32,9 @@ export function computeSlot(index: number, active: number, total: number): SlotG
   const s = ((index - active) % total + total) % total;
   return {
     s,
-    tx: s * 42,
-    ty: s * 16,
-    scale: 1 - s * 0.055,
+    tx: s * 30,
+    ty: s * 13,
+    scale: 1 - s * 0.06,
     hidden: s > 3,
     zIndex: total - s,
     isFront: s === 0,

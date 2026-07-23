@@ -96,11 +96,11 @@ describe('computeSlot()', () => {
       expect(g.scale).toBe(1);
     });
 
-    it('slot 1 card has tx=42, ty=16, scale=0.945', () => {
+    it('slot 1 card has tx=30, ty=13, scale=0.94', () => {
       const g = computeSlot(1, 0, N);
-      expect(g.tx).toBe(42);
-      expect(g.ty).toBe(16);
-      expect(g.scale).toBeCloseTo(1 - 0.055);
+      expect(g.tx).toBe(30);
+      expect(g.ty).toBe(13);
+      expect(g.scale).toBeCloseTo(1 - 0.06);
     });
 
     it('scale is monotonically decreasing with slot', () => {
@@ -131,7 +131,7 @@ describe('buildCardTransform()', () => {
   it('returns correct CSS transform for slot 1', () => {
     const g = computeSlot(1, 0, N);
     const result = buildCardTransform(g);
-    expect(result).toContain('translate(42px, 16px)');
+    expect(result).toContain('translate(30px, 13px)');
     expect(result).toContain('skewY(-3deg)');
   });
 });

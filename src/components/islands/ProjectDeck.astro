@@ -110,6 +110,8 @@
       : geo.isFront
         ? '0 24px 60px rgba(0,0,0,0.55)'
         : '0 12px 30px rgba(0,0,0,0.4)';
+    // Recede non-front cards (unless hover-lifted) so the fan reads as depth.
+    card.style.filter = geo.isFront || lifted ? 'none' : 'brightness(0.42) saturate(0.72)';
     card.setAttribute('tabindex', isVisible ? '0' : '-1');
   }
 
