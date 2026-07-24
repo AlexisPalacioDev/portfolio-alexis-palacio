@@ -20,6 +20,16 @@ export const WORK_STATUS = {
 export type WorkStatusKey = (typeof WORK_STATUS)[keyof typeof WORK_STATUS];
 
 // ── Links ─────────────────────────────────────────────────────────────────────
+/**
+ * GitHub profile overview — the fallback "Code" target.
+ *
+ * Several of these projects live in private repos, so linking straight at them
+ * gives an anonymous visitor a 404. Those point here instead: the profile
+ * overview, where the README presents the work. Same for a project whose
+ * product domain has lapsed.
+ */
+export const GITHUB_OVERVIEW = 'https://github.com/AlexisPalacioDev';
+
 export interface WorkLinks {
   /** "Open" — live demo or product URL. null when not public. */
   link: string | null;
@@ -221,7 +231,8 @@ export const work: readonly WorkItem[] = [
     name: 'AppTreeking',
     accent: '#46C97E',
     cover: coverApptreeking,
-    links: { link: null, code: 'https://github.com/AlexisPalacioDev/apptreeking' },
+    // Repo is private — a direct link 404s for visitors. Point at the profile.
+    links: { link: null, code: GITHUB_OVERVIEW },
     period: { en: '2025 — 2026', es: '2025 — 2026' },
     role: {
       en: 'Full-Stack Mobile Developer',
@@ -256,7 +267,9 @@ export const work: readonly WorkItem[] = [
     name: 'Carl Jung AI',
     accent: '#C6F24E',
     cover: coverCarljung,
-    links: { link: 'https://carljung.app', code: null },
+    // carljung.app no longer resolves (domain lapsed) — the "Open" button was a
+    // dead end. Until it's back up, send visitors to the profile instead.
+    links: { link: null, code: GITHUB_OVERVIEW },
     period: { en: '2023', es: '2023' },
     role: {
       en: 'AI Engineer & Full-Stack Developer',
@@ -330,7 +343,11 @@ export const work: readonly WorkItem[] = [
     name: 'To-Do Automation',
     accent: '#3DD6C0',
     cover: coverTodo,
-    links: { link: 'https://todo-automation-challenge.vercel.app', code: 'https://github.com/AlexisPalacioDev' },
+    // The code link pointed at the bare profile; this repo is public, so link it.
+    links: {
+      link: 'https://todo-automation-challenge.vercel.app',
+      code: 'https://github.com/AlexisPalacioDev/todo-automation-challenge',
+    },
     period: { en: '2023', es: '2023' },
     role: {
       en: 'AI Engineer & Developer',
@@ -367,7 +384,8 @@ export const work: readonly WorkItem[] = [
     name: 'PoisonFlix',
     accent: '#E50914',
     cover: coverPoisonflix,
-    links: { link: null, code: 'https://github.com/AlexisPalacioDev/poisonflix-web' },
+    // Repo is private — a direct link 404s for visitors. Point at the profile.
+    links: { link: null, code: GITHUB_OVERVIEW },
     period: { en: '2025', es: '2025' },
     role: {
       en: 'Full-Stack Developer & DevOps',
@@ -404,7 +422,8 @@ export const work: readonly WorkItem[] = [
     name: 'PoisonOS',
     accent: '#00D4AA',
     cover: coverPoisonos,
-    links: { link: null, code: 'https://github.com/AlexisPalacioDev/hy300-poisonos' },
+    // Repo is private — a direct link 404s for visitors. Point at the profile.
+    links: { link: null, code: GITHUB_OVERVIEW },
     period: { en: '2025', es: '2025' },
     role: {
       en: 'Android Developer & Systems Engineer',
