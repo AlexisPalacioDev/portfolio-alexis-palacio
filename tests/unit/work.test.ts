@@ -8,7 +8,6 @@ const EXPECTED_IDS = [
   'imometrics',
   'sticker-drops',
   'apptreeking',
-  'carljung',
   'bunnygymwear',
   'todo-automation',
   'poisonflix',
@@ -30,8 +29,8 @@ const VALID_STATUS_KEYS = Object.values(WORK_STATUS);
 const HEX_RE = /^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$/;
 
 describe('work[] data model', () => {
-  it('has exactly 11 items', () => {
-    expect(work.length).toBe(11);
+  it('has exactly 10 items', () => {
+    expect(work.length).toBe(10);
   });
 
   it('has items in expected order (most-recent first)', () => {

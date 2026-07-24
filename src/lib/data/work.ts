@@ -70,7 +70,6 @@ import coverAnai from '../../assets/preview-anai.png';
 import coverImometrics from '../../assets/preview-imometrics.png';
 import coverSticker from '../../assets/preview-sticker.png';
 import coverApptreeking from '../../assets/preview-apptreeking.png';
-import coverCarljung from '../../assets/cover-carljung.png';
 import coverBunny from '../../assets/preview-bunny.png';
 import coverTodo from '../../assets/preview-todo.png';
 import coverExtraction from '../../assets/preview-extraction-survivors.png';
@@ -263,46 +262,7 @@ export const work: readonly WorkItem[] = [
     tags: ['Expo / React Native', 'TypeScript', 'Supabase', 'Wompi', 'Next.js'],
   },
 
-  // 4 — Carl Jung AI
-  {
-    id: 'carljung',
-    company: 'Carl Jung AI',
-    name: 'Carl Jung AI',
-    accent: '#C6F24E',
-    cover: coverCarljung,
-    // carljung.app no longer resolves (domain lapsed) — the "Open" button was a
-    // dead end. Until it's back up, send visitors to the profile instead.
-    links: { link: null, code: GITHUB_OVERVIEW },
-    period: { en: '2023', es: '2023' },
-    role: {
-      en: 'AI Engineer & Full-Stack Developer',
-      es: 'Ingeniero IA & Desarrollador Full-Stack',
-    },
-    kind: { en: 'Educational Platform with AI', es: 'Plataforma Educativa con IA' },
-    status: { en: 'Archived', es: 'Archivado' },
-    statusKey: WORK_STATUS.ARCHIVED,
-    desc: {
-      en: 'An AI-powered educational platform with 10,000+ registered users that generates formative content based on Carl Jung\'s archetypes. Built from scratch with Next.js/React frontend, Supabase backend and real subscription billing and payment processing.',
-      es: 'Plataforma educativa con IA con 10,000+ usuarios registrados que genera contenido formativo basado en los arquetipos de Carl Jung. Construida desde cero con frontend Next.js/React, backend Supabase y procesamiento de pagos y suscripciones reales.',
-    },
-    bullets: {
-      en: [
-        'Architected and built the full Next.js/React frontend with server-side rendering, auth flows and responsive design serving 10,000+ users',
-        'Implemented real subscription billing — webhooks, subscription management and full payment lifecycle handling',
-        'Built an AI content generation pipeline using ChatGPT API with structured prompting and RAG over primary Jungian texts for philosophical accuracy',
-        'Designed Supabase database schema, Row Level Security policies and real-time features for user content delivery',
-      ],
-      es: [
-        'Arquitecté y construí el frontend completo en Next.js/React con renderizado server-side, flujos de autenticación y diseño responsivo sirviendo a 10,000+ usuarios',
-        'Implementé cobros y suscripciones reales — webhooks, gestión de suscripciones y manejo completo del ciclo de vida de pagos',
-        'Construí un pipeline de generación de contenido con IA usando ChatGPT API con prompting estructurado y RAG sobre textos jungianos primarios para precisión filosófica',
-        'Diseñé el esquema de base de datos en Supabase, políticas de seguridad Row Level Security y funcionalidades en tiempo real para entrega de contenido',
-      ],
-    },
-    tags: ['Next.js', 'React', 'Supabase', 'ChatGPT API', 'RAG'],
-  },
-
-  // 5 — BunnyGymWear
+  // 4 — BunnyGymWear
   {
     id: 'bunnygymwear',
     company: 'BunnyGymWear',
