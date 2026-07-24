@@ -122,7 +122,10 @@ export const work: readonly WorkItem[] = [
     name: 'Extraction Survivors',
     accent: '#3B6EF0',
     cover: coverExtraction,
-    links: { link: 'https://extraction-survivors-client.vercel.app', code: null },
+    links: {
+      link: 'https://extraction-survivors-client.vercel.app',
+      code: 'https://github.com/AlexisPalacioDev/extraction-survivors',
+    },
     period: { en: '2026', es: '2026' },
     role: {
       en: 'Game Developer · Solo',
@@ -384,8 +387,7 @@ export const work: readonly WorkItem[] = [
     name: 'PoisonFlix',
     accent: '#E50914',
     cover: coverPoisonflix,
-    // Repo is private — a direct link 404s for visitors. Point at the profile.
-    links: { link: null, code: GITHUB_OVERVIEW },
+    links: { link: null, code: 'https://github.com/AlexisPalacioDev/poisonflix-web' },
     period: { en: '2025', es: '2025' },
     role: {
       en: 'Full-Stack Developer & DevOps',
@@ -422,8 +424,7 @@ export const work: readonly WorkItem[] = [
     name: 'PoisonOS',
     accent: '#00D4AA',
     cover: coverPoisonos,
-    // Repo is private — a direct link 404s for visitors. Point at the profile.
-    links: { link: null, code: GITHUB_OVERVIEW },
+    links: { link: null, code: 'https://github.com/AlexisPalacioDev/hy300-poisonos' },
     period: { en: '2025', es: '2025' },
     role: {
       en: 'Android Developer & Systems Engineer',
