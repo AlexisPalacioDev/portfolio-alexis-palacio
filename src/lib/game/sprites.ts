@@ -328,12 +328,15 @@ function wingLayer(L: BugLayout): string {
   const grid = makeGrid(L.w, L.h);
   // A long translucent wing hinged at the thorax and swept back over the
   // abdomen. Kept see-through (CSS opacity) so length never reads as a slab.
-  const wingCx = L.th.cx - L.th.rx * 0.95;
-  const wingCy = L.th.cy - L.th.ry - 1;
   const wingRx = L.th.rx * 2.7;
-  // Height tracks width at a fixed ratio so the wing scales uniformly as the
-  // bug fattens — otherwise it only widened and thinned into an ugly hairline.
-  const wingRy = Math.max(2.5, wingRx * 0.34);
+  // Height grows with the ABDOMEN, not the thorax — the belly is what fattens,
+  // so tying the wing to it keeps the wing proportional to the body instead of
+  // thinning into a hairline over a big abdomen.
+  const wingRy = Math.max(3.5, L.ab.ry * 0.9);
+  const wingCx = L.th.cx - L.th.rx * 0.95;
+  // Anchor the wing's underside just above the thorax so the extra height grows
+  // UP-and-back over the body rather than sinking into it.
+  const wingCy = L.th.cy - L.th.ry - wingRy * 0.5;
   fillEllipse(grid, wingCx, wingCy, wingRx, wingRy, 'A');
   return `<g class="bh-wing">${gridToRects(grid)}</g>`;
 }
