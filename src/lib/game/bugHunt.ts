@@ -1228,6 +1228,17 @@ function injectStyles(): void {
     @keyframes bh-throb-mid   { 0%,100% { transform: scale(1,1); } 50% { transform: scale(1.04, 0.95); } }
     @keyframes bh-throb-light { 0%,100% { transform: scale(1,1); } 50% { transform: scale(1.025, 0.975); } }
 
+    /* Legs: each pivots around its own root (fill-box → top of its own shank)
+       and swings side to side. Alternating phase across the three reads as a
+       little scuttle. Kept subtle so it complements the idle bob, not fights it. */
+    .bh-leg { transform-box: fill-box; transform-origin: 50% 0%; }
+    .bh-leg--1 { animation: bh-step 0.36s ease-in-out infinite; }
+    .bh-leg--2 { animation: bh-step 0.36s ease-in-out infinite; animation-delay: -0.18s; }
+    .bh-leg--3 { animation: bh-step 0.36s ease-in-out infinite; }
+    @keyframes bh-step { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+    /* While grabbed, the legs flail — faster. */
+    .bh-bug--grabbed .bh-leg { animation-duration: 0.14s; }
+
     /* Thin translucent wing, flapping fast and hinged at the thorax. */
     .bh-wing { opacity: 0.32; transform-box: fill-box; transform-origin: right bottom; animation: bh-flutter 0.1s ease-in-out infinite; }
     @keyframes bh-flutter { 0%,100% { transform: rotate(3deg) scaleY(1); } 50% { transform: rotate(-24deg) scaleY(0.72); } }

@@ -256,10 +256,7 @@ function abdomenLayer(L: BugLayout): string {
     }
   }
 
-  // One rear leg trailing back under the abdomen, rooted into the body.
-  const legLen = 4 + Math.round(L.ab.ry * 0.4);
-  drawLeg(grid, Math.round(L.ab.cx + L.ab.rx * 0.15), Math.round(L.ab.cy + L.ab.ry) - 1, -1, legLen);
-
+  // Legs live in their own animated layer now (see legLayers) — not baked here.
   return `<g class="bh-seg bh-abdomen">${gridToRects(grid)}</g>`;
 }
 
@@ -268,13 +265,33 @@ function thoraxLayer(L: BugLayout): string {
   fillEllipse(grid, L.th.cx, L.th.cy, L.th.rx, L.th.ry, 'W');
   shadeBlob(grid, { highlight: true });
 
-  // Two legs under the thorax, splayed front/back, rooted into the body.
-  const footY = Math.round(L.th.cy + L.th.ry) - 1;
-  const legLen = 4 + Math.round(L.th.ry * 0.4);
-  drawLeg(grid, Math.round(L.th.cx - L.th.rx * 0.4), footY, -1, legLen);
-  drawLeg(grid, Math.round(L.th.cx + L.th.rx * 0.4), footY, 1, legLen);
-
+  // Legs live in their own animated layer now (see legLayers) — not baked here.
   return `<g class="bh-seg bh-thorax">${gridToRects(grid)}</g>`;
+}
+
+/**
+ * The three legs, each in its OWN <g> so it can pivot around its own root.
+ * Rendered behind the body layers, so each leg's root tucks under the body and
+ * only the shank below shows — which is what the CSS `bh-step` swing animates.
+ */
+function legLayers(L: BugLayout): string {
+  const abFootY = Math.round(L.ab.cy + L.ab.ry) - 1;
+  const thFootY = Math.round(L.th.cy + L.th.ry) - 1;
+  const legs = [
+    // rear leg trailing under the abdomen
+    { x: Math.round(L.ab.cx + L.ab.rx * 0.15), topY: abFootY, dir: -1, len: 4 + Math.round(L.ab.ry * 0.4) },
+    // back thorax leg
+    { x: Math.round(L.th.cx - L.th.rx * 0.4), topY: thFootY, dir: -1, len: 4 + Math.round(L.th.ry * 0.4) },
+    // front thorax leg
+    { x: Math.round(L.th.cx + L.th.rx * 0.4), topY: thFootY, dir: 1, len: 4 + Math.round(L.th.ry * 0.4) },
+  ];
+  return legs
+    .map((lg, i) => {
+      const grid = makeGrid(L.w, L.h);
+      drawLeg(grid, lg.x, lg.topY, lg.dir, lg.len);
+      return `<g class="bh-leg bh-leg--${i + 1}">${gridToRects(grid)}</g>`;
+    })
+    .join('');
 }
 
 function headLayer(L: BugLayout): string {
@@ -359,6 +376,7 @@ export function bugSprite(stage = 0): string {
     `shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg" ` +
     `preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">` +
     wingLayer(L) +
+    legLayers(L) +
     abdomenLayer(L) +
     thoraxLayer(L) +
     headLayer(L) +
