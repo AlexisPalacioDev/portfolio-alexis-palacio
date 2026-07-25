@@ -331,7 +331,9 @@ function wingLayer(L: BugLayout): string {
   const wingCx = L.th.cx - L.th.rx * 0.95;
   const wingCy = L.th.cy - L.th.ry - 1;
   const wingRx = L.th.rx * 2.7;
-  const wingRy = Math.max(2, L.th.ry * 0.62);
+  // Height tracks width at a fixed ratio so the wing scales uniformly as the
+  // bug fattens — otherwise it only widened and thinned into an ugly hairline.
+  const wingRy = Math.max(2.5, wingRx * 0.34);
   fillEllipse(grid, wingCx, wingCy, wingRx, wingRy, 'A');
   return `<g class="bh-wing">${gridToRects(grid)}</g>`;
 }

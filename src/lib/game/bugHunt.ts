@@ -44,6 +44,8 @@ const MENU_DELAY_MS = 1600; // delay before the weapons menu slides in
 const BASE_HIT_RADIUS = 46; // px; grows with the bug's fatness
 const SPRAY_RANGE = 150; // px; how far the held aerosol reaches the fly
 const SPRAY_INTERVAL_MS = 70; // puff cadence while the trigger is held
+const GROOM_CHANCE = 0.16; // odds a bite is skipped to perch on a button and groom
+const GROOM_COOLDOWN_MS = 9000; // min gap between grooming stops
 const HAND_PX = 72; // fixed cursor-hand size — deliberately NOT tied to the bug's
 // fatness. It's a hand, not a glove that stretches: a fresh hand is created on
 // every hover, so deriving its size from the (growing) bug made it balloon as
@@ -76,6 +78,7 @@ export function initBugHunt(): void {
   let facing = 1; // 1 = facing right, -1 = facing left
   let stage = 0;
   let eatenCount = 0;
+  let lastGroomAt = 0; // timestamp of the last grooming stop (throttles it)
   let armed = false;
   let weapon: 'hammer' | 'spray' | null = null;
   let cursorOffset = { x: 8, y: 36 }; // pointer→sprite offset, set per weapon
@@ -230,9 +233,62 @@ export function initBugHunt(): void {
     return bugCell(stage).h * PX;
   }
 
+  // ── Grooming: perch on a button and clean up like a real fly ──────────────
+  /** A visible, roughly button-sized element in the viewport to perch on. */
+  function pickPerch(): DOMRect | null {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const rects = Array.from(document.querySelectorAll<HTMLElement>('a[href], button'))
+      .filter((el) => !el.closest('.bh-root')) // never the game's own UI
+      .map((el) => el.getBoundingClientRect())
+      .filter(
+        (r) =>
+          r.width >= 90 &&
+          r.height >= 34 &&
+          r.top > 64 && // clear of the fixed nav
+          r.bottom < vh - 16 &&
+          r.left > 0 &&
+          r.right < vw
+      );
+    return rects.length ? (rects[Math.floor(Math.random() * rects.length)] ?? null) : null;
+  }
+
+  /** Fly to a button, land on it, and groom (rub the legs + wipe the head). */
+  function groom(): void {
+    const perch = pickPerch();
+    if (!perch || !bug) {
+      eatTimer = window.setTimeout(nextBite, EAT_PAUSE_MS);
+      return;
+    }
+    lastGroomAt = performance.now();
+    facing = Math.random() < 0.5 ? 1 : -1;
+    // Sit on top of the button — feet resting on its upper edge.
+    placeBug(perch.left + perch.width / 2 - bugW() / 2, perch.top - bugH() * 0.82, true);
+
+    eatTimer = window.setTimeout(() => {
+      if (state !== 'active' || !bug) return;
+      bug.classList.add('bh-bug--grooming');
+      const dur = 2200 + Math.random() * 1500;
+      eatTimer = window.setTimeout(() => {
+        bug?.classList.remove('bh-bug--grooming');
+        eatTimer = window.setTimeout(nextBite, EAT_PAUSE_MS);
+      }, dur);
+    }, FLIGHT_MS);
+  }
+
   // ── Eating loop ─────────────────────────────────────────────────────────
   function nextBite(): void {
     if (state !== 'active' || !bug) return;
+
+    // Every so often, take a break to perch on a button and groom.
+    if (
+      eatenCount >= 3 &&
+      performance.now() - lastGroomAt > GROOM_COOLDOWN_MS &&
+      Math.random() < GROOM_CHANCE
+    ) {
+      groom();
+      return;
+    }
 
     let targets = liveChars();
     if (targets.length === 0) {
@@ -251,6 +307,13 @@ export function initBugHunt(): void {
     const c = charCenter(target);
     facing = c.x >= bugCenter.x ? 1 : -1;
     placeBug(c.x - bugW() / 2 - facing * bugW() * 0.32, c.y - bugH() * 0.45, true);
+
+    // Scale the mouth to the glyph: a hero headline letter gets a much wider
+    // gape than a body-copy one. Baseline ~ body text; clamped so it never gets
+    // cartoonish. Reads by the .bh-jaw keyframes via the --jaw custom property.
+    const glyphH = target.getBoundingClientRect().height;
+    const jaw = Math.max(1, Math.min(2.4, 0.62 + glyphH / 64));
+    bug.style.setProperty('--jaw', jaw.toFixed(2));
 
     eatTimer = window.setTimeout(() => {
       if (state !== 'active') return;
@@ -358,9 +421,10 @@ export function initBugHunt(): void {
     shakeCount = 0;
     shakeDir = 0;
     lastShakeT = performance.now();
-    window.clearTimeout(eatTimer); // stop eating while held
+    window.clearTimeout(eatTimer); // stop eating (or grooming) while held
     window.clearTimeout(menuTimer);
     bug.style.transition = 'none';
+    bug.classList.remove('bh-bug--grooming'); // interrupt grooming if we grabbed mid-clean
     bug.classList.add('bh-bug--grabbed');
     showHand(true);
     lastDragX = e.clientX;
@@ -1239,6 +1303,21 @@ function injectStyles(): void {
     /* While grabbed, the legs flail — faster. */
     .bh-bug--grabbed .bh-leg { animation-duration: 0.14s; }
 
+    /* ── Grooming (perched on a button) ──────────────────────────────────────
+       The fly sits still — no bob, closed jaws — and rubs its front legs
+       together and up over its head, the way a real fly cleans itself. The two
+       thorax legs sweep toward each other near the head; the rear leg idles. */
+    .bh-bug--grooming .bh-bob { animation: none; }
+    .bh-bug--grooming .bh-jaw-top,
+    .bh-bug--grooming .bh-jaw-bot { animation: none; transform: rotate(0deg) scale(1); }
+    .bh-bug--grooming .bh-leg--3 { animation: bh-groom-fore 0.16s ease-in-out infinite; }
+    .bh-bug--grooming .bh-leg--2 { animation: bh-groom-hind 0.16s ease-in-out infinite; }
+    .bh-bug--grooming .bh-leg--1 { animation-duration: 1.1s; }
+    .bh-bug--grooming .bh-head  { animation: bh-groom-head 0.32s ease-in-out infinite; }
+    @keyframes bh-groom-fore { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(-48deg) translateY(-1.5px); } }
+    @keyframes bh-groom-hind { 0%,100% { transform: rotate(4deg); }  50% { transform: rotate(36deg) translateY(-1.5px); } }
+    @keyframes bh-groom-head { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-3deg); } }
+
     /* Thin translucent wing, flapping fast and hinged at the thorax. */
     .bh-wing { opacity: 0.32; transform-box: fill-box; transform-origin: right bottom; animation: bh-flutter 0.1s ease-in-out infinite; }
     @keyframes bh-flutter { 0%,100% { transform: rotate(3deg) scaleY(1); } 50% { transform: rotate(-24deg) scaleY(0.72); } }
@@ -1246,10 +1325,13 @@ function injectStyles(): void {
     /* Pac-Man jaws: two real jaws rotating apart on a shared hinge, baring the
        dark mouth line behind them. transform-box:view-box + the per-stage hinge
        origin are set inline on each group (the grid grows as the bug fattens). */
+    /* --jaw (set per-bite on .bh-bug) scales the jaws up for big letters. It
+       multiplies the open/close rotation from the same hinge, so a big glyph
+       gets a visibly wider gape. Defaults to 1. */
     .bh-jaw-top { animation: bh-chew-top 0.26s ease-in-out infinite; }
     .bh-jaw-bot { animation: bh-chew-bot 0.26s ease-in-out infinite; }
-    @keyframes bh-chew-top { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-32deg); } }
-    @keyframes bh-chew-bot { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(32deg); } }
+    @keyframes bh-chew-top { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(-32deg) scale(var(--jaw,1)); } }
+    @keyframes bh-chew-bot { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(32deg) scale(var(--jaw,1)); } }
 
     /* Glyphs the bug spits out when it explodes. */
     .bh-flyletter {
