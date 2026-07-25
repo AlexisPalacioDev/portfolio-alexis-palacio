@@ -15,6 +15,7 @@
 
 import { $lang } from './store';
 import { I18N } from './dictionary';
+import { resolveExperience } from '../data/experience';
 import type { TranslationKey } from './types';
 
 export function applyLang(lang: string): void {
@@ -26,7 +27,7 @@ export function applyLang(lang: string): void {
 
       const dict = lang === 'es' ? I18N.es : I18N.en;
       if (key in dict) {
-        el.textContent = dict[key];
+        el.textContent = resolveExperience(dict[key]);
       }
     });
 

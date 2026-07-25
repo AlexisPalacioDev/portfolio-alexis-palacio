@@ -1,5 +1,6 @@
 import { persistentAtom } from '@nanostores/persistent';
 import { I18N } from './dictionary';
+import { resolveExperience } from '../data/experience';
 import type { Lang, TranslationKey } from './types';
 
 // Const-object pattern (TypeScript skill) — single source of truth,
@@ -20,5 +21,5 @@ export const $lang = persistentAtom<LangValue>('lang', LANG.EN);
 // Both parameters are fully typed — invalid keys and invalid langs are
 // caught at compile time.
 export function t(lang: LangValue, key: TranslationKey): string {
-  return I18N[lang as Lang][key];
+  return resolveExperience(I18N[lang as Lang][key]);
 }

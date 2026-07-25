@@ -17,3 +17,13 @@ export const EXPERIENCE_YEARS = yearsOfExperience();
 
 /** "6+" — the badge/stat label. */
 export const EXPERIENCE_LABEL = `${EXPERIENCE_YEARS}+`;
+
+/**
+ * Replace the {YEARS} token in copy with the years-of-experience value —
+ * computed with whatever "now" is: the build date on the server (SSR), the
+ * visitor's clock in the browser. Run by both t() (build) and applyLang
+ * (client), so the bio copy stays live even on a build shipped last year.
+ */
+export function resolveExperience(text: string): string {
+  return text.replace(/\{YEARS\}/g, String(yearsOfExperience()));
+}
