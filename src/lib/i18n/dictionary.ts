@@ -13,6 +13,8 @@
 // VOICE: first-person, plain, conversational — like Alexis talking to you in
 // person. No taglines, no jargon, no marketing-speak. ES is Colombian neutral (tú).
 
+import { EXPERIENCE_YEARS } from '../data/experience';
+
 export const I18N = {
   en: {
     // ── Nav ──────────────────────────────────────────────────────────────
@@ -37,7 +39,7 @@ export const I18N = {
     about_label: 'ABOUT',
     about_h2: 'Here’s how I work.',
     about_p1:
-      'I’m Alexis, a full-stack developer with 5+ years building web products from start to finish. What I do best is solve problems — especially the messy, half-defined ones nobody knows where to start with. I own them end to end and I don’t let go until they’re running in production.',
+      `I’m Alexis, a full-stack developer with ${EXPERIENCE_YEARS}+ years building web products from start to finish. What I do best is solve problems — especially the messy, half-defined ones nobody knows where to start with. I own them end to end and I don’t let go until they’re running in production.`,
     about_p2:
       'This past year I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). And I’m always up for learning whatever tech a project needs — honestly, that’s the part I enjoy most.',
     about_p3:
@@ -152,7 +154,7 @@ export const I18N = {
     about_label: 'SOBRE MÍ',
     about_h2: 'Así trabajo.',
     about_p1:
-      'Soy Alexis, full-stack developer con 5+ años construyendo productos web de principio a fin. Lo que mejor hago es resolver problemas — sobre todo los desordenados y a medio definir, esos que nadie sabe por dónde agarrar. Me los apropio de punta a punta y no los suelto hasta verlos funcionando en producción.',
+      `Soy Alexis, full-stack developer con ${EXPERIENCE_YEARS}+ años construyendo productos web de principio a fin. Lo que mejor hago es resolver problemas — sobre todo los desordenados y a medio definir, esos que nadie sabe por dónde agarrar. Me los apropio de punta a punta y no los suelto hasta verlos funcionando en producción.`,
     about_p2:
       'Este último año me metí a fondo en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). Y estoy abierto a aprender cualquier tecnología que el proyecto necesite — la verdad, esa es la parte que más disfruto.',
     about_p3:

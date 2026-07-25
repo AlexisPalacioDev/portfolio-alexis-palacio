@@ -1,6 +1,7 @@
 ---
 import { t } from '../../lib/i18n/store';
 import HeroCanvas from '../islands/HeroCanvas.astro';
+import { CAREER_START_YEAR, EXPERIENCE_YEARS } from '../../lib/data/experience';
 ---
 
 <section
@@ -48,7 +49,7 @@ import HeroCanvas from '../islands/HeroCanvas.astro';
         class="font-mono text-faint"
         style="font-size: 12px; text-align: right; line-height: 1.8;"
       >
-        EST. 2020 · 5+ yrs<br />
+        EST. {CAREER_START_YEAR} · {EXPERIENCE_YEARS}+ yrs<br />
         <span data-i18n="hero_loc">{t('en', 'hero_loc')}</span>
       </div>
     </div>
