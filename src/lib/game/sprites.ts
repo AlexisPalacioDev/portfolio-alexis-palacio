@@ -326,17 +326,20 @@ function headLayer(L: BugLayout): string {
 
 function wingLayer(L: BugLayout): string {
   const grid = makeGrid(L.w, L.h);
-  // A long translucent wing hinged at the thorax and swept back over the
-  // abdomen. Kept see-through (CSS opacity) so length never reads as a slab.
-  const wingRx = L.th.rx * 2.7;
-  // Height grows with the ABDOMEN, not the thorax — the belly is what fattens,
-  // so tying the wing to it keeps the wing proportional to the body instead of
-  // thinning into a hairline over a big abdomen.
-  const wingRy = Math.max(3.5, L.ab.ry * 0.9);
-  const wingCx = L.th.cx - L.th.rx * 0.95;
-  // Anchor the wing's underside just above the thorax so the extra height grows
-  // UP-and-back over the body rather than sinking into it.
-  const wingCy = L.th.cy - L.th.ry - wingRy * 0.5;
+  // A translucent wing HINGED AT THE THORAX and swept back over the abdomen —
+  // never reaching forward onto the head. Span it between a front hinge just
+  // over the thorax and a tail out over the rear of the abdomen, so it sits on
+  // the body's back rather than floating above the head.
+  const frontX = L.th.cx + L.th.rx * 0.15; // hinge, at the front of the thorax
+  const backX = L.ab.cx - L.ab.rx * 0.35; // tail, over the rear of the abdomen
+  const wingCx = (frontX + backX) / 2;
+  const wingRx = (frontX - backX) / 2;
+  // Height grows with the ABDOMEN (the belly is what fattens) so the wing stays
+  // proportional instead of thinning into a hairline over a big body.
+  const wingRy = Math.max(3, L.ab.ry * 0.55);
+  // Rest the wing ON the back: its lower half overlaps the thorax/abdomen top,
+  // its upper half rises just above — anchored, not hovering.
+  const wingCy = L.th.cy - L.th.ry - wingRy * 0.35;
   fillEllipse(grid, wingCx, wingCy, wingRx, wingRy, 'A');
   return `<g class="bh-wing">${gridToRects(grid)}</g>`;
 }
