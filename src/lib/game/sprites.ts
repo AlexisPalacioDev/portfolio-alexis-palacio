@@ -270,28 +270,31 @@ function thoraxLayer(L: BugLayout): string {
 }
 
 /**
- * The three legs, each in its OWN <g> so it can pivot around its own root.
- * Rendered behind the body layers, so each leg's root tucks under the body and
- * only the shank below shows — which is what the CSS `bh-step` swing animates.
+ * Six legs in three pairs (fore / mid / hind) like a real insect — all rooted
+ * near the thorax, not the abdomen. Each leg is its OWN <g> so it can pivot
+ * around its own root (the CSS animates the swing/scuttle and the grooming rub).
+ * Each pair is a near leg plus a slightly raised, shorter FAR leg for depth, so
+ * you read six legs in what is otherwise a flat side view.
  */
 function legLayers(L: BugLayout): string {
-  const abFootY = Math.round(L.ab.cy + L.ab.ry) - 1;
-  const thFootY = Math.round(L.th.cy + L.th.ry) - 1;
-  const legs = [
-    // rear leg trailing under the abdomen
-    { x: Math.round(L.ab.cx + L.ab.rx * 0.15), topY: abFootY, dir: -1, len: 4 + Math.round(L.ab.ry * 0.4) },
-    // back thorax leg
-    { x: Math.round(L.th.cx - L.th.rx * 0.4), topY: thFootY, dir: -1, len: 4 + Math.round(L.th.ry * 0.4) },
-    // front thorax leg
-    { x: Math.round(L.th.cx + L.th.rx * 0.4), topY: thFootY, dir: 1, len: 4 + Math.round(L.th.ry * 0.4) },
+  const footY = Math.round(L.th.cy + L.th.ry) - 1;
+  const len = 4 + Math.round(L.th.ry * 0.4);
+  const pairs = [
+    { cls: 'fore', x: Math.round(L.th.cx + L.th.rx * 0.55), dir: 1, len }, // forelegs — grooming
+    { cls: 'mid', x: Math.round(L.th.cx - L.th.rx * 0.15), dir: -1, len: len + 1 },
+    { cls: 'hind', x: Math.round(L.ab.cx + L.ab.rx * 0.3), dir: -1, len: len + 2 }, // longest, splay back
   ];
-  return legs
-    .map((lg, i) => {
-      const grid = makeGrid(L.w, L.h);
-      drawLeg(grid, lg.x, lg.topY, lg.dir, lg.len);
-      return `<g class="bh-leg bh-leg--${i + 1}">${gridToRects(grid)}</g>`;
-    })
-    .join('');
+  let out = '';
+  for (const p of pairs) {
+    const near = makeGrid(L.w, L.h);
+    drawLeg(near, p.x, footY, p.dir, p.len);
+    out += `<g class="bh-leg bh-leg--${p.cls} bh-leg--${p.cls}-n">${gridToRects(near)}</g>`;
+    // Far leg of the pair: one cell back and up, a touch shorter → reads behind.
+    const far = makeGrid(L.w, L.h);
+    drawLeg(far, p.x + 2, footY - 1, p.dir, Math.max(3, p.len - 1));
+    out += `<g class="bh-leg bh-leg--${p.cls} bh-leg--${p.cls}-f">${gridToRects(far)}</g>`;
+  }
+  return out;
 }
 
 function headLayer(L: BugLayout): string {
@@ -326,17 +329,20 @@ function headLayer(L: BugLayout): string {
 
 function wingLayer(L: BugLayout): string {
   const grid = makeGrid(L.w, L.h);
-  // A long translucent wing hinged at the thorax and swept back over the
-  // abdomen. Kept see-through (CSS opacity) so length never reads as a slab.
-  const wingRx = L.th.rx * 2.7;
-  // Height grows with the ABDOMEN, not the thorax — the belly is what fattens,
-  // so tying the wing to it keeps the wing proportional to the body instead of
-  // thinning into a hairline over a big abdomen.
-  const wingRy = Math.max(3.5, L.ab.ry * 0.9);
-  const wingCx = L.th.cx - L.th.rx * 0.95;
-  // Anchor the wing's underside just above the thorax so the extra height grows
-  // UP-and-back over the body rather than sinking into it.
-  const wingCy = L.th.cy - L.th.ry - wingRy * 0.5;
+  // A translucent wing HINGED AT THE THORAX and swept back over the abdomen —
+  // never reaching forward onto the head. Span it between a front hinge just
+  // over the thorax and a tail out over the rear of the abdomen, so it sits on
+  // the body's back rather than floating above the head.
+  const frontX = L.th.cx + L.th.rx * 0.15; // hinge, at the front of the thorax
+  const backX = L.ab.cx - L.ab.rx * 0.35; // tail, over the rear of the abdomen
+  const wingCx = (frontX + backX) / 2;
+  const wingRx = (frontX - backX) / 2;
+  // Height grows with the ABDOMEN (the belly is what fattens) so the wing stays
+  // proportional instead of thinning into a hairline over a big body.
+  const wingRy = Math.max(3, L.ab.ry * 0.55);
+  // Rest the wing ON the back: its lower half overlaps the thorax/abdomen top,
+  // its upper half rises just above — anchored, not hovering.
+  const wingCy = L.th.cy - L.th.ry - wingRy * 0.35;
   fillEllipse(grid, wingCx, wingCy, wingRx, wingRy, 'A');
   return `<g class="bh-wing">${gridToRects(grid)}</g>`;
 }
@@ -380,10 +386,11 @@ export function bugSprite(stage = 0): string {
     `<svg viewBox="0 0 ${L.w} ${L.h}" width="${L.w * PX}" height="${L.h * PX}" ` +
     `shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg" ` +
     `preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">` +
-    wingLayer(L) +
     legLayers(L) +
     abdomenLayer(L) +
     thoraxLayer(L) +
+    wingLayer(L) + // wings lie ON the back, over the body — translucent, so the
+    // segmentation still reads through them
     headLayer(L) +
     jawLayers(L) +
     `</svg>`

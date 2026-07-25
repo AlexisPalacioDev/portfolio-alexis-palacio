@@ -1295,13 +1295,12 @@ function injectStyles(): void {
     @keyframes bh-throb-mid   { 0%,100% { transform: scale(1,1); } 50% { transform: scale(1.04, 0.95); } }
     @keyframes bh-throb-light { 0%,100% { transform: scale(1,1); } 50% { transform: scale(1.025, 0.975); } }
 
-    /* Legs: each pivots around its own root (fill-box → top of its own shank)
-       and swings side to side. Alternating phase across the three reads as a
-       little scuttle. Kept subtle so it complements the idle bob, not fights it. */
+    /* Six legs (fore/mid/hind pairs), each pivoting around its own root. The
+       mid pair swings on the opposite phase to the fore+hind pairs, so the
+       insect reads as scuttling on a tripod gait rather than twitching. */
     .bh-leg { transform-box: fill-box; transform-origin: 50% 0%; }
-    .bh-leg--1 { animation: bh-step 0.36s ease-in-out infinite; }
-    .bh-leg--2 { animation: bh-step 0.36s ease-in-out infinite; animation-delay: -0.18s; }
-    .bh-leg--3 { animation: bh-step 0.36s ease-in-out infinite; }
+    .bh-leg--fore, .bh-leg--hind { animation: bh-step 0.36s ease-in-out infinite; }
+    .bh-leg--mid { animation: bh-step 0.36s ease-in-out infinite; animation-delay: -0.18s; }
     @keyframes bh-step { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
     /* While grabbed, the legs flail — faster. */
     .bh-bug--grabbed .bh-leg { animation-duration: 0.14s; }
@@ -1316,10 +1315,11 @@ function injectStyles(): void {
     .bh-bug--grooming .bh-wing { animation: none; }
     .bh-bug--grooming .bh-jaw-top,
     .bh-bug--grooming .bh-jaw-bot { animation: none; transform: rotate(0deg) scale(1); }
-    .bh-bug--grooming .bh-leg--1 { animation: none; transform: rotate(3deg); }  /* hind: planted */
-    .bh-bug--grooming .bh-leg--2 { animation: bh-rub-b 2.4s ease-in-out infinite; }
-    .bh-bug--grooming .bh-leg--3 { animation: bh-rub-a 2.4s ease-in-out infinite; }
-    .bh-bug--grooming .bh-head   { animation: bh-groom-bow 2.4s ease-in-out infinite; }
+    .bh-bug--grooming .bh-leg--mid,
+    .bh-bug--grooming .bh-leg--hind { animation: none; transform: rotate(3deg); } /* planted */
+    .bh-bug--grooming .bh-leg--fore-n { animation: bh-rub-a 2.4s ease-in-out infinite; }
+    .bh-bug--grooming .bh-leg--fore-f { animation: bh-rub-b 2.4s ease-in-out infinite; }
+    .bh-bug--grooming .bh-head        { animation: bh-groom-bow 2.4s ease-in-out infinite; }
 
     /* One 2.4s loop = a burst of ~9 fast face-rubs (both forelegs raised, moving
        opposite each other), then one slow sweep up over the eye. */
@@ -1362,7 +1362,9 @@ function injectStyles(): void {
        air. They only chomp during an actual bite: the eat step adds
        .bh-bug--biting for that beat, and --jaw scales the gape to the glyph so
        a big headline letter gets a wider bite. Two chomps per bite, then shut. */
-    .bh-jaw-top, .bh-jaw-bot { transform: rotate(0deg) scale(var(--jaw,1)); }
+    /* Resting jaws are always normal size; the --jaw gape scale only lives
+       inside the bite animation, so the mouth snaps back the instant it's done. */
+    .bh-jaw-top, .bh-jaw-bot { transform: rotate(0deg) scale(1); }
     .bh-bug--biting .bh-jaw-top { animation: bh-chew-top 0.19s ease-in-out 2; }
     .bh-bug--biting .bh-jaw-bot { animation: bh-chew-bot 0.19s ease-in-out 2; }
     @keyframes bh-chew-top { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(-34deg) scale(var(--jaw,1)); } }
