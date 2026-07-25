@@ -316,7 +316,10 @@ export function initBugHunt(): void {
     bug.style.setProperty('--jaw', jaw.toFixed(2));
 
     eatTimer = window.setTimeout(() => {
-      if (state !== 'active') return;
+      if (state !== 'active' || !bug) return;
+      // Chomp NOW that we've reached the letter — jaws open only for this beat.
+      bug.classList.add('bh-bug--biting');
+      window.setTimeout(() => bug?.classList.remove('bh-bug--biting'), 400);
       chomp();
       // Recompute: earlier bites reflow text, so the span may have shifted.
       const bite = charCenter(target);
@@ -1304,19 +1307,49 @@ function injectStyles(): void {
     .bh-bug--grabbed .bh-leg { animation-duration: 0.14s; }
 
     /* ── Grooming (perched on a button) ──────────────────────────────────────
-       The fly sits still — no bob, closed jaws — and rubs its front legs
-       together and up over its head, the way a real fly cleans itself. The two
-       thorax legs sweep toward each other near the head; the rear leg idles. */
-    .bh-bug--grooming .bh-bob { animation: none; }
+       A real fly's routine: it stands still on its mid/hind legs and lifts both
+       FRONT legs up in front of its face, rubbing them against each other in
+       fast, tiny counter-phase strokes ("rubbing its hands"), while the head
+       bows to meet them. Every couple of seconds the forelegs sweep up and over
+       the eye to wipe it. Body, wings and jaws hold still throughout. */
+    .bh-bug--grooming .bh-bob  { animation: none; }
+    .bh-bug--grooming .bh-wing { animation: none; }
     .bh-bug--grooming .bh-jaw-top,
     .bh-bug--grooming .bh-jaw-bot { animation: none; transform: rotate(0deg) scale(1); }
-    .bh-bug--grooming .bh-leg--3 { animation: bh-groom-fore 0.16s ease-in-out infinite; }
-    .bh-bug--grooming .bh-leg--2 { animation: bh-groom-hind 0.16s ease-in-out infinite; }
-    .bh-bug--grooming .bh-leg--1 { animation-duration: 1.1s; }
-    .bh-bug--grooming .bh-head  { animation: bh-groom-head 0.32s ease-in-out infinite; }
-    @keyframes bh-groom-fore { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(-48deg) translateY(-1.5px); } }
-    @keyframes bh-groom-hind { 0%,100% { transform: rotate(4deg); }  50% { transform: rotate(36deg) translateY(-1.5px); } }
-    @keyframes bh-groom-head { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-3deg); } }
+    .bh-bug--grooming .bh-leg--1 { animation: none; transform: rotate(3deg); }  /* hind: planted */
+    .bh-bug--grooming .bh-leg--2 { animation: bh-rub-b 2.4s ease-in-out infinite; }
+    .bh-bug--grooming .bh-leg--3 { animation: bh-rub-a 2.4s ease-in-out infinite; }
+    .bh-bug--grooming .bh-head   { animation: bh-groom-bow 2.4s ease-in-out infinite; }
+
+    /* One 2.4s loop = a burst of ~9 fast face-rubs (both forelegs raised, moving
+       opposite each other), then one slow sweep up over the eye. */
+    @keyframes bh-rub-a {
+      0% { transform: rotate(-116deg); }
+      4% { transform: rotate(-104deg); }  8% { transform: rotate(-116deg); }
+      12%{ transform: rotate(-104deg); } 16% { transform: rotate(-116deg); }
+      20%{ transform: rotate(-104deg); } 24% { transform: rotate(-116deg); }
+      28%{ transform: rotate(-104deg); } 32% { transform: rotate(-116deg); }
+      36%{ transform: rotate(-104deg); } 40%,60% { transform: rotate(-116deg); }
+      76%{ transform: rotate(-142deg) translateY(-2px); }  /* up over the eye */
+      90%{ transform: rotate(-98deg); }                     /* down across it */
+      100%{ transform: rotate(-116deg); }
+    }
+    @keyframes bh-rub-b {
+      0% { transform: rotate(-92deg); }
+      4% { transform: rotate(-104deg); }  8% { transform: rotate(-92deg); }
+      12%{ transform: rotate(-104deg); } 16% { transform: rotate(-92deg); }
+      20%{ transform: rotate(-104deg); } 24% { transform: rotate(-92deg); }
+      28%{ transform: rotate(-104deg); } 32% { transform: rotate(-92deg); }
+      36%{ transform: rotate(-104deg); } 40%,60% { transform: rotate(-92deg); }
+      76%{ transform: rotate(-122deg) translateY(-2px); }
+      90%{ transform: rotate(-80deg); }
+      100%{ transform: rotate(-92deg); }
+    }
+    @keyframes bh-groom-bow {
+      0%,60%,100% { transform: rotate(6deg); }
+      76% { transform: rotate(10deg); }  /* head dips into the wipe */
+      90% { transform: rotate(3deg); }
+    }
 
     /* Thin translucent wing, flapping fast and hinged at the thorax. */
     .bh-wing { opacity: 0.32; transform-box: fill-box; transform-origin: right bottom; animation: bh-flutter 0.1s ease-in-out infinite; }
@@ -1325,13 +1358,15 @@ function injectStyles(): void {
     /* Pac-Man jaws: two real jaws rotating apart on a shared hinge, baring the
        dark mouth line behind them. transform-box:view-box + the per-stage hinge
        origin are set inline on each group (the grid grows as the bug fattens). */
-    /* --jaw (set per-bite on .bh-bug) scales the jaws up for big letters. It
-       multiplies the open/close rotation from the same hinge, so a big glyph
-       gets a visibly wider gape. Defaults to 1. */
-    .bh-jaw-top { animation: bh-chew-top 0.26s ease-in-out infinite; }
-    .bh-jaw-bot { animation: bh-chew-bot 0.26s ease-in-out infinite; }
-    @keyframes bh-chew-top { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(-32deg) scale(var(--jaw,1)); } }
-    @keyframes bh-chew-bot { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(32deg) scale(var(--jaw,1)); } }
+    /* The jaws stay SHUT while the fly flies around — a fly doesn't chew the
+       air. They only chomp during an actual bite: the eat step adds
+       .bh-bug--biting for that beat, and --jaw scales the gape to the glyph so
+       a big headline letter gets a wider bite. Two chomps per bite, then shut. */
+    .bh-jaw-top, .bh-jaw-bot { transform: rotate(0deg) scale(var(--jaw,1)); }
+    .bh-bug--biting .bh-jaw-top { animation: bh-chew-top 0.19s ease-in-out 2; }
+    .bh-bug--biting .bh-jaw-bot { animation: bh-chew-bot 0.19s ease-in-out 2; }
+    @keyframes bh-chew-top { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(-34deg) scale(var(--jaw,1)); } }
+    @keyframes bh-chew-bot { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(34deg) scale(var(--jaw,1)); } }
 
     /* Glyphs the bug spits out when it explodes. */
     .bh-flyletter {
