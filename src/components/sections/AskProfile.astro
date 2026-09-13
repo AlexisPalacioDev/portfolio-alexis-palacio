@@ -1,0 +1,214 @@
+---
+import { t } from '../../lib/i18n/store';
+import Eyebrow from '../ui/Eyebrow.astro';
+---
+
+<section
+  id="ask"
+  class="min-h-screen"
+  style="padding: 110px 40px; border-top: 1px solid #23252D;"
+>
+  <div style="max-width: 1280px; margin: 0 auto;">
+
+    <!-- Eyebrow without number -->
+    <div class="rev" style="margin-bottom: 22px;">
+      <Eyebrow data-i18n="ask_label">{t('en', 'ask_label')}</Eyebrow>
+    </div>
+
+    <h2
+      class="rev font-display font-bold text-ink"
+      style="font-size: clamp(32px, 4.8vw, 64px); line-height: 1.0; letter-spacing: -2px; margin: 0 0 16px; max-width: 820px;"
+      data-i18n="ask_h2"
+    >
+      {t('en', 'ask_h2')}
+    </h2>
+
+    <p
+      class="rev text-muted"
+      style="font-size: 17px; line-height: 1.65; max-width: 640px; margin: 0 0 46px;"
+      data-i18n="ask_sub"
+    >
+      {t('en', 'ask_sub')}
+    </p>
+
+    <div class="rev" style="max-width: 640px;">
+      <form id="ask-form" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+        <label for="ask-input" class="sr-only" data-i18n="ask_input_label">{t('en', 'ask_input_label')}</label>
+        <div style="display: flex; gap: 8px;">
+          <input
+            id="ask-input"
+            type="text"
+            maxlength="500"
+            required
+            class="bg-surface text-ink font-mono"
+            style="flex: 1; border: 1px solid #23252D; padding: 12px 16px; outline: none; border-radius: 0;"
+            placeholder={t('en', 'ask_input_placeholder')}
+            data-i18n-placeholder="ask_input_placeholder"
+          />
+          <button
+            id="ask-submit"
+            type="submit"
+            class="bg-surface text-lime font-display font-bold"
+            style="border: 1px solid #C6F24E; padding: 0 24px; cursor: pointer; transition: opacity 0.2s; border-radius: 0;"
+          >
+            <span data-i18n="ask_btn_submit" id="ask-submit-text">{t('en', 'ask_btn_submit')}</span>
+          </button>
+        </div>
+      </form>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;">
+        <button class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_1">{t('en', 'ask_chip_1')}</button>
+        <button class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_2">{t('en', 'ask_chip_2')}</button>
+        <button class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_3">{t('en', 'ask_chip_3')}</button>
+      </div>
+
+      <div
+        id="ask-answer-container"
+        class="bg-surface"
+        style="border: 1px solid #23252D; border-left: 2px solid #C6F24E; padding: 26px 24px; display: none;"
+        aria-live="polite"
+      >
+        <p id="ask-answer-text" class="text-ink font-display" style="font-size: 17px; line-height: 1.6; margin: 0 0 16px;"></p>
+        <div id="ask-sources-container" style="display: none;">
+          <p id="ask-related-text" class="text-muted font-mono" style="font-size: 13px; margin: 0 0 8px;" data-i18n="ask_related_sections">{t('en', 'ask_related_sections')}</p>
+          <ul id="ask-sources-list" class="text-lime font-mono" style="font-size: 13px; list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px;"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  input:focus {
+    border-color: #C6F24E !important;
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+  }
+  .ask-chip:hover {
+    border-color: #C6F24E !important;
+    color: #C6F24E !important;
+  }
+</style>
+
+<script>
+  import { $lang } from '../../lib/i18n/store';
+  import { I18N } from '../../lib/i18n/dictionary';
+
+  const form = document.getElementById('ask-form') as HTMLFormElement;
+  const input = document.getElementById('ask-input') as HTMLInputElement;
+  const submitBtn = document.getElementById('ask-submit') as HTMLButtonElement;
+  const submitText = document.getElementById('ask-submit-text') as HTMLSpanElement;
+  const chips = document.querySelectorAll('.ask-chip');
+  const answerContainer = document.getElementById('ask-answer-container') as HTMLDivElement;
+  const answerText = document.getElementById('ask-answer-text') as HTMLParagraphElement;
+  const sourcesContainer = document.getElementById('ask-sources-container') as HTMLDivElement;
+  const sourcesList = document.getElementById('ask-sources-list') as HTMLUListElement;
+  const relatedText = document.getElementById('ask-related-text') as HTMLParagraphElement;
+
+  function setStatus(loading: boolean) {
+    if (loading) {
+      input.disabled = true;
+      submitBtn.disabled = true;
+      const dict = I18N[$lang.get() as 'en' | 'es'];
+      submitText.textContent = dict['ask_btn_loading'];
+      answerContainer.style.display = 'block';
+      answerText.textContent = dict['ask_btn_loading'];
+      sourcesContainer.style.display = 'none';
+    } else {
+      input.disabled = false;
+      submitBtn.disabled = false;
+      const dict = I18N[$lang.get() as 'en' | 'es'];
+      submitText.textContent = dict['ask_btn_submit'];
+    }
+  }
+
+  async function submitQuestion(question: string) {
+    if (!question || question.length < 3) return;
+    setStatus(true);
+
+    try {
+      const res = await fetch('/api/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+
+      const dict = I18N[$lang.get() as 'en' | 'es'];
+
+      if (res.status === 429) {
+        answerText.textContent = dict['ask_error_429'];
+        setStatus(false);
+        return;
+      }
+      if (res.status === 503) {
+        answerText.textContent = dict['ask_error_503'];
+        setStatus(false);
+        return;
+      }
+      if (!res.ok) {
+        answerText.textContent = dict['ask_error_default'];
+        setStatus(false);
+        return;
+      }
+
+      const data = await res.json();
+      setStatus(false);
+
+      if (data.mode === 'no-context') {
+        answerText.textContent = dict['ask_no_context'];
+        sourcesContainer.style.display = 'none';
+      } else if (data.mode === 'retrieval-only') {
+        answerText.textContent = '';
+        relatedText.style.display = 'block';
+        sourcesContainer.style.display = 'block';
+      } else {
+        answerText.textContent = data.answer || '';
+        relatedText.style.display = 'none';
+        sourcesContainer.style.display = 'block';
+      }
+
+      // Render sources
+      sourcesList.textContent = '';
+      if (data.sources && data.sources.length > 0) {
+        data.sources.forEach((src: any) => {
+          const li = document.createElement('li');
+          li.textContent = `[${src.n}] ${src.title}`;
+          sourcesList.appendChild(li);
+        });
+      } else {
+        sourcesContainer.style.display = 'none';
+      }
+
+    } catch (err) {
+      const dict = I18N[$lang.get() as 'en' | 'es'];
+      answerText.textContent = dict['ask_error_default'];
+      setStatus(false);
+    }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    submitQuestion(input.value.trim());
+  });
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const question = chip.textContent || '';
+      input.value = question;
+      submitQuestion(question);
+    });
+  });
+</script>

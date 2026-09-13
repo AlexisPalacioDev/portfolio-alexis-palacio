@@ -122,6 +122,24 @@ export const I18N = {
     contact_github: 'GitHub',
     contact_cta: 'Get in touch',
 
+    // ── Ask Profile ───────────────────────────────────────────────────────
+    ask_label: 'ASK MY PROFILE',
+    ask_h2: 'Any questions?',
+    ask_sub:
+      'This AI assistant answers based only on my verified professional profile. It may be wrong, so double-check with my CV.',
+    ask_input_label: 'Question',
+    ask_input_placeholder: 'Ask about my experience, skills or projects...',
+    ask_btn_submit: 'Ask',
+    ask_btn_loading: 'Thinking...',
+    ask_chip_1: 'What is his tech stack?',
+    ask_chip_2: 'Tell me about his experience',
+    ask_chip_3: 'What kind of role is he looking for?',
+    ask_error_429: 'Too many questions right now. Please wait a minute.',
+    ask_error_503: 'Assistant is temporarily unavailable. Please contact me directly.',
+    ask_error_default: 'Something went wrong. Please try again or contact me directly.',
+    ask_no_context: 'I don\'t have information about that in my verified profile. Please contact Alexis at alexis26-93@live.com for details.',
+    ask_related_sections: 'Related sections:',
+
     // ── Shared / Footer ───────────────────────────────────────────────────
     available: 'Available for remote (and hybrid/onsite in Medellín)',
     cv: 'Download CV',
@@ -236,6 +254,24 @@ export const I18N = {
     contact_linkedin: 'LinkedIn',
     contact_github: 'GitHub',
     contact_cta: 'Escríbeme',
+
+    // ── Ask Profile ───────────────────────────────────────────────────────
+    ask_label: 'PREGÚNTALE A MI PERFIL',
+    ask_h2: '¿Tienes dudas?',
+    ask_sub:
+      'Este asistente de IA responde basándose únicamente en mi perfil profesional verificado. Puede equivocarse, así que compruébalo con mi CV.',
+    ask_input_label: 'Pregunta',
+    ask_input_placeholder: 'Pregunta sobre mi experiencia, habilidades o proyectos...',
+    ask_btn_submit: 'Preguntar',
+    ask_btn_loading: 'Pensando...',
+    ask_chip_1: '¿Cuál es su stack tecnológico?',
+    ask_chip_2: 'Cuéntame de su experiencia',
+    ask_chip_3: '¿Qué tipo de rol busca?',
+    ask_error_429: 'Demasiadas preguntas en este momento. Por favor espera un minuto.',
+    ask_error_503: 'El asistente no está disponible temporalmente. Por favor contáctame directamente.',
+    ask_error_default: 'Algo salió mal. Por favor intenta de nuevo o contáctame.',
+    ask_no_context: 'No tengo información sobre eso en el perfil verificado. Por favor contacta a Alexis en alexis26-93@live.com para más detalles.',
+    ask_related_sections: 'Secciones relacionadas:',
 
     // ── Shared / Footer ───────────────────────────────────────────────────
     available: 'Disponible para remoto (y presencial/híbrido en Medellín)',

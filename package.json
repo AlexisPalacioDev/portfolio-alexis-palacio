@@ -3,6 +3,8 @@
   "type": "module",
   "version": "0.1.0",
   "scripts": {
+    "rag:index": "node --experimental-strip-types scripts/rag-build-index.ts",
+    "rag:eval": "node --experimental-strip-types scripts/rag-eval.ts",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",

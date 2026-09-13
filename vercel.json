@@ -31,5 +31,11 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/ask.ts": {
+      "includeFiles": "rag/index.json",
+      "maxDuration": 30
+    }
+  }
 }
