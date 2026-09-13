@@ -7,6 +7,7 @@ describe('api ask handler', () => {
     const handler = createHandler({ loadIndex: () => null });
     const res = await handler(new Request('http://localhost', { method: 'POST' }));
     expect(res.status).toBe(503);
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
     expect(await res.json()).toEqual({ error: 'unavailable' });
   });
 
@@ -15,6 +16,7 @@ describe('api ask handler', () => {
     const handler = createHandler({ loadIndex: () => ({ chunks: [] }) });
     const res = await handler(new Request('http://localhost', { method: 'POST', body: '{badjson' }));
     expect(res.status).toBe(400);
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
     expect(await res.json()).toEqual({ error: 'invalid_request' });
   });
 

@@ -114,6 +114,33 @@ test.describe('Ask Profile', () => {
     expect(questionSent).toBe(chipText);
   });
 
+  // Regression: chips stayed clickable during a request, firing parallel
+  // requests whose answers overwrote each other.
+  test('suggestions are disabled and ignored while a request is in flight', async ({ page }) => {
+    let calls = 0;
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => (release = resolve));
+    await page.route('**/api/ask', async (route) => {
+      calls++;
+      await pending;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ mode: 'generated', answer: 'First answer.', sources: [] }),
+      });
+    });
+
+    const chips = page.locator('.ask-chip');
+    await chips.nth(0).click();
+    await expect(chips.nth(1)).toBeDisabled();
+    await chips.nth(1).click({ force: true });
+    release();
+
+    await expect(page.locator('#ask-answer-text')).toHaveText('First answer.');
+    await expect(chips.nth(1)).toBeEnabled();
+    expect(calls).toBe(1);
+  });
+
   test('XSS prevention: renders HTML as text', async ({ page }) => {
     await page.route('**/api/ask', async (route) => {
       await route.fulfill({
