@@ -51,11 +51,15 @@ async function buildIndex() {
   const vectors = await embedder.embed(textsToEmbed);
 
   let existingMinScore = 0.25;
+  let existingMinLexical = 2.0;
   if (fs.existsSync(indexPath)) {
     try {
       const existing = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
       if (typeof existing.minScore === 'number') {
         existingMinScore = existing.minScore;
+      }
+      if (typeof existing.minLexical === "number") {
+        existingMinLexical = existing.minLexical;
       }
     } catch (e) {
       // Ignore
@@ -68,6 +72,7 @@ async function buildIndex() {
     dims: vectors[0].length,
     createdAt: new Date().toISOString(),
     minScore: existingMinScore,
+    minLexical: existingMinLexical,
     chunks: allChunks.map((c, i) => ({
       id: c.id,
       title: c.title,

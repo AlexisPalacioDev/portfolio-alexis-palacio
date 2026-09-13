@@ -1,6 +1,6 @@
-import { cosineTopK } from './vector.ts';
 import { MissingKeyError } from './embeddings.ts';
 import { buildMessages } from './prompt.ts';
+import { retrieve } from './retrieve.ts';
 
 type RateLimitEntry = {
   timestamps: number[];
@@ -9,6 +9,7 @@ type RateLimitEntry = {
 
 export type IndexData = {
   minScore?: number;
+  minLexical?: number;
   chunks: { id: string; title: string; text: string; vector: number[] }[];
 };
 
@@ -69,12 +70,10 @@ export function createAsk({ index, embedder, generator, now = Date.now }: AskDep
       if (err instanceof MissingKeyError) {
         return { status: 503, body: { error: 'unavailable' } };
       }
-      // Consider other embedder errors as 502 or 503? Let's say 502 upstream.
       return { status: 502, body: { error: 'upstream' } };
     }
 
-    const minScore = index.minScore ?? 0.25;
-    const topChunks = cosineTopK(queryVector, index.chunks, 4, minScore);
+    const topChunks = retrieve(index, queryVector, trimmed);
 
     if (topChunks.length === 0) {
       return {
@@ -97,7 +96,8 @@ export function createAsk({ index, embedder, generator, now = Date.now }: AskDep
       return { n: i + 1, title: chunk.title, text: chunk.text };
     });
 
-    const messages = buildMessages(trimmed, contexts);
+    const todayStr = new Date(now()).toISOString().slice(0, 10);
+    const messages = buildMessages(trimmed, contexts, todayStr);
 
     try {
       const answer = await generator.generate(messages);

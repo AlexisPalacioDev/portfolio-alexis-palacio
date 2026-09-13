@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createEmbedder } from '../rag/lib/embeddings.ts';
 import { cosineTopK } from '../rag/lib/vector.ts';
+import { retrieve } from '../rag/lib/retrieve.ts';
 import { calculateMetrics } from '../rag/lib/metrics.ts';
 import type { EvalResult } from '../rag/lib/metrics.ts';
 
@@ -24,78 +25,77 @@ async function evaluate() {
   console.log(`Embedding ${questions.length} questions...`);
   const vectors = await embedder.embed(questions);
 
-  const results: EvalResult[] = [];
+  const resultsVector: EvalResult[] = [];
+  const resultsHybrid: EvalResult[] = [];
   const details: any[] = [];
 
   for (let i = 0; i < evalData.cases.length; i++) {
     const c = evalData.cases[i];
-    const topChunks = cosineTopK(vectors[i], index.chunks, 4, -Infinity); // Get top 4 disregarding minScore for evaluation
-
-    const hitIds = topChunks.map(hit => hit.id);
-    const scores = topChunks.map(hit => hit.score);
-
-    results.push({
+    
+    // Vector only
+    const topVector = cosineTopK(vectors[i], index.chunks, 4, -Infinity);
+    resultsVector.push({
       expected: c.expected,
-      hitIds,
-      scores,
+      hitIds: topVector.map(hit => hit.id),
+      scores: topVector.map(hit => hit.score),
+    });
+
+    // Hybrid
+    const topHybrid = retrieve(index, vectors[i], c.question, true);
+    const hitIdsHybrid = topHybrid.map(hit => hit.id);
+    resultsHybrid.push({
+      expected: c.expected,
+      hitIds: hitIdsHybrid,
+      scores: topHybrid.map(hit => hit.score),
     });
 
     let isHit = false;
     if (c.expected !== null) {
-      isHit = c.expected.some((exp: string) => hitIds.includes(exp));
+      isHit = c.expected.some((exp: string) => hitIdsHybrid.includes(exp));
     } else {
-      // For out of scope, a "hit" means we successfully filtered it out?
-      // Actually we just record it.
-      isHit = true; // Not strictly used for the table hit/miss visual unless we want
+      isHit = true;
     }
 
     details.push({
       question: c.question,
       expected: c.expected ? c.expected.join(', ') : 'OUT OF SCOPE',
-      top3: topChunks.slice(0, 3).map(hit => `${hit.id} (${hit.score.toFixed(3)})`).join('<br>'),
+      top3Vector: topVector.slice(0, 3).map(hit => `${hit.id}`).join('<br>'),
+      top3Hybrid: topHybrid.slice(0, 3).map(hit => `${hit.id}`).join('<br>'),
       hit: c.expected === null ? 'N/A' : (isHit ? '✅' : '❌')
     });
   }
 
-  const metrics = calculateMetrics(results);
+  const metricsVector = calculateMetrics(resultsVector);
+  const metricsHybrid = calculateMetrics(resultsHybrid);
+n  console.log("\n--- Sensitive Cases ---");
+  for (const c of evalData.sensitive || []) {
+    console.log(`- ${c.question}`);
+  }
 
-  console.log('\n--- Metrics ---');
-  console.log(`Hit@1: ${(metrics.inScope.hitAt1 * 100).toFixed(2)}%`);
-  console.log(`Hit@4: ${(metrics.inScope.hitAt4 * 100).toFixed(2)}%`);
-  console.log(`MRR: ${metrics.inScope.mrr.toFixed(4)}`);
-  
-  console.log('\nIn-Scope Top-1 Scores:');
-  console.log(`  Min: ${metrics.inScope.top1Scores.min.toFixed(4)}`);
-  console.log(`  P10: ${metrics.inScope.top1Scores.p10.toFixed(4)}`);
-  console.log(`  Median: ${metrics.inScope.top1Scores.median.toFixed(4)}`);
-  console.log(`  Max: ${metrics.inScope.top1Scores.max.toFixed(4)}`);
 
-  console.log('\nOut-of-Scope Top-1 Scores:');
-  console.log(`  Min: ${metrics.outScope.top1Scores.min.toFixed(4)}`);
-  console.log(`  Median: ${metrics.outScope.top1Scores.median.toFixed(4)}`);
-  console.log(`  Max: ${metrics.outScope.top1Scores.max.toFixed(4)}`);
-
-  console.log(`\nSuggested minScore: ${metrics.suggestedMinScore.toFixed(4)}`);
+  console.log('\n--- Metrics (Vector vs Hybrid) ---');
+  console.log(`Hit@1: ${(metricsVector.inScope.hitAt1 * 100).toFixed(2)}% vs ${(metricsHybrid.inScope.hitAt1 * 100).toFixed(2)}%`);
+  console.log(`Hit@4: ${(metricsVector.inScope.hitAt4 * 100).toFixed(2)}% vs ${(metricsHybrid.inScope.hitAt4 * 100).toFixed(2)}%`);
+  console.log(`MRR: ${metricsVector.inScope.mrr.toFixed(4)} vs ${metricsHybrid.inScope.mrr.toFixed(4)}`);
 
   let reportMd = `# RAG Evaluation Report\n\n`;
-  reportMd += `## Metrics\n`;
-  reportMd += `- Hit@1: ${(metrics.inScope.hitAt1 * 100).toFixed(2)}%\n`;
-  reportMd += `- Hit@4: ${(metrics.inScope.hitAt4 * 100).toFixed(2)}%\n`;
-  reportMd += `- MRR: ${metrics.inScope.mrr.toFixed(4)}\n`;
-  reportMd += `- Suggested minScore: ${metrics.suggestedMinScore.toFixed(4)}\n\n`;
+  reportMd += `## Metrics (Vector vs Hybrid)\n`;
+  reportMd += `- Hit@1: ${(metricsVector.inScope.hitAt1 * 100).toFixed(2)}% | ${(metricsHybrid.inScope.hitAt1 * 100).toFixed(2)}%\n`;
+  reportMd += `- Hit@4: ${(metricsVector.inScope.hitAt4 * 100).toFixed(2)}% | ${(metricsHybrid.inScope.hitAt4 * 100).toFixed(2)}%\n`;
+  reportMd += `- MRR: ${metricsVector.inScope.mrr.toFixed(4)} | ${metricsHybrid.inScope.mrr.toFixed(4)}\n\n`;
   
-  reportMd += `## Cases\n\n`;
-  reportMd += `| Question | Expected | Top 3 Hits | Hit |\n`;
-  reportMd += `|---|---|---|---|\n`;
+  reportMd += `## Cases (Hybrid)\n\n`;
+  reportMd += `| Question | Expected | Top 3 Vector | Top 3 Hybrid | Hit |\n`;
+  reportMd += `|---|---|---|---|---|\n`;
   for (const d of details) {
-    reportMd += `| ${d.question.replace(/\|/g, "\\|")} | ${d.expected.replace(/\|/g, "\\|")} | ${d.top3.replace(/\|/g, "\\|")} | ${d.hit} |\n`;
+    reportMd += `| ${d.question.replace(/\|/g, "\\|")} | ${d.expected.replace(/\|/g, "\\|")} | ${d.top3Vector.replace(/\|/g, "\\|")} | ${d.top3Hybrid.replace(/\|/g, "\\|")} | ${d.hit} |\n`;
   }
 
   fs.writeFileSync(reportPath, reportMd);
   console.log(`\nReport saved to ${reportPath}`);
 
-  if (metrics.inScope.hitAt4 < 0.85) {
-    console.error('Hit@4 is below 0.85. Failing.');
+  if (metricsHybrid.inScope.hitAt4 < 0.85) {
+    console.error('Hybrid Hit@4 is below 0.85. Failing.');
     process.exit(1);
   }
 }
