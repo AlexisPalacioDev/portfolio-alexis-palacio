@@ -6,11 +6,8 @@ const EXPECTED_IDS = [
   'anai',
   'imometrics',
   'poisonflix',
-  'sprite-studio',
-  'cajita',
   'extraction-survivors',
-  'dungeon-triage',
-  'poisonos'
+  'poisonos',
 ] as const;
 
 const REQUIRED_LOCALIZED_FIELDS: Array<keyof WorkItem> = [
@@ -27,8 +24,8 @@ const VALID_STATUS_KEYS = Object.values(WORK_STATUS);
 const HEX_RE = /^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$/;
 
 describe('work[] data model', () => {
-  it('has exactly 8 items', () => {
-    expect(work.length).toBe(8);
+  it('has exactly the expected number of items', () => {
+    expect(work.length).toBe(EXPECTED_IDS.length);
   });
 
   it('has items in expected order (most-recent first)', () => {

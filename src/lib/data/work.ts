@@ -54,8 +54,8 @@ export const work: readonly WorkItem[] = [
     links: { link: 'https://anaiapp.ai', code: null },
     period: { en: 'May 2026 – Present', es: 'may. 2026 – actualidad' },
     role: {
-      en: 'Full Stack Developer',
-      es: 'Desarrollador Full Stack',
+      en: 'Full Stack Developer (frontend focus)',
+      es: 'Desarrollador Full Stack (enfoque frontend)',
     },
     kind: { en: 'AI Video Creation SaaS', es: 'SaaS de Creación de Video con IA' },
     status: { en: 'Current', es: 'Actual' },
@@ -67,8 +67,8 @@ export const work: readonly WorkItem[] = [
     bullets: {
       en: [
         'Over 600 commits in the main branch with Next.js 16, React 19, and TypeScript, in a team of 5 developers',
-        'Built the browser video editor (timeline, subtitles, and export) with over 190 commits, and its backend module in NestJS',
-        'Built end-to-end user retention and support modules with escalation to human agents (Next.js, NestJS, MongoDB), and participated in onboarding, AI chat, and character cloning',
+        'Work on the browser video editor (timeline, subtitles, and export), my main area with over 190 commits; created the editor module in the backend (NestJS)',
+        'Created end-to-end user retention and support modules with escalation to human agents (Next.js, NestJS, MongoDB), and participated in onboarding, AI chat, and character cloning',
         'Created over 500 automated test files (Vitest, Testing Library, Jest, Supertest) with AI-assisted development (Claude Code)'
       ],
       es: [
@@ -124,7 +124,7 @@ export const work: readonly WorkItem[] = [
       es: 'Desarrollador Full-Stack',
     },
     kind: { en: 'Self-Hosted Streaming Platform', es: 'Plataforma de Streaming Autoalojada' },
-    status: { en: 'Live', es: 'En vivo' },
+    status: { en: 'Open source', es: 'Código abierto' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
       en: 'Self-hosted streaming platform: PWA web client, Android TV app, and cast bridge.',
@@ -147,64 +147,6 @@ export const work: readonly WorkItem[] = [
     tags: ['React', 'TypeScript', 'PWA', 'Kotlin', 'Jetpack Compose', 'GitHub Actions'],
   },
   {
-    id: 'sprite-studio',
-    company: 'Personal Project',
-    name: 'Sprite Studio',
-    accent: '#FF5CA8',
-    cover: coverAnai,
-    links: { link: null, code: GITHUB_OVERVIEW },
-    period: { en: '2026', es: '2026' },
-    role: { en: 'Developer', es: 'Desarrollador' },
-    kind: { en: 'AI Sprite Sheet Generator', es: 'Generador de Hojas de Sprites con IA' },
-    status: { en: 'Live', es: 'En vivo' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: 'AI sprite sheet generator that plans and generates animations.',
-      es: 'Generador de hojas de sprites con IA que planifica y genera animaciones.',
-    },
-    bullets: {
-      en: [
-        'Built with React, PixiJS, and Vercel Functions',
-        'Plans and generates animations with Google Gemini and OpenAI',
-        '17 test suites with Vitest'
-      ],
-      es: [
-        'Construido con React, PixiJS y Vercel Functions',
-        'Planifica y genera animaciones con Google Gemini y OpenAI',
-        '17 suites de pruebas con Vitest'
-      ]
-    },
-    tags: ['React', 'PixiJS', 'Vercel Functions', 'Google Gemini', 'OpenAI', 'Vitest'],
-  },
-  {
-    id: 'cajita',
-    company: 'Team Project',
-    name: 'Cajita',
-    accent: '#46C97E',
-    cover: coverAnai,
-    links: { link: null, code: GITHUB_OVERVIEW },
-    period: { en: '2026', es: '2026' },
-    role: { en: 'Developer', es: 'Desarrollador' },
-    kind: { en: 'Browser Video Editor', es: 'Editor de Video en Navegador' },
-    status: { en: 'Live', es: 'En vivo' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: 'Multitrack video editor that exports MP4 directly in the browser.',
-      es: 'Editor de video multipista que exporta MP4 en el navegador.',
-    },
-    bullets: {
-      en: [
-        'Built with Next.js, WebCodecs, and Supabase',
-        'Contributed over 460 test files'
-      ],
-      es: [
-        'Construido con Next.js, WebCodecs y Supabase',
-        'Aporté más de 460 archivos de pruebas'
-      ]
-    },
-    tags: ['Next.js', 'WebCodecs', 'Supabase', 'Testing'],
-  },
-  {
     id: 'extraction-survivors',
     company: 'Personal Project',
     name: 'Extraction Survivors',
@@ -214,7 +156,7 @@ export const work: readonly WorkItem[] = [
     period: { en: '2026', es: '2026' },
     role: { en: 'Game Developer', es: 'Desarrollador de Juegos' },
     kind: { en: '2D Multiplayer Game', es: 'Juego Multijugador 2D' },
-    status: { en: 'Live', es: 'En vivo' },
+    status: { en: 'Open source', es: 'Código abierto' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
       en: '2D browser multiplayer game for up to 4 players.',
@@ -233,36 +175,6 @@ export const work: readonly WorkItem[] = [
     tags: ['ECS', 'PixiJS', 'WebGL', 'WebRTC'],
   },
   {
-    id: 'dungeon-triage',
-    company: 'Personal Project',
-    name: 'Dungeon Triage',
-    accent: '#8B5CF6',
-    cover: coverExtraction,
-    links: { link: null, code: GITHUB_OVERVIEW },
-    period: { en: '2026', es: '2026' },
-    role: { en: 'Game Developer', es: 'Desarrollador de Juegos' },
-    kind: { en: '3D Co-op Game', es: 'Juego 3D Cooperativo' },
-    status: { en: 'Live', es: 'En vivo' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: '3D co-op game in Godot 4.',
-      es: 'Juego 3D cooperativo en Godot 4.',
-    },
-    bullets: {
-      en: [
-        'Godot 4 with Jolt physics running at 90 Hz',
-        'Over 340 GDScript files',
-        'Headless test harness with over 120 test and measurement files'
-      ],
-      es: [
-        'Godot 4 con física Jolt a 90 Hz',
-        'Más de 340 scripts GDScript',
-        'Arnés de pruebas headless con más de 120 archivos de prueba y medición'
-      ]
-    },
-    tags: ['Godot 4', 'Jolt Physics', 'GDScript', 'Testing'],
-  },
-  {
     id: 'poisonos',
     company: 'Personal Project',
     name: 'HY300 PoisonOS',
@@ -272,7 +184,7 @@ export const work: readonly WorkItem[] = [
     period: { en: '2026', es: '2026' },
     role: { en: 'Android Developer', es: 'Desarrollador Android' },
     kind: { en: 'Custom Android Launcher', es: 'Launcher Android Custom' },
-    status: { en: 'Live', es: 'En vivo' },
+    status: { en: 'Open source', es: 'Código abierto' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
       en: 'Android launcher and customization kit without root for the HY300 projector via ADB.',
