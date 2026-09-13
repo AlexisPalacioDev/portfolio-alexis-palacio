@@ -17,4 +17,14 @@ describe('lexical retrieval', () => {
     const results = bm25.score('react');
     expect(results[0].id).toBe('2');
   });
+
+  // guards: IDF — a rare term outweighs a term present in every document
+  it('weights rare terms above common ones', () => {
+    const bm25 = new BM25([
+      { id: 'common', title: 'x', text: 'developer developer developer' },
+      { id: 'rare', title: 'x', text: 'developer playwright' },
+      { id: 'other', title: 'x', text: 'developer vitest' },
+    ]);
+    expect(bm25.score('developer playwright')[0].id).toBe('rare');
+  });
 });

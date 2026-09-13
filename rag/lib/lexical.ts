@@ -70,10 +70,13 @@ export class BM25 {
 const STOPWORDS = new Set([
   // ES
   'el','la','los','las','un','una','unos','unas','y','o','pero','si','no','en','por','con','de','del','al','para',
-  'como','que','cual','quien','donde','cuando','cuanto','porque','es','su','tu','mi','te','me','se',
+  'como','que','cual','cuales','quien','donde','cuando','cuanto','cuantos','cuantas','porque','es','su','sus','tu','mi','te','me','se',
+  'le','lo','les','ha','han','hay','ser','esta','este','esto','sobre','muy','mas','ya','hoy','sabe','tiene','hace','hizo','puede',
   // EN
   'the','a','an','and','or','but','if','not','in','by','with','of','to','for','as','that','which','who','where',
-  'when','how','because','is','are','was','were','it','its','my','your','his','her','their'
+  'when','how','because','is','are','was','were','it','its','my','your','his','her','their',
+  'what','whats','does','do','did','has','have','had','he','she','him','be','been','can','could','would','should',
+  'will','about','on','at','from','this','these','those','there','any','some','today','tell','me','like','know'
 ]);
 
 export function tokenize(text: string): string[] {

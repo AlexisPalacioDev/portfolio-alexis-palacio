@@ -44,6 +44,14 @@ describe('ask', () => {
     expect((await ask('valid question', 'client1')).status).toBe(429);
   });
 
+  // guards: off-by-one in the cap — the map may hold exactly `cap` clients
+  it('does not evict while the map is at (not over) its cap', async () => {
+    const ask = getAsk({ now: () => 1000, rateLimitCap: 2 });
+    for (let i = 0; i < 8; i++) await ask('valid question', 'heavy');
+    await ask('valid question', 'light');
+    expect((await ask('valid question', 'heavy')).status).toBe(429);
+  });
+
   // guards: missing embeddings key = 503
   it('returns 503 for missing embeddings key', async () => {
     const ask = getAsk({ embedder: { embed: vi.fn().mockRejectedValue(new MissingKeyError()) } });

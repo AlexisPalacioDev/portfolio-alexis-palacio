@@ -57,9 +57,9 @@ import Eyebrow from '../ui/Eyebrow.astro';
       </form>
 
       <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;">
-        <button class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_1">{t('en', 'ask_chip_1')}</button>
-        <button class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_2">{t('en', 'ask_chip_2')}</button>
-        <button class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_3">{t('en', 'ask_chip_3')}</button>
+        <button type="button" class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_1">{t('en', 'ask_chip_1')}</button>
+        <button type="button" class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_2">{t('en', 'ask_chip_2')}</button>
+        <button type="button" class="ask-chip bg-surface text-muted font-mono" style="font-size: 13px; border: 1px solid #23252D; padding: 6px 12px; cursor: pointer;" data-i18n="ask_chip_3">{t('en', 'ask_chip_3')}</button>
       </div>
 
       <div
@@ -118,7 +118,11 @@ import Eyebrow from '../ui/Eyebrow.astro';
   const sourcesList = document.getElementById('ask-sources-list') as HTMLUListElement;
   const relatedText = document.getElementById('ask-related-text') as HTMLParagraphElement;
 
+  let inFlight = false;
+
   function setStatus(loading: boolean) {
+    inFlight = loading;
+    chips.forEach((chip) => ((chip as HTMLButtonElement).disabled = loading));
     if (loading) {
       input.disabled = true;
       submitBtn.disabled = true;
@@ -136,7 +140,7 @@ import Eyebrow from '../ui/Eyebrow.astro';
   }
 
   async function submitQuestion(question: string) {
-    if (!question || question.length < 3) return;
+    if (inFlight || !question || question.length < 3) return;
     setStatus(true);
 
     try {

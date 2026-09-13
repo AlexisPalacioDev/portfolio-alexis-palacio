@@ -1,11 +1,34 @@
+const ES_MARKERS = new Set([
+  'el', 'la', 'los', 'las', 'un', 'una', 'y', 'pero', 'en', 'por', 'con', 'de', 'del', 'al', 'para',
+  'como', 'que', 'cual', 'cuales', 'quien', 'donde', 'cuando', 'cuanto', 'cuantos', 'porque', 'es',
+  'su', 'sus', 'tiene', 'sabe', 'ha', 'hay', 'trabajo', 'trabaja', 'experiencia', 'esperado',
+  'salario', 'remoto', 'estudio', 'sobre', 'cuentame', 'busca', 'años', 'anos',
+]);
+const EN_MARKERS = new Set([
+  'the', 'a', 'an', 'and', 'but', 'in', 'on', 'of', 'to', 'for', 'with', 'is', 'are', 'was', 'does',
+  'do', 'did', 'has', 'have', 'he', 'his', 'him', 'what', 'which', 'who', 'where', 'when', 'how',
+  'can', 'any', 'about', 'tell', 'me', 'or', 'yes', 'open', 'work', 'experience', 'used', 'know',
+]);
+
+// Deterministic, dependency-free guess of the question language. Spanish-only
+// characters (¿ ¡ ñ and accents) decide immediately; otherwise marker words
+// are counted and a tie falls back to Spanish, the site's primary audience.
 export function detectLanguage(question: string): 'es' | 'en' {
   const q = question.toLowerCase();
-  const hasEsPunctuation = /[¿¡áéíóúñ]/.test(q);
-  const esStopwords = /\b(el|la|los|las|un|una|unos|unas|y|o|pero|si|no|en|por|con|de|del|al|para|como|qué|cual|quién|donde|cuando|cuanto|porque|es|su|tu|mi|te|se)\b/;
-  if (hasEsPunctuation || esStopwords.test(q)) {
-    return 'es';
+  if (/[¿¡ñáéíóú]/.test(q)) return 'es';
+  const words = q.split(/[^a-z]+/).filter(Boolean);
+  let es = 0;
+  let en = 0;
+  for (const word of words) {
+    if (ES_MARKERS.has(word)) es++;
+    if (EN_MARKERS.has(word)) en++;
   }
-  return 'en';
+  return en > es ? 'en' : 'es';
+}
+
+// Keep the question from closing or faking the <question> delimiter.
+function escapeQuestion(question: string): string {
+  return question.replace(/</g, '‹').replace(/>/g, '›');
 }
 
 export function buildMessages(
@@ -31,8 +54,8 @@ Never disclose salary expectations, family members, or personal data beyond the 
   const answerLangStr = lang === 'es' ? 'Answer language: Spanish.' : 'Answer language: English.';
 
   const userContent = contextBlocks 
-    ? `${contextBlocks}\n\n<question>\n${question}\n</question>\n\n${answerLangStr}`
-    : `<question>\n${question}\n</question>\n\n${answerLangStr}`;
+    ? `${contextBlocks}\n\n<question>\n${escapeQuestion(question)}\n</question>\n\n${answerLangStr}`
+    : `<question>\n${escapeQuestion(question)}\n</question>\n\n${answerLangStr}`;
 
   return [
     { role: 'system', content: systemPrompt },

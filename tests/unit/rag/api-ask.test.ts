@@ -26,6 +26,16 @@ describe('api ask handler', () => {
     expect(await res.json()).toEqual({ error: 'invalid_question' });
   });
 
+  // guards: a non-string question is a client error, not a crash
+  it('returns 400 when question is not a string', async () => {
+    const handler = createHandler({ loadIndex: () => ({ chunks: [] }) });
+    for (const body of ['{"question":5}', '[]', '"x"']) {
+      const res = await handler(new Request('http://localhost', { method: 'POST', body }));
+      expect(res.status).toBe(400);
+      expect(await res.json()).toEqual({ error: 'invalid_question' });
+    }
+  });
+
   // guards: 500 for unexpected errors
   it('returns 500 on unexpected exception', async () => {
     // Force an internal error by mocking request.json() to throw a generic error, which is caught by the first catch,
@@ -39,6 +49,7 @@ describe('api ask handler', () => {
     } as any;
     const res = await handler(badReq);
     expect(res.status).toBe(500);
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
     expect(await res.json()).toEqual({ error: 'internal' });
   });
 });

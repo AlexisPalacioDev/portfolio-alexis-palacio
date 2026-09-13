@@ -9,7 +9,6 @@ type RateLimitEntry = {
 
 export type IndexData = {
   minScore?: number;
-  minLexical?: number;
   chunks: { id: string; title: string; text: string; vector: number[] }[];
 };
 

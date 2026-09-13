@@ -16,7 +16,7 @@ export function createGenerator(
       }
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 20000);
+      const timeoutId = setTimeout(() => controller.abort(), 18000);
 
       try {
         const res = await fetchImpl(`${baseUrl}/chat/completions`, {

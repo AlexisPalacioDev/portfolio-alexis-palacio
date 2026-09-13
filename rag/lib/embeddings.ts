@@ -17,7 +17,7 @@ export function createEmbedder(
 
   return {
     model,
-    async embed(texts: string[], timeoutMs: number = 15000): Promise<number[][]> {
+    async embed(texts: string[], timeoutMs: number = 8000): Promise<number[][]> {
       if (!apiKey) {
         throw new MissingKeyError();
       }

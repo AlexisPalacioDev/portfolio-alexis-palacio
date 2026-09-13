@@ -48,7 +48,14 @@ describe('embeddings', () => {
   it('does not leak API key in HTTP error messages', async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: false, status: 401 });
     const embedder = createEmbedder({ EMBEDDINGS_API_KEY: 'super-secret-key' }, fetchMock as any);
-    try { await embedder.embed(['a']); expect.unreachable(); } catch (err: any) { expect(err.message).not.toContain('super-secret-key'); }
+    const error = await embedder.embed(['a']).then(
+      () => null,
+      (err: Error) => err,
+    );
+    // A swallowed HTTP error (resolving instead of throwing) must fail here.
+    expect(error).toBeInstanceOf(Error);
+    expect(error!.message).toContain('401');
+    expect(error!.message).not.toContain('super-secret-key');
   });
 
   // guards: network timeout aborts fetch

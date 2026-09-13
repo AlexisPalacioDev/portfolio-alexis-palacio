@@ -57,23 +57,24 @@ describe('retrieve (hybrid score fusion)', () => {
   describe('no-context gate', () => {
     const index: IndexData = {
       minScore: 0.5,
-      minLexical: 0.1,
       chunks: [
         chunk('a', 'playwright vitest jest', [1, 0, 0]),
         chunk('b', 'kotlin compose android', [0, 1, 0]),
       ],
     };
 
-    it('returns nothing when both cosine and BM25 are below their thresholds', () => {
+    it('returns nothing when the best cosine is below minScore', () => {
       expect(retrieve(index, normalize([0, 0, 1]), 'weather today')).toEqual([]);
     });
 
-    it('passes when only the cosine score clears its threshold', () => {
+    it('passes when the best cosine clears minScore', () => {
       expect(retrieve(index, normalize([1, 0, 0]), 'weather today').length).toBeGreaterThan(0);
     });
 
-    it('passes when only the BM25 score clears its threshold', () => {
-      expect(retrieve(index, normalize([0, 0, 1]), 'kotlin').length).toBeGreaterThan(0);
+    // Regression: off-topic questions sharing one word with the corpus
+    // ("square root", "poem") scored > 3 in BM25 and bypassed a lexical gate.
+    it('does not let a keyword-only match bypass the gate', () => {
+      expect(retrieve(index, normalize([0, 0, 1]), 'kotlin')).toEqual([]);
     });
 
     it('uses the default thresholds when the index does not define them', () => {

@@ -11,7 +11,10 @@ describe('generator', () => {
     });
     const gen = createGenerator({ LLM_API_KEY: 'test', LLM_MODEL: 'test-model' }, fetchMock as any);
     await gen.generate([{ role: 'user', content: 'hi' }]);
-    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe('https://api.openai.com/v1/chat/completions');
+    expect(init.headers.Authorization).toBe('Bearer test');
+    const body = JSON.parse(init.body);
     expect(body.model).toBe('test-model');
     expect(body.messages[0].content).toBe('hi');
     expect(body.temperature).toBeDefined();
@@ -28,7 +31,14 @@ describe('generator', () => {
   it('throws on HTTP error without leaking key', async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: false, status: 500 });
     const gen = createGenerator({ LLM_API_KEY: 'secret' }, fetchMock as any);
-    try { await gen.generate([]); expect.unreachable(); } catch (err: any) { expect(err.message).not.toContain('secret'); }
+    const error = await gen.generate([]).then(
+      () => null,
+      (err: Error) => err,
+    );
+    // A swallowed HTTP error (resolving instead of throwing) must fail here.
+    expect(error).toBeInstanceOf(Error);
+    expect(error!.message).toContain('500');
+    expect(error!.message).not.toContain('secret');
   });
 
   // guards: timeout aborts fetch

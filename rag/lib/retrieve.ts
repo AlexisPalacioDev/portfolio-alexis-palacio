@@ -16,7 +16,6 @@ export type RetrieveOptions = {
 };
 
 export const DEFAULT_MIN_SCORE = 0.25;
-export const DEFAULT_MIN_LEXICAL = 2.0;
 
 const bm25Cache = new WeakMap<IndexData, BM25>();
 
@@ -60,12 +59,12 @@ export function retrieve(
     .filter((hit) => hit.score > 0)
     .slice(0, candidates);
 
+  // The no-context gate uses cosine only. Measured on the eval set: in-scope
+  // top cosine >= 0.263, off-topic <= 0.240. BM25 cannot gate on a corpus this
+  // small: a single shared word ("root", "poem") already scores above 3.
   if (!skipGate) {
     const bestCosine = vectorRanking[0]?.score ?? -Infinity;
-    const bestLexical = lexicalRanking[0]?.score ?? 0;
-    const minScore = index.minScore ?? DEFAULT_MIN_SCORE;
-    const minLexical = index.minLexical ?? DEFAULT_MIN_LEXICAL;
-    if (bestCosine < minScore && bestLexical < minLexical) return [];
+    if (bestCosine < (index.minScore ?? DEFAULT_MIN_SCORE)) return [];
   }
 
   // Score fusion: cosine plus the BM25 score normalized to [0, 1] and weighted.

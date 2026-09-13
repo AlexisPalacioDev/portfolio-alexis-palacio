@@ -15,6 +15,11 @@ describe('chunkMarkdown', () => {
       const fences = (c.text.match(/^```/gm) || []).length;
       expect(fences % 2).toBe(0);
     }
+    // Parts of one section get -pN ids and stay unique.
+    const ids = chunks.map((c) => c.id);
+    expect(ids[0]).toBe('file1#big-section');
+    expect(ids[1]).toBe('file1#big-section-p2');
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
   it('ignores # title inside code fences', () => {
@@ -24,10 +29,11 @@ describe('chunkMarkdown', () => {
   });
 
   it('guarantees unique ids for colliding suffixes', () => {
-    const md = '# H1\n## Foo\nText 1\n## Foo\nText 2\n## Foo 2\nText 3';
+    // Three "Foo" plus a literal "Foo 2" needs a loop, not a single retry.
+    const md = '# H1\n## Foo\nText 1\n## Foo\nText 2\n## Foo 2\nText 3\n## Foo\nText 4';
     const chunks = chunkMarkdown('file1', md);
     const ids = chunks.map(c => c.id);
-    expect(new Set(ids).size).toBe(3);
+    expect(new Set(ids).size).toBe(4);
     expect(ids).toContain('file1#foo');
     expect(ids).toContain('file1#foo-2');
   });
