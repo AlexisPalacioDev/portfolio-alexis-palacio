@@ -179,6 +179,7 @@ test.describe('Ask Profile', () => {
 
     // Switch to Spanish
     await page.locator('#lang-btn-es').click();
+    await expect(page.locator('#ask-input')).toHaveAttribute('placeholder', /Pregunta sobre mi experiencia/);
 
     // Ask again, should get Spanish error
     await page.locator('#ask-submit').click();

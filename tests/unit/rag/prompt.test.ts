@@ -39,6 +39,7 @@ describe('prompt building', () => {
     expect(sys).toContain('ONLY the numbered context');
     expect(sys).toContain('Today\'s date: ' + today);
     expect(sys).toContain('Compute any durations');
+    expect(sys).toContain('Keep the exact scope of each claim');
     expect(sys).toContain('Answer language');
     expect(sys).toContain('third person');
     expect(sys).toContain('120 words');

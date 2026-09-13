@@ -120,6 +120,12 @@ import Eyebrow from '../ui/Eyebrow.astro';
 
   let inFlight = false;
 
+  // apply.ts only swaps textContent, so the placeholder attribute follows the
+  // language toggle here.
+  $lang.subscribe((lang) => {
+    input.placeholder = I18N[lang === 'es' ? 'es' : 'en']['ask_input_placeholder'];
+  });
+
   function setStatus(loading: boolean) {
     inFlight = loading;
     chips.forEach((chip) => ((chip as HTMLButtonElement).disabled = loading));
