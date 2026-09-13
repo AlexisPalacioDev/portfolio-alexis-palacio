@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { createAsk, IndexData } from '../rag/lib/ask.ts';
+import { createAsk } from '../rag/lib/ask.ts';
+import type { IndexData } from '../rag/lib/ask.ts';
 import { createEmbedder } from '../rag/lib/embeddings.ts';
 import { createGenerator } from '../rag/lib/generate.ts';
 
@@ -15,8 +16,8 @@ function getAskFn() {
     try {
       if (fs.existsSync(indexPath)) {
         indexCache = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
-        const embedder = createEmbedder(process['env']);
-        const generator = createGenerator(process['env']);
+        const embedder = createEmbedder(process.env);
+        const generator = createGenerator(process.env);
         askFn = createAsk({ index: indexCache!, embedder, generator });
       }
     } catch (e) {

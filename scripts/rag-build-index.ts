@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { chunkMarkdown, Chunk } from '../rag/lib/chunk.ts';
+import { chunkMarkdown } from '../rag/lib/chunk.ts';
+import type { Chunk } from '../rag/lib/chunk.ts';
 import { createEmbedder } from '../rag/lib/embeddings.ts';
 import { scanForSecrets } from '../rag/lib/scan.ts';
 
@@ -42,7 +43,7 @@ async function buildIndex() {
     }
   }
 
-  const embedder = createEmbedder(process['env']);
+  const embedder = createEmbedder(process.env);
   const textsToEmbed = allChunks.map(c => `${c.title}\n\n${c.text}`);
 
   console.log(`Generating embeddings for ${allChunks.length} chunks (approx ${Math.round(totalChars / 4)} tokens)...`);

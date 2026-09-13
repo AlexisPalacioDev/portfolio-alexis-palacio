@@ -2,7 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createEmbedder } from '../rag/lib/embeddings.ts';
 import { cosineTopK } from '../rag/lib/vector.ts';
-import { calculateMetrics, EvalResult } from '../rag/lib/metrics.ts';
+import { calculateMetrics } from '../rag/lib/metrics.ts';
+import type { EvalResult } from '../rag/lib/metrics.ts';
 
 const indexPath = path.join(process.cwd(), 'rag', 'index.json');
 const evalPath = path.join(process.cwd(), 'rag', 'eval.json');
@@ -17,7 +18,7 @@ async function evaluate() {
   const index = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
   const evalData = JSON.parse(fs.readFileSync(evalPath, 'utf-8'));
 
-  const embedder = createEmbedder(process['env']);
+  const embedder = createEmbedder(process.env);
   const questions = evalData.cases.map((c: any) => c.question);
   
   console.log(`Embedding ${questions.length} questions...`);

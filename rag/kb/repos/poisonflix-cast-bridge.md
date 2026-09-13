@@ -31,7 +31,7 @@ On host networking there is no port publishing and no network namespace: a
 the Wi-Fi, with Caddy and the Jellyseerr session nowhere in the path. Anyone on
 the network could launch anything on the television.
 
-So it binds `CAST_BRIDGE_BIND` (default `172.18.0.1`, the docker bridge
+So it binds `CAST_BRIDGE_BIND` (default the docker bridge gateway IP, the docker bridge
 gateway): containers on that bridge reach it, the LAN does not. If that address
 does not exist on the host the process **exits with a log line** instead of
 falling back to `0.0.0.0` — a restart loop is a bug report, a silent fallback is
@@ -92,7 +92,7 @@ cannot write, which is the line to grep for. The fix on the host is
 
 | Variable | Default | |
 | --- | --- | --- |
-| `CAST_BRIDGE_BIND` | `172.18.0.1` | see above |
+| `CAST_BRIDGE_BIND` | the docker bridge gateway IP | see above |
 | `CAST_BRIDGE_PORT` | `8791` | |
 | `CAST_DATA_DIR` | `/data` | where the webOS `client-key` is persisted |
 | `CAST_CACHE_TTL_MS` | `8000` | a scan costs seconds; the player screen asks often |
