@@ -3,24 +3,21 @@ import { t } from '../../lib/i18n/store';
 import Eyebrow from '../ui/Eyebrow.astro';
 
 const aiChips = [
-  'Claude Code', 'SDD (Spec-Driven Dev)', 'Harness Engineering',
-  'MCP', 'Subagents', 'Evals & Verification',
-  'RAG', 'Structured Output', 'OpenAI', 'Anthropic', 'OpenRouter',
-  'Ollama', 'LangChain',
+  'Claude API', 'OpenAI API', 'Google Gemini API', 'AI Agent-Assisted Development'
 ];
 
 const backendSkills = [
-  'Node.js', 'NestJS', 'PHP', 'Python', 'REST APIs',
-  'PostgreSQL', 'MySQL', 'Redis', 'Supabase',
+  'Node.js', 'NestJS', 'PHP', 'CakePHP', 'REST APIs',
+  'MongoDB', 'PostgreSQL', 'Supabase', 'MySQL'
 ];
 
 const frontendSkills = [
-  'React', 'React Native', 'Next.js', 'TypeScript', 'Astro', 'Tailwind CSS',
+  'React 19', 'Next.js 16', 'TypeScript', 'Tailwind CSS', 'TanStack Query', 'Astro', 'PixiJS'
 ];
 
 const infraSkills = [
-  'AWS (EC2, S3, Lambda)', 'Docker', 'Vercel', 'GitHub Actions',
-  'Cloudflare', 'Linux', 'Nginx', 'Git',
+  'Vitest', 'Jest', 'Testing Library', 'Supertest', 'Playwright', 'GitHub Actions',
+  'Docker', 'Google Cloud Run', 'Vercel', 'Linux', 'Kotlin', 'Jetpack Compose', 'Godot'
 ];
 ---
 
@@ -156,23 +153,24 @@ const infraSkills = [
         </div>
       </div>
 
-      <!-- Soft Skills & Leadership -->
+      <!-- Infra & Tools -->
       <div class="rev bg-surface" style="border: 1px solid #23252D; padding: 26px;">
         <div
           class="font-mono text-lime"
           style="font-size: 12px; letter-spacing: 1px; margin-bottom: 18px;"
-          data-i18n="skills_soft_title"
+          data-i18n="cat_infra"
         >
-          {t('en', 'skills_soft_title')}
+          {t('en', 'cat_infra')}
         </div>
         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-          <span class="font-mono" style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-size: 12.5px;" data-i18n="soft_leadership">{t('en', 'soft_leadership')}</span>
-          <span class="font-mono" style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-size: 12.5px;" data-i18n="soft_agile">{t('en', 'soft_agile')}</span>
-          <span class="font-mono" style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-size: 12.5px;" data-i18n="soft_comm">{t('en', 'soft_comm')}</span>
-          <span class="font-mono" style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-size: 12.5px;" data-i18n="soft_review">{t('en', 'soft_review')}</span>
-          <span class="font-mono" style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-size: 12.5px;" data-i18n="soft_remote">{t('en', 'soft_remote')}</span>
-          <span class="font-mono" style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-size: 12.5px;" data-i18n="soft_decisions">{t('en', 'soft_decisions')}</span>
-          <span class="font-mono" style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-size: 12.5px;" data-i18n="soft_problem">{t('en', 'soft_problem')}</span>
+          {infraSkills.map((s) => (
+            <span
+              class="font-mono"
+              style="padding: 7px 12px; border: 1px solid #34373F; color: #C8C8C0; font-size: 12.5px;"
+            >
+              {s}
+            </span>
+          ))}
         </div>
       </div>
 

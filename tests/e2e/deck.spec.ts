@@ -55,9 +55,9 @@ test.describe('ProjectDeck — card interaction', () => {
     );
     expect(card2Border).toMatch(/C6F24E|rgb\(198, 242, 78\)/i);
 
-    // Detail panel should update (company, name, or desc for index 2 — Sticker Drops)
+    // Detail panel should update (company, name, or desc for index 2 — PoisonFlix)
     const detailName = page.locator('#detail-name');
-    await expect(detailName).toContainText('Sticker', { ignoreCase: true });
+    await expect(detailName).toContainText('PoisonFlix', { ignoreCase: true });
   });
 
   test('clicking indicator dot 4 activates card 4 and updates detail', async ({ page }) => {
@@ -139,8 +139,8 @@ test.describe('ProjectDeck — regression: count-up must not clobber the deck', 
   // textContent, destroying all 7 .work-card elements (they collapsed to a
   // single text node like "7 anai Current anai ..."). The fix scopes the
   // count-up selector to #about. This test triggers the count-up by scrolling
-  // through About, then asserts the deck still has its 7 card ELEMENTS.
-  test('deck retains its 7 card elements after the About count-up fires', async ({ page }) => {
+  // through About, then asserts the deck still has all its card ELEMENTS.
+  test('deck retains all its card elements after the About count-up fires', async ({ page }) => {
     await page.goto('/');
 
     // Scroll About into view to trigger the count-up IntersectionObserver
@@ -156,9 +156,9 @@ test.describe('ProjectDeck — regression: count-up must not clobber the deck', 
     });
     await page.waitForSelector('#work-deck[data-hydrated="true"]', { state: 'attached', timeout: 8000 });
 
-    // The deck must still contain 7 real card elements, not a flattened text node
+    // The deck must still contain one real card element per work item, not a flattened text node
     const cardCount = await page.locator('#work-deck .work-card').count();
-    expect(cardCount).toBe(7);
+    expect(cardCount).toBe(5); // keep in sync with src/lib/data/work.ts
 
     // And the stat tile STRUCTURE must survive the count-up: the value lives in
     // a [data-stat-value] child and the label is a separate sibling. The old bug

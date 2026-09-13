@@ -28,8 +28,8 @@ interface Props {
 const SITE = 'https://portfolio-alexis-palacio.vercel.app';
 
 const {
-  title = 'Alexis Palacio — AI Engineer & Harness Engineer',
-  description = 'AI Engineer in Medellín, Colombia. I set up AI so it ships reliable, verifiable results — full-stack underneath (Next.js, React, TypeScript, NestJS).',
+  title = 'Alexis Palacio — Full Stack TypeScript Developer',
+  description = 'Full Stack TypeScript developer in Medellín, Colombia. Next.js, React, NestJS and Node.js, building AI video products with automated testing.',
   ogImage = '/og-image.png',
   canonical = SITE,
 } = Astro.props;
@@ -50,17 +50,16 @@ const structuredData = {
       alternateName: 'AlexisPalacioDev',
       url: `${SITE}/`,
       image: ogImageAbsolute,
-      jobTitle: 'AI Engineer & Harness Engineer',
-      description: 'I make AI reliable — the right tools, context and self-checks — and build full-stack web products end to end.',
+      jobTitle: 'Full Stack TypeScript Developer',
+      description: 'Full stack developer building web products with Next.js, React, NestJS and automated tests.',
       // TODO: reemplazar por email profesional (ej: alexis@midominio.com)
       email: 'mailto:alexis26-93@live.com',
       telephone: '+573206088114',
       address: { '@type': 'PostalAddress', addressLocality: 'Medellín', addressCountry: 'CO' },
       worksFor: { '@type': 'Organization', name: 'anai', url: 'https://anaiapp.ai' },
       knowsAbout: [
-        'Harness Engineering', 'AI agents', 'AI orchestration', 'LLM evaluation',
-        'Automation', 'Next.js', 'React', 'React Native', 'TypeScript', 'NestJS',
-        'Full-stack development',
+        'TypeScript', 'Next.js', 'React', 'NestJS', 'Node.js', 'MongoDB',
+        'Vitest', 'Jest', 'Playwright', 'Full-stack development',
       ],
       sameAs: [
         'https://github.com/AlexisPalacioDev',
@@ -121,7 +120,7 @@ const navItems = [
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Alexis Palacio — AI Engineer & Harness Engineer" />
+    <meta property="og:image:alt" content="Alexis Palacio — Full Stack TypeScript Developer" />
     <meta property="og:site_name" content="Alexis Palacio" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="es_ES" />
@@ -131,7 +130,7 @@ const navItems = [
     <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImageAbsolute} />
-    <meta name="twitter:image:alt" content="Alexis Palacio — AI Engineer & Harness Engineer" />
+    <meta name="twitter:image:alt" content="Alexis Palacio — Full Stack TypeScript Developer" />
     <meta name="twitter:creator" content="@AlexisPalacioDev" />
 
     <!-- Favicon -->

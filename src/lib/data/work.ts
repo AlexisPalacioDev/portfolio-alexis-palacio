@@ -1,16 +1,12 @@
 import type { ImageMetadata } from 'astro';
 import type { Lang } from '../i18n/types';
 
-// ── Generic bilingual wrapper ─────────────────────────────────────────────────
-// Keeps both language translations adjacent so it is impossible to forget one.
-// Use pick(localized, lang) to read the active-language value.
 export type Localized<T> = Readonly<Record<Lang, T>>;
 
 export function pick<T>(loc: Localized<T>, lang: Lang): T {
   return loc[lang];
 }
 
-// ── Status ────────────────────────────────────────────────────────────────────
 export const WORK_STATUS = {
   LIVE: 'live',
   BACKEND: 'backend',
@@ -18,68 +14,37 @@ export const WORK_STATUS = {
 } as const;
 
 export type WorkStatusKey = (typeof WORK_STATUS)[keyof typeof WORK_STATUS];
-
-// ── Links ─────────────────────────────────────────────────────────────────────
-/**
- * GitHub profile overview — the fallback "Code" target.
- *
- * Several of these projects live in private repos, so linking straight at them
- * gives an anonymous visitor a 404. Those point here instead: the profile
- * overview, where the README presents the work. Same for a project whose
- * product domain has lapsed.
- */
 export const GITHUB_OVERVIEW = 'https://github.com/AlexisPalacioDev';
 
 export interface WorkLinks {
-  /** "Open" — live demo or product URL. null when not public. */
   link: string | null;
-  /** "Code" — GitHub / source URL. null when closed-source. */
   code: string | null;
 }
 
-// ── WorkItem ──────────────────────────────────────────────────────────────────
 export interface WorkItem {
-  /** Stable slug — used as deck key, dot key, and unit tests */
   id: string;
-  /** Company / client name (proper noun — not localized) */
   company: string;
-  /** Project name (proper noun — not localized) */
   name: string;
-  /** Per-project accent hex — applied via inline style, NOT a theme token */
   accent: string;
-  /** ESM-imported asset so Astro's Sharp pipeline optimizes it at build time */
   cover: ImageMetadata;
   links: WorkLinks;
   period: Localized<string>;
   role: Localized<string>;
   kind: Localized<string>;
-  /** Human-readable status label (localized) */
   status: Localized<string>;
-  /** Machine status key — drives styling/filtering */
   statusKey: WorkStatusKey;
-  /** Short description paragraph */
   desc: Localized<string>;
-  /** "What I did" bullet list */
   bullets: Localized<string[]>;
-  /** Tech tags — not localized */
   tags: readonly string[];
 }
 
-// ── Cover images (ESM imports → Sharp-optimized at build time) ────────────────
 import coverAnai from '../../assets/preview-anai.png';
 import coverImometrics from '../../assets/preview-imometrics.png';
-import coverSticker from '../../assets/preview-sticker.png';
-import coverApptreeking from '../../assets/preview-apptreeking.png';
-import coverBunny from '../../assets/preview-bunny.png';
-import coverTodo from '../../assets/preview-todo.png';
-import coverExtraction from '../../assets/preview-extraction-survivors.png';
 import coverPoisonflix from '../../assets/preview-poisonflix.png';
 import coverPoisonos from '../../assets/preview-poisonos.png';
-import coverHermes from '../../assets/preview-hermes.png';
+import coverExtraction from '../../assets/preview-extraction-survivors.png';
 
-// ── Work array — most-recent first ───────────────────────────────────────────
 export const work: readonly WorkItem[] = [
-  // 0 — anai
   {
     id: 'anai',
     company: 'anai',
@@ -87,260 +52,65 @@ export const work: readonly WorkItem[] = [
     accent: '#5B8DEF',
     cover: coverAnai,
     links: { link: 'https://anaiapp.ai', code: null },
-    period: { en: '2026 — Present', es: '2026 — Hoy' },
+    period: { en: 'May 2026 – Present', es: 'may. 2026 – actualidad' },
     role: {
-      en: 'Lead Fullstack Developer · Frontend',
-      es: 'Líder de Desarrollo Fullstack · Frontend',
+      en: 'Full Stack Developer (frontend focus)',
+      es: 'Desarrollador Full Stack (enfoque frontend)',
     },
     kind: { en: 'AI Video Creation SaaS', es: 'SaaS de Creación de Video con IA' },
     status: { en: 'Current', es: 'Actual' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'I lead the Next.js 16 / React 19 platform at anai (anaiapp.ai) — an AI SaaS that turns social content into viral short-form videos through AI scripting, voice synthesis and a browser-native video editor. Leading the engineering team, serving thousands of users with billing handled through Hotmart.',
-      es: 'Lidero la plataforma Next.js 16 / React 19 de anai (anaiapp.ai) — un SaaS de IA que convierte contenido social en videos cortos virales mediante scripting con IA, síntesis de voz y un editor de video nativo en el browser. Lidero el equipo de desarrollo, con miles de usuarios y cobros gestionados a través de Hotmart.',
+      en: 'One of the top three frontend contributors at anai (anaiapp.ai), an AI video creation SaaS. Working on the browser video editor, user retention, and support modules.',
+      es: 'Uno de los tres principales contribuidores del frontend de anai (anaiapp.ai), SaaS de creación de video con IA. Trabajo en el editor de video en el navegador, retención de usuarios y módulos de soporte.'
     },
     bullets: {
       en: [
-        'Lead the Next.js 16 / React 19 frontend and the BFF architecture (Route Handlers → NestJS, Google OAuth, HttpOnly cookies) — leading the engineering team and coordinating sprint delivery',
-        'Built a browser-native video editor with WebCodecs, WebGL and WASM subtitle rendering',
-        'Integrated Claude, GPT, Gemini, Veo 3.1 and ElevenLabs into an AI-assisted creation studio',
+        'Over 600 commits in the main branch with Next.js 16, React 19, and TypeScript, in a team of 5 developers',
+        'Work on the browser video editor (timeline, subtitles, and export), my main area with over 190 commits; created the editor module in the backend (NestJS)',
+        'Created end-to-end user retention and support modules with escalation to human agents (Next.js, NestJS, MongoDB), and participated in onboarding, AI chat, and character cloning',
+        'Created over 500 automated test files (Vitest, Testing Library, Jest, Supertest) with AI-assisted development (Claude Code)'
       ],
       es: [
-        'Lidero el frontend Next.js 16 / React 19 y la arquitectura BFF (Route Handlers → NestJS, Google OAuth, cookies HttpOnly) — liderando el equipo de desarrollo y coordinando la entrega de sprints',
-        'Construí un editor de video nativo en el browser con WebCodecs, WebGL y renderizado de subtítulos por WASM',
-        'Integré Claude, GPT, Gemini, Veo 3.1 y ElevenLabs en un estudio de creación asistido por IA',
-      ],
+        'Más de 600 commits en la rama principal con Next.js 16, React 19 y TypeScript, en un equipo de 5 desarrolladores',
+        'Trabajo en el editor de video en el navegador (línea de tiempo, subtítulos y exportación) con más de 190 commits; creé el módulo del editor en el backend (NestJS)',
+        'Creé de punta a punta los módulos de retención de usuarios y de soporte con escalado a asesor humano (Next.js, NestJS, MongoDB), y participé en onboarding, chat con IA y clonación de personajes',
+        'Creé más de 500 archivos de pruebas automatizadas (Vitest, Testing Library, Jest, Supertest) con desarrollo asistido por agentes de IA (Claude Code)'
+      ]
     },
-    tags: ['Next.js 16', 'React 19', 'TypeScript', 'NestJS', 'Google Cloud', 'Claude / Veo 3.1'],
+    tags: ['Next.js 16', 'React 19', 'TypeScript', 'NestJS', 'MongoDB', 'Vitest'],
   },
-
-  // 1 — Extraction Survivors
-  {
-    id: 'extraction-survivors',
-    company: 'Personal Project',
-    name: 'Extraction Survivors',
-    accent: '#3B6EF0',
-    cover: coverExtraction,
-    links: {
-      link: 'https://extraction-survivors-client.vercel.app',
-      code: 'https://github.com/AlexisPalacioDev/extraction-survivors',
-    },
-    period: { en: '2026', es: '2026' },
-    role: {
-      en: 'Game Developer · Solo',
-      es: 'Game Developer · Solo',
-    },
-    kind: { en: '2D Multiplayer Survivors Game', es: 'Juego Survivors Multijugador 2D' },
-    status: { en: 'Live', es: 'En vivo' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: 'A 2D browser multiplayer extraction-looter with Vampire-Survivors-style hordes — up to 4 players over WebRTC. Built from scratch with no game engine: a custom ECS and fixed-timestep simulation, PixiJS (WebGL) only for rendering, and procedural pixel creatures (a descendant of this portfolio’s Bug Hunt fly).',
-      es: 'Looter-extraction multijugador 2D en el browser con hordas estilo Vampire Survivors — hasta 4 jugadores por WebRTC. Hecho desde cero, sin motor de juego: ECS y simulación de timestep fijo propios, PixiJS (WebGL) solo para el render, y criaturas pixel procedurales (descendientes de la mosca del Bug Hunt de este portafolio).',
-    },
-    bullets: {
-      en: [
-        'Designed the simulation core from scratch with no game engine — fixed-timestep loop, ECS, spatial-grid collisions — so it runs identically on host and clients',
-        'Built host-client netcode over WebRTC DataChannels (+ a signaling server) with snapshot streaming and interpolation for up to 4 players',
-        'Rendered hundreds of enemies on the GPU with PixiJS by rasterizing procedural pixel creatures to cached textures',
-        'Shipped a full loop: Vampire-Survivors auto-combat, ground loot, hold-to-extract zones, death-drops and between-run meta-progression',
-      ],
-      es: [
-        'Diseñé el core de simulación desde cero, sin motor de juego — loop de timestep fijo, ECS, colisiones por grilla espacial — para que corra igual en host y clientes',
-        'Construí el netcode host-cliente sobre WebRTC DataChannels (+ servidor de signaling) con streaming de snapshots e interpolación para hasta 4 jugadores',
-        'Rendericé cientos de enemigos en la GPU con PixiJS rasterizando criaturas pixel procedurales a texturas cacheadas',
-        'Entregué el loop completo: auto-combate estilo Vampire Survivors, loot, zonas de extracción (mantener para extraer), drop al morir y meta-progresión entre partidas',
-      ],
-    },
-    tags: ['TypeScript', 'PixiJS / WebGL', 'WebRTC', 'ECS', 'Vite', 'Monorepo'],
-  },
-
-  // 1 — iMometrics
   {
     id: 'imometrics',
     company: 'iMometrics',
     name: 'iMometrics',
-    accent: '#8B7CF6',
+    accent: '#0CA1B1',
     cover: coverImometrics,
-    links: { link: 'https://www.imometrics.com', code: null },
-    period: { en: '2024 — 2026', es: '2024 — 2026' },
+    links: { link: 'https://imometrics.com', code: null },
+    period: { en: 'Jun 2025 – Apr 2026', es: 'jun. 2025 – abr. 2026' },
     role: {
-      en: 'Backend Developer',
-      es: 'Desarrollador Backend',
+      en: 'Lead Developer',
+      es: 'Líder de Desarrollo',
     },
-    kind: { en: 'Cold-Chain Monitoring Platform', es: 'Plataforma de Monitoreo de Cadena de Frío' },
-    status: { en: 'Live', es: 'En vivo' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: 'Backend architecture and real-time alerting system for iMometrics, a cold-chain monitoring platform that processes sensor data from refrigeration fleets of 1 to 1,000+ units — delivering real-time metrics, dashboards and audible alerts.',
-      es: 'Arquitectura backend y sistema de alertamiento en tiempo real para iMometrics, plataforma de monitoreo de cadena de frío que procesa datos de sensores de flotas de refrigeración de 1 a 1,000+ equipos — entregando métricas, dashboards y alertas sonoras en tiempo real.',
-    },
-    bullets: {
-      en: [
-        'Built a real-time audio alerting system ("sound alarm") that notifies users when temperature measurements deviate from parameters — eliminating the need for constant dashboard monitoring and reducing response time on critical refrigeration assets',
-        'Designed a device control panel for diagnosing sensors that stop reporting data, enabling companies to trace failure root causes, view historical logs and generate automatic support tickets — improving incident traceability across 1,000+ device fleets',
-        'Optimized SQL queries and implemented Redis caching, reducing average API response time by 60%',
-        'Built data ingestion pipelines and aggregation logic processing sensor temperature readings at scale',
-      ],
-      es: [
-        'Construí un sistema de alertamiento sonoro en tiempo real que notifica a los usuarios cuando las mediciones de temperatura se salen de los parámetros — eliminando la necesidad de monitoreo constante del dashboard y reduciendo el tiempo de respuesta en equipos críticos de refrigeración',
-        'Diseñé un panel de control de equipos para diagnosticar sensores que dejan de reportar datos, permitiendo a las empresas rastrear causas raíz de fallos, ver históricos y generar tickets de soporte automáticos — mejorando la trazabilidad de incidencias en flotas de 1,000+ equipos',
-        'Optimicé consultas SQL e implementé caché con Redis, reduciendo el tiempo de respuesta promedio de las APIs en un 60%',
-        'Construí pipelines de ingesta de datos y lógica de agregación procesando lecturas de sensores de temperatura a escala',
-      ],
-    },
-    tags: ['PHP', 'CakePHP', 'MySQL', 'Redis', 'Docker', 'AWS'],
-  },
-
-  // 2 — Sticker Drops
-  {
-    id: 'sticker-drops',
-    company: 'Sticker Drops',
-    name: 'Sticker Drops',
-    accent: '#FF5CA8',
-    cover: coverSticker,
-    links: { link: 'https://sticker-drops.vercel.app', code: null },
-    period: { en: '2023', es: '2023' },
-    role: {
-      en: 'Full-Stack Developer',
-      es: 'Desarrollador Full-Stack',
-    },
-    kind: { en: 'Collectible Drops Platform', es: 'Plataforma de Drops Coleccionables' },
-    status: { en: 'Live', es: 'En vivo' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: 'A collectible "drops" platform — limited runs of numbered tickets where users pick a number to win prizes, with a Next.js 16 storefront, Supabase backend and fal.ai-generated artwork.',
-      es: 'Plataforma de "drops" coleccionables — tiradas limitadas de talonarios numerados donde el usuario elige su número para ganar premios, con storefront Next.js 16, backend Supabase y arte generado con fal.ai.',
-    },
-    bullets: {
-      en: [
-        'Built the Next.js 16 storefront with live drops, numbered ticket selection and pricing',
-        'Backed it with Supabase for data, auth and real-time drop availability',
-        'Integrated fal.ai to generate the drop artwork',
-      ],
-      es: [
-        'Construí el storefront Next.js 16 con drops en vivo, selección de talonario numerado y precios',
-        'Lo respaldé con Supabase para datos, auth y disponibilidad de drops en tiempo real',
-        'Integré fal.ai para generar el arte de los drops',
-      ],
-    },
-    tags: ['Next.js 16', 'TypeScript', 'Supabase', 'fal.ai', 'Tailwind'],
-  },
-
-  // 3 — Tripi
-  {
-    id: 'apptreeking',
-    company: 'AppTreeking',
-    name: 'AppTreeking',
-    accent: '#46C97E',
-    cover: coverApptreeking,
-    // Repo is private — a direct link 404s for visitors. Point at the profile.
-    links: { link: null, code: GITHUB_OVERVIEW },
-    period: { en: '2025 — 2026', es: '2025 — 2026' },
-    role: {
-      en: 'Full-Stack Mobile Developer',
-      es: 'Desarrollador Full-Stack Mobile',
-    },
-    kind: { en: 'Trekking Experiences Marketplace', es: 'Marketplace de Experiencias de Trekking' },
-    status: { en: 'In progress', es: 'En curso' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: 'A mobile marketplace connecting Colombian travelers with certified local trekking guides — guides publish routes by biome; travelers book spots with escrow-protected payments via Wompi. Built solo: mobile app, Supabase backend and a Next.js admin panel.',
-      es: 'Marketplace móvil que conecta viajeros colombianos con guías de trekking locales certificados — los guías publican rutas por bioma; los viajeros reservan cupos con pago en custodia vía Wompi. Hecho en solitario: app móvil, backend Supabase y panel admin Next.js.',
-    },
-    bullets: {
-      en: [
-        'Built a full-stack Expo / React Native marketplace on Supabase — RLS policies, Postgres RPCs and Deno Edge Functions for escrow booking and payment webhooks',
-        'Integrated Wompi (Colombia) behind a port/adapter pattern with webhook signature verification and checkout integrity signing',
-        'Designed a role-based system (traveler / guide / admin) with a guide-verification flow and a Next.js admin panel for moderation and disputes',
-      ],
-      es: [
-        'Construí un marketplace full-stack Expo / React Native sobre Supabase — políticas RLS, RPCs de Postgres y Deno Edge Functions para reservas en custodia y webhooks de pago',
-        'Integré Wompi (Colombia) con patrón port/adapter, verificación de firma de webhooks y firma de integridad del checkout',
-        'Diseñé un sistema por roles (viajero / guía / admin) con flujo de verificación de guías y un panel admin Next.js para moderación y disputas',
-      ],
-    },
-    tags: ['Expo / React Native', 'TypeScript', 'Supabase', 'Wompi', 'Next.js'],
-  },
-
-  // 4 — BunnyGymWear
-  {
-    id: 'bunnygymwear',
-    company: 'BunnyGymWear',
-    name: 'BunnyGymWear',
-    accent: '#F5C24B',
-    cover: coverBunny,
-    links: { link: 'https://bunnygymwear.com', code: null },
-    period: { en: '2022', es: '2022' },
-    role: {
-      en: 'Full-Stack Developer',
-      es: 'Desarrollador Full-Stack',
-    },
-    kind: { en: 'E-commerce / Fashion Brand', es: 'E-commerce / Marca de Moda' },
+    kind: { en: 'Cold Chain Monitoring', es: 'Monitoreo IoT de Cadena de Frío' },
     status: { en: 'Delivered', es: 'Entregado' },
     statusKey: WORK_STATUS.ARCHIVED,
     desc: {
-      en: 'Complete e-commerce platform for BunnyGymWear, a fitness and activewear brand — from product catalog to checkout, inventory management and order tracking.',
-      es: 'Plataforma de e-commerce completa para BunnyGymWear, una marca de ropa fitness y activewear — desde catálogo de productos hasta checkout, gestión de inventario y seguimiento de pedidos.',
+      en: 'Freelance from Jun 2025; permanent contract as Lead Developer since Sep 2025. Developed and maintained internal applications for the cold-chain IoT monitoring platform.',
+      es: 'Freelance desde jun. 2025; contrato indefinido como Líder de Desarrollo desde sep. 2025. Desarrollé y mantuve aplicaciones internas de la plataforma de monitoreo IoT de cadena de frío.',
     },
     bullets: {
       en: [
-        'Built full e-commerce platform with product catalog, cart, checkout and order management',
-        'Integrated payment gateway supporting local Colombian payment methods',
-        'Implemented inventory management system with low-stock alerts and replenishment flows',
-        'Designed brand-consistent UI matching the energetic fitness aesthetic',
+        'Developed and maintained internal apps with CakePHP 4.6, PHP, and MySQL, including database migrations',
+        'Improved existing code following best practices, integrating Composer for dependencies and Docker for development environments'
       ],
       es: [
-        'Construí plataforma e-commerce completa con catálogo, carrito, checkout y gestión de pedidos',
-        'Integré pasarela de pago soportando métodos de pago locales colombianos',
-        'Implementé sistema de gestión de inventario con alertas de stock bajo y flujos de reposición',
-        'Diseñé UI coherente con la marca, acorde a la estética fitness energética',
-      ],
+        'Desarrollé y mantuve aplicaciones internas de la plataforma con CakePHP 4.6, PHP y MySQL, incluyendo migraciones de base de datos',
+        'Mejoré código existente siguiendo buenas prácticas, con Composer para dependencias y Docker para entornos de desarrollo'
+      ]
     },
-    tags: ['Next.js', 'Node.js', 'MongoDB', 'TypeScript'],
+    tags: ['CakePHP 4.6', 'PHP', 'MySQL', 'Docker', 'Composer'],
   },
-
-  // 6 — To-Do Automation
-  {
-    id: 'todo-automation',
-    company: 'Personal Project',
-    name: 'To-Do Automation',
-    accent: '#3DD6C0',
-    cover: coverTodo,
-    // The code link pointed at the bare profile; this repo is public, so link it.
-    links: {
-      link: 'https://todo-automation-challenge.vercel.app',
-      code: 'https://github.com/AlexisPalacioDev/todo-automation-challenge',
-    },
-    period: { en: '2023', es: '2023' },
-    role: {
-      en: 'AI Engineer & Developer',
-      es: 'Ingeniero IA & Desarrollador',
-    },
-    kind: { en: 'AI Automation / n8n Harness', es: 'Automatización IA / Harness n8n' },
-    status: { en: 'Open Source', es: 'Open Source' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: 'An intelligent task automation harness that connects to-do lists with AI agents — tasks are parsed, prioritized and delegated to specialized sub-agents that research, draft and execute actions autonomously.',
-      es: 'Harness de automatización de tareas inteligente que conecta listas de tareas con agentes IA — las tareas se analizan, priorizan y delegan a sub-agentes especializados que investigan, redactan y ejecutan acciones de forma autónoma.',
-    },
-    bullets: {
-      en: [
-        'Built n8n automation harness with AI-powered task parsing and intent classification',
-        'Implemented multi-agent routing: research agent, drafting agent and execution agent',
-        'Integrated with Notion, Google Calendar and Slack for full workflow coverage',
-        'Added LLM-based priority scoring and deadline detection from natural language',
-      ],
-      es: [
-        'Construí harness de automatización n8n con análisis de tareas impulsado por IA y clasificación de intenciones',
-        'Implementé ruteo multi-agente: agente de investigación, agente de redacción y agente de ejecución',
-        'Integré con Notion, Google Calendar y Slack para cobertura completa del flujo de trabajo',
-        'Agregué puntuación de prioridad basada en LLM y detección de plazos desde lenguaje natural',
-      ],
-    },
-    tags: ['n8n', 'OpenAI', 'Notion API', 'Slack', 'Node.js'],
-  },
-
-  // 7 — PoisonFlix
   {
     id: 'poisonflix',
     company: 'Personal Project',
@@ -348,106 +118,88 @@ export const work: readonly WorkItem[] = [
     accent: '#E50914',
     cover: coverPoisonflix,
     links: { link: null, code: 'https://github.com/AlexisPalacioDev/poisonflix-web' },
-    period: { en: '2025', es: '2025' },
+    period: { en: '2026', es: '2026' },
     role: {
-      en: 'Full-Stack Developer & DevOps',
-      es: 'Desarrollador Full-Stack & DevOps',
+      en: 'Full-Stack Developer',
+      es: 'Desarrollador Full-Stack',
     },
-    kind: { en: 'Netflix-like Streaming PWA', es: 'PWA Streaming tipo Netflix' },
-    status: { en: 'Live', es: 'En vivo' },
+    kind: { en: 'Self-Hosted Streaming Platform', es: 'Plataforma de Streaming Autoalojada' },
+    status: { en: 'Open source', es: 'Código abierto' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'A Netflix-like streaming PWA built on top of Jellyfin, transforming a media server into a polished streaming experience with a modern interface, search, organized catalog, automated content fetching and cross-platform playback.',
-      es: 'PWA de streaming tipo Netflix construida sobre Jellyfin, transformando un servidor de medios en una experiencia de streaming completa con interfaz moderna, búsqueda, catálogo organizado, automatización de contenido y reproducción multiplataforma.',
+      en: 'Self-hosted streaming platform: PWA web client, Android TV app, and cast bridge.',
+      es: 'Plataforma de streaming autoalojada: cliente web PWA, app para Android TV y puente de transmisión.',
     },
     bullets: {
       en: [
-        'Built a full-featured PWA from scratch — same-origin architecture, responsive design and offline capabilities via service workers',
-        'Integrated Jellyfin API for media catalog, search, playback and user management across devices',
-        'Automated content pipeline with Sonarr/Radarr integration — new media is fetched, organized and available for streaming without manual intervention',
-        'Containerized the full stack (Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent) with Docker Compose for one-command deployment',
+        'PWA web client built with React and TypeScript',
+        'Android TV application built with Kotlin and Jetpack Compose',
+        'Cast bridge supporting Google Cast, DIAL, DLNA, and webOS',
+        'Over 180 test files and CI in GitHub Actions'
       ],
       es: [
-        'Construí una PWA completa desde cero — arquitectura same-origin, diseño responsivo y capacidades offline via service workers',
-        'Integré la API de Jellyfin para catálogo de medios, búsqueda, reproducción y gestión de usuarios multi-dispositivo',
-        'Automaticé el pipeline de contenido con integración de Sonarr/Radarr — el contenido nuevo se descarga, organiza y está disponible para streaming sin intervención manual',
-        'Contenericé el stack completo (Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent) con Docker Compose para despliegue con un solo comando',
-      ],
+        'Cliente web PWA con React y TypeScript',
+        'App para Android TV con Kotlin y Jetpack Compose',
+        'Puente de transmisión con Google Cast, DIAL, DLNA y webOS',
+        'Más de 180 archivos de pruebas y CI en GitHub Actions'
+      ]
     },
-    tags: ['TypeScript', 'PWA', 'Jellyfin API', 'Docker', 'Sonarr/Radarr', 'Linux'],
+    tags: ['React', 'TypeScript', 'PWA', 'Kotlin', 'Jetpack Compose', 'GitHub Actions'],
   },
-
-  // 8 — PoisonOS
+  {
+    id: 'extraction-survivors',
+    company: 'Personal Project',
+    name: 'Extraction Survivors',
+    accent: '#FACC15',
+    cover: coverExtraction,
+    links: { link: null, code: 'https://github.com/AlexisPalacioDev/extraction-survivors' },
+    period: { en: '2026', es: '2026' },
+    role: { en: 'Game Developer', es: 'Desarrollador de Juegos' },
+    kind: { en: '2D Multiplayer Game', es: 'Juego Multijugador 2D' },
+    status: { en: 'Open source', es: 'Código abierto' },
+    statusKey: WORK_STATUS.LIVE,
+    desc: {
+      en: '2D browser multiplayer game for up to 4 players.',
+      es: 'Juego multijugador 2D en navegador para hasta 4 jugadores.',
+    },
+    bullets: {
+      en: [
+        'Custom ECS engine with fixed timestep',
+        'PixiJS/WebGL rendering and WebRTC P2P networking'
+      ],
+      es: [
+        'Motor ECS propio con paso de tiempo fijo',
+        'Renderizado PixiJS/WebGL y red WebRTC P2P'
+      ]
+    },
+    tags: ['ECS', 'PixiJS', 'WebGL', 'WebRTC'],
+  },
   {
     id: 'poisonos',
     company: 'Personal Project',
-    name: 'PoisonOS',
+    name: 'HY300 PoisonOS',
     accent: '#00D4AA',
     cover: coverPoisonos,
     links: { link: null, code: 'https://github.com/AlexisPalacioDev/hy300-poisonos' },
-    period: { en: '2025', es: '2025' },
-    role: {
-      en: 'Android Developer & Systems Engineer',
-      es: 'Desarrollador Android & Ingeniero de Sistemas',
-    },
-    kind: { en: 'Custom Android Launcher for Projector', es: 'Launcher Android Custom para Proyector' },
-    status: { en: 'Live', es: 'En vivo' },
+    period: { en: '2026', es: '2026' },
+    role: { en: 'Android Developer', es: 'Desarrollador Android' },
+    kind: { en: 'Custom Android Launcher', es: 'Launcher Android Custom' },
+    status: { en: 'Open source', es: 'Código abierto' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'A custom minimalist Android launcher (PoisonOS) + tooling for the HY300 Ultra projector — replacing the factory software with a clean, optimized interface, without requiring root access.',
-      es: 'Launcher Android minimalista custom (PoisonOS) + tooling para el proyector HY300 Ultra — reemplazando el software de fábrica con una interfaz limpia y optimizada, sin necesidad de root.',
+      en: 'Android launcher and customization kit without root for the HY300 projector via ADB.',
+      es: 'Launcher Android y kit de personalización sin root para el proyector HY300 vía ADB.',
     },
     bullets: {
       en: [
-        'Designed and built a custom Android launcher from scratch — minimal UI, fast navigation, optimized for projector remote input',
-        'Developed tooling for no-root deployment via ADB — sideloading, permissions management and automated updates',
-        'Overcame factory software limitations (bloated UI, slow navigation, no customization) delivering a clean media-centric experience',
-        'Created comprehensive documentation and installation scripts for the open-source community',
+        'Custom launcher built in Kotlin',
+        'No root access required, deploys via ADB'
       ],
       es: [
-        'Diseñé y construí un launcher Android custom desde cero — UI minimalista, navegación rápida, optimizado para entrada por control remoto del proyector',
-        'Desarrollé tooling para despliegue sin root via ADB — sideloading, gestión de permisos y actualizaciones automáticas',
-        'Superé las limitaciones del software de fábrica (UI pesada, navegación lenta, sin personalización) entregando una experiencia limpia centrada en medios',
-        'Creé documentación completa y scripts de instalación para la comunidad open-source',
-      ],
+        'Launcher custom construido en Kotlin',
+        'No requiere acceso root, se despliega vía ADB'
+      ]
     },
-    tags: ['Android', 'Kotlin', 'ADB', 'Launcher Custom', 'Open Source', 'Linux'],
-  },
-
-  // 9 — Mendez AI Server
-  {
-    id: 'mendez-ai',
-    company: 'Personal Project',
-    name: 'Mendez AI Server',
-    accent: '#8B5CF6',
-    cover: coverHermes,
-    links: { link: null, code: null },
-    period: { en: '2025 — Present', es: '2025 — Presente' },
-    role: {
-      en: 'AI Engineer & Systems Architect',
-      es: 'Ingeniero IA & Arquitecto de Sistemas',
-    },
-    kind: { en: 'Autonomous AI Agent Server', es: 'Servidor Autónomo de Agentes IA' },
-    status: { en: 'Live', es: 'En vivo' },
-    statusKey: WORK_STATUS.LIVE,
-    desc: {
-      en: 'An autonomous AI agent server (Hermes Agent) deployed on bare-metal Linux that executes code, browses the web, manipulates files and orchestrates complex workflows via Telegram — with speech-to-text voice interface and multi-provider AI integration.',
-      es: 'Servidor autónomo de agentes de IA (Hermes Agent) desplegado en bare-metal Linux que ejecuta código, navega la web, manipula archivos y orquesta flujos de trabajo complejos vía Telegram — con interfaz de voz speech-to-text e integración multi-provider de IA.',
-    },
-    bullets: {
-      en: [
-        'Architected and deployed a full-agent infrastructure on bare-metal Linux — multiple AI providers (OpenRouter, Anthropic), tool-calling execution environment and Telegram gateway',
-        'Built a voice interface pipeline — speech-to-text transcription, AI processing and text-to-speech response in Latin American Spanish',
-        'Implemented autonomous capabilities: code execution, web browsing, file system operations, and sub-agent delegation for parallel task execution',
-        'Configured systemd services, Docker containers and cron jobs for 24/7 production-grade autonomous operation',
-      ],
-      es: [
-        'Arquitecté y desplegué infraestructura completa de agentes en bare-metal Linux — múltiples proveedores de IA (OpenRouter, Anthropic), entorno de ejecución con tool-calling y gateway de Telegram',
-        'Construí un pipeline de interfaz de voz — transcripción speech-to-text, procesamiento con IA y respuesta text-to-speech en español latino',
-        'Implementé capacidades autónomas: ejecución de código, navegación web, operaciones de sistema de archivos y delegación de sub-agentes para ejecución paralela de tareas',
-        'Configuré servicios systemd, contenedores Docker y cron jobs para operación autónoma 24/7 a nivel producción',
-      ],
-    },
-    tags: ['Python', 'Linux', 'Docker', 'APIs IA', 'Telegram Bot', 'STT/TTS', 'systemd'],
-  },
+    tags: ['Android', 'Kotlin', 'ADB'],
+  }
 ] as const;

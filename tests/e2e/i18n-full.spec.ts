@@ -167,17 +167,17 @@ test.describe('ProjectDeck lang-switch with non-default active project', () => {
     });
     await page.waitForTimeout(300);
 
-    // Activate card 3 (Tripi — has real EN/ES role translations)
+    // Activate card 3 (Extraction Survivors — has real EN/ES role translations)
     const cards = page.locator('#work-deck .work-card');
     await cards.nth(3).evaluate((el) =>
       el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
     );
     await page.waitForTimeout(600);
 
-    // Confirm EN detail is showing (role should contain 'Full-Stack Developer')
+    // Confirm EN detail is showing (role should contain 'Developer')
     const detailRole = page.locator('#detail-role');
     const enRole = await detailRole.textContent();
-    expect(enRole).toContain('Full-Stack');
+    expect(enRole).toContain('Developer');
 
     // Toggle to ES
     await page.locator('[data-lang-target="es"]').click();
@@ -185,17 +185,16 @@ test.describe('ProjectDeck lang-switch with non-default active project', () => {
 
     // Detail role should switch to ES translation
     const esRole = await detailRole.textContent();
-    // Spanish translation for Tripi role: 'Desarrollador Full-Stack'
+    // Spanish translation for the role: 'Desarrollador de Juegos'
     expect(esRole).toContain('Desarrollador');
-    expect(esRole).not.toContain('Full-Stack Developer');
+    expect(esRole).not.toContain('Developer');
 
-    // Also check period — Tripi has same value in both langs ('2022 — 2023') so we
-    // check desc instead (which is clearly different)
+    // Period is identical in both langs ('2026'), so check desc instead
     const detailDesc = page.locator('#detail-desc');
     const esDesc = await detailDesc.textContent();
     expect(esDesc).toBeTruthy();
-    // ES desc for AppTreeking (card 3) should be the Spanish copy
-    expect(esDesc).toContain('Marketplace móvil');
+    // ES desc for card 3 should be the Spanish copy
+    expect(esDesc).toContain('Juego multijugador');
   });
 
   test('switching back to EN after non-default project restores EN text', async ({ page }) => {

@@ -9,8 +9,7 @@
     "astro": "astro",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test",
-    "cv:pdf": "node scripts/regenerate-cv-pdf.mjs"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.3",

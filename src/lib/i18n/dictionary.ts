@@ -23,11 +23,11 @@ export const I18N = {
     nav_contact: 'Contact',
 
     // ── Hero ─────────────────────────────────────────────────────────────
-    hero_status: 'AI ENGINEER · HARNESS ENGINEERING',
+    hero_status: 'FULL STACK TYPESCRIPT · AI PRODUCT',
     hero_h1: 'Hi, I’m Alexis.',
-    hero_h1_accent: 'I lead products from idea to production.',
+    hero_h1_accent: 'Full Stack TypeScript Developer',
     hero_sub:
-      'Lead full-stack developer specializing in AI. I architect and ship web platforms end to end — from the frontend to the AI orchestration underneath — and I make the complex stuff easy to follow, whoever I’m talking to.',
+      'Next.js, React, NestJS, Node.js · Product AI · Testing.',
     hero_cta_hire: 'Hire me',
     hero_cta_cv: 'Download CV',
     hero_scroll: 'Scroll',
@@ -39,11 +39,11 @@ export const I18N = {
     about_p1:
       'I’m Alexis, a full-stack developer with {YEARS}+ years building web products from start to finish. What I do best is solve problems — especially the messy, half-defined ones nobody knows where to start with. I own them end to end and I don’t let go until they’re running in production.',
     about_p2:
-      'This past year I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). And I’m always up for learning whatever tech a project needs — honestly, that’s the part I enjoy most.',
+      'This past year I’ve gone deep into AI products, and I’m comfortable across the whole stack (React, Next.js, NestJS, Node.js). And I’m always up for learning whatever tech a project needs — honestly, that’s the part I enjoy most.',
     about_p3:
-      'Right now I lead development at anai, an AI content-generation product. I care about my team as much as the person on the other side of the screen: I keep the team unblocked, communicate clearly, and sweat the details so the work actually lands.',
+      'Right now I’m a Full Stack Developer at anai, an AI video creation SaaS. I work mainly on the browser video editor and build modules end-to-end with Next.js and NestJS.',
     stat_years: 'Years shipping to production',
-    stat_projects: 'Products in production',
+    stat_projects: 'Test files written',
 
     // ── Harness method ─────────────────────────────────────────────────────
     harness_label: 'THE METHOD',
@@ -72,7 +72,7 @@ export const I18N = {
       'I know my own tools well, and I pick up whatever a project needs — fast.',
     skills_ai_title: 'AI Agents & Automation',
     skills_ai_desc:
-      'I build AI that holds up in production — agents and pipelines that real users depend on every day.',
+      'I work on AI features of a video SaaS in production, and I develop with AI agents backed by automated tests.',
     skills_core: 'Core focus',
     skills_loop: 'A typical agent loop',
     cat_backend: 'Backend',
@@ -91,7 +91,7 @@ export const I18N = {
     projects_label: 'SELECTED WORK',
     projects_h2: 'A few things I’ve built.',
     projects_sub:
-      'Real products with real users — not tutorial exercises.',
+      'Professional work and personal projects — real code, with tests.',
     projects_view: 'Open',
     projects_code: 'Code',
 
@@ -100,9 +100,9 @@ export const I18N = {
     services_h2: 'How I can help.',
     services_sub:
       'I’m available for full-time or project work. Tell me what you need and we’ll figure out the best way to make it happen — together.',
-    svc1_title: 'AI Agents & Automation',
+    svc1_title: 'AI in Web Products',
     svc1_desc:
-      'Bots and automations that handle the boring, repetitive work for you — on WhatsApp, Telegram, or wherever your people already are.',
+      'Integrating language model APIs (Claude, OpenAI, Gemini) into web products, with tests so the feature keeps working.',
     svc2_title: 'Full-Stack Development',
     svc2_desc:
       'Web apps from start to finish: quick to launch, solid underneath, and built to scale as your users grow.',
@@ -123,7 +123,7 @@ export const I18N = {
     contact_cta: 'Get in touch',
 
     // ── Shared / Footer ───────────────────────────────────────────────────
-    available: 'Available for new projects',
+    available: 'Available for remote (and hybrid/onsite in Medellín)',
     cv: 'Download CV',
     footer_rights: 'All rights reserved.',
     footer_built: 'Made with care.',
@@ -138,11 +138,11 @@ export const I18N = {
     nav_contact: 'Contacto',
 
     // ── Hero ─────────────────────────────────────────────────────────────
-    hero_status: 'AI ENGINEER · HARNESS ENGINEERING',
+    hero_status: 'FULL STACK TYPESCRIPT · PRODUCTO CON IA',
     hero_h1: 'Hola, soy Alexis.',
-    hero_h1_accent: 'Llevo productos de la idea a producción.',
+    hero_h1_accent: 'Desarrollador Full Stack TypeScript',
     hero_sub:
-      'Lead full-stack developer especializado en IA. Diseño y construyo plataformas web de punta a punta — del frontend a la orquestación de IA que va por debajo — y hago que lo complejo se entienda fácil, sea con quien sea que esté hablando.',
+      'Next.js, React, NestJS, Node.js · IA en producto · Testing.',
     hero_cta_hire: 'Contrátame',
     hero_cta_cv: 'Descargar CV',
     hero_scroll: 'Baja',
@@ -154,11 +154,11 @@ export const I18N = {
     about_p1:
       'Soy Alexis, full-stack developer con {YEARS}+ años construyendo productos web de principio a fin. Lo que mejor hago es resolver problemas — sobre todo los desordenados y a medio definir, esos que nadie sabe por dónde agarrar. Me los apropio de punta a punta y no los suelto hasta verlos funcionando en producción.',
     about_p2:
-      'Este último año me metí a fondo en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). Y estoy abierto a aprender cualquier tecnología que el proyecto necesite — la verdad, esa es la parte que más disfruto.',
+      'Este último año me metí a fondo en productos con IA, y me muevo cómodo en todo el stack (React, Next.js, NestJS, Node.js). Y estoy abierto a aprender cualquier tecnología que el proyecto necesite — la verdad, esa es la parte que más disfruto.',
     about_p3:
-      'Hoy lidero el desarrollo en anai, un producto de generación de contenido con IA. Me importa tanto mi equipo como la persona del otro lado de la pantalla: mantengo al equipo sin bloqueos, comunico con claridad y cuido los detalles para que el trabajo de verdad aterrice.',
+      'Hoy soy Desarrollador Full Stack en anai, un SaaS de creación de video con IA. Trabajo principalmente en el editor de video en el navegador y construyo módulos de punta a punta con Next.js y NestJS.',
     stat_years: 'Años entregando a producción',
-    stat_projects: 'Productos en producción',
+    stat_projects: 'Archivos de pruebas creados',
 
     // ── Harness method ─────────────────────────────────────────────────────
     harness_label: 'EL MÉTODO',
@@ -185,9 +185,9 @@ export const I18N = {
     skills_h2: 'Las herramientas con las que trabajo.',
     skills_sub:
       'Conozco bien las mías y agarro rápido lo que el proyecto pida.',
-    skills_ai_title: 'Agentes de IA & Automatización',
+    skills_ai_title: 'IA en producto',
     skills_ai_desc:
-      'Construyo IA que aguanta en producción — agentes y pipelines de los que usuarios reales dependen a diario.',
+      'Trabajo en funcionalidades con IA de un SaaS de video en producción y desarrollo con agentes de IA respaldado por pruebas automatizadas.',
     skills_core: 'Foco principal',
     skills_loop: 'Un loop de agente típico',
     cat_backend: 'Backend',
@@ -206,7 +206,7 @@ export const I18N = {
     projects_label: 'TRABAJO SELECCIONADO',
     projects_h2: 'Algunas cosas que construí.',
     projects_sub:
-      'Productos de verdad, con usuarios de verdad — no ejercicios de tutorial.',
+      'Trabajo profesional y proyectos personales: código real, con pruebas.',
     projects_view: 'Abrir',
     projects_code: 'Código',
 
@@ -214,23 +214,23 @@ export const I18N = {
     services_label: 'FREELANCE',
     services_h2: 'En qué te puedo ayudar.',
     services_sub:
-      'Estoy disponible para trabajo full-time o por proyecto. Contame qué necesitás y encontramos juntos la mejor forma de lograrlo.',
-    svc1_title: 'Agentes de IA & Automatización',
+      'Estoy disponible para trabajo de tiempo completo o por proyecto. Cuéntame qué necesitas y encontramos juntos la mejor forma de lograrlo.',
+    svc1_title: 'IA en productos web',
     svc1_desc:
-      'Bots y automatizaciones que se encargan del trabajo repetitivo y aburrido por vos — en WhatsApp, Telegram o donde ya está tu gente.',
+      'Integración de APIs de modelos de lenguaje (Claude, OpenAI, Gemini) en productos web, con pruebas para que la funcionalidad no se rompa.',
     svc2_title: 'Desarrollo Full-Stack',
     svc2_desc:
       'Apps web de principio a fin: rápidas de lanzar, sólidas por debajo y construidas para escalar a medida que crecen tus usuarios.',
     svc3_title: 'Estrategia & Consultoría en IA',
     svc3_desc:
-      '¿No sabés dónde encaja la IA en tu negocio? Te ayudo a separar lo útil del ruido y a lanzar lo que de verdad sirve.',
+      '¿No sabes dónde encaja la IA en tu negocio? Te ayudo a separar lo útil del ruido y a lanzar lo que de verdad sirve.',
     svc_cta: 'Empezar un proyecto',
 
     // ── Contact ───────────────────────────────────────────────────────────
     contact_label: 'CONTACTO',
     contact_h2: '¿Trabajamos juntos?',
     contact_sub:
-      'Abierto a roles, contratos o consultoría — en cualquier parte del mundo. Escribime y casi siempre te respondo el mismo día.',
+      'Abierto a roles, contratos o consultoría — en cualquier parte del mundo. Escríbeme y casi siempre te respondo el mismo día.',
     contact_email: 'Correo',
     contact_whats: 'WhatsApp',
     contact_linkedin: 'LinkedIn',
@@ -238,7 +238,7 @@ export const I18N = {
     contact_cta: 'Escríbeme',
 
     // ── Shared / Footer ───────────────────────────────────────────────────
-    available: 'Disponible para nuevos proyectos',
+    available: 'Disponible para remoto (y presencial/híbrido en Medellín)',
     cv: 'Descargar CV',
     footer_rights: 'Todos los derechos reservados.',
     footer_built: 'Hecho con cuidado.',
