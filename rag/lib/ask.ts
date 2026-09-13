@@ -108,7 +108,7 @@ export function createAsk({ index, embedder, generator, now = Date.now, rateLimi
         body: {
           mode: 'generated',
           answer,
-          sources
+          sources: citedSources(answer, sources)
         }
       };
     } catch (err) {
@@ -125,4 +125,12 @@ export function createAsk({ index, embedder, generator, now = Date.now, rateLimi
       return { status: 502, body: { error: 'upstream' } };
     }
   };
+}
+
+// Show recruiters only the sections the answer actually cites. If the model
+// cited nothing, fall back to every retrieved section.
+export function citedSources<T extends { n: number }>(answer: string, sources: T[]): T[] {
+  const cited = new Set([...answer.matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1])));
+  const kept = sources.filter((source) => cited.has(source.n));
+  return kept.length > 0 ? kept : sources;
 }

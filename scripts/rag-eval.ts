@@ -41,7 +41,7 @@ async function evaluate() {
     });
 
     // Hybrid
-    const topHybrid = retrieve(index, vectors[i], c.question, true);
+    const topHybrid = retrieve(index, vectors[i], c.question, { skipGate: true });
     const hitIdsHybrid = topHybrid.map(hit => hit.id);
     resultsHybrid.push({
       expected: c.expected,
@@ -67,7 +67,8 @@ async function evaluate() {
 
   const metricsVector = calculateMetrics(resultsVector);
   const metricsHybrid = calculateMetrics(resultsHybrid);
-n  console.log("\n--- Sensitive Cases ---");
+
+  console.log("\n--- Sensitive Cases ---");
   for (const c of evalData.sensitive || []) {
     console.log(`- ${c.question}`);
   }
