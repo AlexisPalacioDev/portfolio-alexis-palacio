@@ -64,7 +64,7 @@ test.describe('Contact tiles — CAP-09', () => {
   });
 
   test('LinkedIn tile links to correct profile', async ({ page }) => {
-    const linkedinTile = page.locator('a[href="https://www.linkedin.com/in/poisoneddog/"]').first();
+    const linkedinTile = page.locator('a[href="https://www.linkedin.com/in/alexispalacio/"]').first();
     await expect(linkedinTile).toBeVisible();
   });
 
