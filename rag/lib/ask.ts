@@ -14,13 +14,15 @@ export type IndexData = {
 };
 
 export type AskDeps = {
+  rateLimitMaxHits?: number;
+  rateLimitCap?: number;
   index: IndexData;
   embedder: { embed(texts: string[]): Promise<number[][]> };
   generator: { generate(messages: any[]): Promise<string> };
   now?: () => number;
 };
 
-export function createAsk({ index, embedder, generator, now = Date.now }: AskDeps) {
+export function createAsk({ index, embedder, generator, now = Date.now, rateLimitMaxHits = 8, rateLimitCap = 5000 }: AskDeps) {
   const rateLimits = new Map<string, RateLimitEntry>();
 
   return async function ask(question: string, clientId: string) {
@@ -41,14 +43,14 @@ export function createAsk({ index, embedder, generator, now = Date.now }: AskDep
     rl.lastAccess = currentTime;
     rl.timestamps = rl.timestamps.filter(t => currentTime - t < 60000);
     
-    if (rl.timestamps.length >= 8) {
+    if (rl.timestamps.length >= rateLimitMaxHits) {
       return { status: 429, body: { error: 'rate_limited' } };
     }
     
     rl.timestamps.push(currentTime);
 
     // Evict oldest if map too big
-    if (rateLimits.size > 5000) {
+    if (rateLimits.size > rateLimitCap) {
       let oldestId: string | null = null;
       let oldestTime = Infinity;
       for (const [id, entry] of rateLimits.entries()) {

@@ -1,7 +1,7 @@
 export function detectLanguage(question: string): 'es' | 'en' {
   const q = question.toLowerCase();
   const hasEsPunctuation = /[¿¡áéíóúñ]/.test(q);
-  const esStopwords = /\b(el|la|los|las|un|una|unos|unas|y|o|pero|si|no|en|por|con|de|del|al|para|como|qué|cual|quién|donde|cuando|cuanto|porque|es|su|tu|mi|te|me|se)\b/;
+  const esStopwords = /\b(el|la|los|las|un|una|unos|unas|y|o|pero|si|no|en|por|con|de|del|al|para|como|qué|cual|quién|donde|cuando|cuanto|porque|es|su|tu|mi|te|se)\b/;
   if (hasEsPunctuation || esStopwords.test(q)) {
     return 'es';
   }
