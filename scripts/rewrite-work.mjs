@@ -1,4 +1,6 @@
-import type { ImageMetadata } from 'astro';
+import fs from 'node:fs';
+
+const workContent = `import type { ImageMetadata } from 'astro';
 import type { Lang } from '../i18n/types';
 
 export type Localized<T> = Readonly<Record<Lang, T>>;
@@ -291,3 +293,6 @@ export const work: readonly WorkItem[] = [
     tags: ['Android', 'Kotlin', 'ADB'],
   }
 ] as const;
+`;
+
+fs.writeFileSync('src/lib/data/work.ts', workContent);

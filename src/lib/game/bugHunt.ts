@@ -310,14 +310,14 @@ export function initBugHunt(): void {
 
     // Scale the mouth to the glyph: a hero headline letter gets a much wider
     // gape than a body-copy one. Baseline ~ body text; clamped so it never gets
-    // cartoonish. Reads by the .bh-jaw keyframes via the --jaw custom property.
+    // cartoonish. Reads by the .bh-mandible keyframes via the --mandible custom property.
     const glyphH = target.getBoundingClientRect().height;
-    const jaw = Math.max(1, Math.min(2.4, 0.62 + glyphH / 64));
-    bug.style.setProperty('--jaw', jaw.toFixed(2));
+    const mandible = Math.max(1, Math.min(2.4, 0.62 + glyphH / 64));
+    bug.style.setProperty('--mandible', mandible.toFixed(2));
 
     eatTimer = window.setTimeout(() => {
       if (state !== 'active' || !bug) return;
-      // Chomp NOW that we've reached the letter — jaws open only for this beat.
+      // Chomp NOW that we've reached the letter — mandibles open only for this beat.
       bug.classList.add('bh-bug--biting');
       window.setTimeout(() => bug?.classList.remove('bh-bug--biting'), 400);
       chomp();
@@ -1310,11 +1310,11 @@ function injectStyles(): void {
        FRONT legs up in front of its face, rubbing them against each other in
        fast, tiny counter-phase strokes ("rubbing its hands"), while the head
        bows to meet them. Every couple of seconds the forelegs sweep up and over
-       the eye to wipe it. Body, wings and jaws hold still throughout. */
+       the eye to wipe it. Body, wings and mandibles hold still throughout. */
     .bh-bug--grooming .bh-bob  { animation: none; }
     .bh-bug--grooming .bh-wing { animation: none; }
-    .bh-bug--grooming .bh-jaw-top,
-    .bh-bug--grooming .bh-jaw-bot { animation: none; transform: rotate(0deg) scale(1); }
+    .bh-bug--grooming .bh-mandible-top,
+    .bh-bug--grooming .bh-mandible-bot { animation: none; transform: rotate(0deg) scale(1); }
     .bh-bug--grooming .bh-leg--mid,
     .bh-bug--grooming .bh-leg--hind { animation: none; transform: rotate(3deg); } /* planted */
     .bh-bug--grooming .bh-leg--fore-n { animation: bh-rub-a 2.4s ease-in-out infinite; }
@@ -1329,7 +1329,7 @@ function injectStyles(): void {
       12%{ transform: rotate(-104deg); } 16% { transform: rotate(-116deg); }
       20%{ transform: rotate(-104deg); } 24% { transform: rotate(-116deg); }
       28%{ transform: rotate(-104deg); } 32% { transform: rotate(-116deg); }
-      36%{ transform: rotate(-104deg); } 40%,60% { transform: rotate(-116deg); }
+      36%{ transform: rotate(-104deg); } 40%,60.1% { transform: rotate(-116deg); }
       76%{ transform: rotate(-142deg) translateY(-2px); }  /* up over the eye */
       90%{ transform: rotate(-98deg); }                     /* down across it */
       100%{ transform: rotate(-116deg); }
@@ -1340,13 +1340,13 @@ function injectStyles(): void {
       12%{ transform: rotate(-104deg); } 16% { transform: rotate(-92deg); }
       20%{ transform: rotate(-104deg); } 24% { transform: rotate(-92deg); }
       28%{ transform: rotate(-104deg); } 32% { transform: rotate(-92deg); }
-      36%{ transform: rotate(-104deg); } 40%,60% { transform: rotate(-92deg); }
+      36%{ transform: rotate(-104deg); } 40%,60.1% { transform: rotate(-92deg); }
       76%{ transform: rotate(-122deg) translateY(-2px); }
       90%{ transform: rotate(-80deg); }
       100%{ transform: rotate(-92deg); }
     }
     @keyframes bh-groom-bow {
-      0%,60%,100% { transform: rotate(6deg); }
+      0%,60.1%,100% { transform: rotate(6deg); }
       76% { transform: rotate(10deg); }  /* head dips into the wipe */
       90% { transform: rotate(3deg); }
     }
@@ -1355,20 +1355,20 @@ function injectStyles(): void {
     .bh-wing { opacity: 0.32; transform-box: fill-box; transform-origin: right bottom; animation: bh-flutter 0.1s ease-in-out infinite; }
     @keyframes bh-flutter { 0%,100% { transform: rotate(3deg) scaleY(1); } 50% { transform: rotate(-24deg) scaleY(0.72); } }
 
-    /* Pac-Man jaws: two real jaws rotating apart on a shared hinge, baring the
+    /* Pac-Man mandibles: two real mandibles rotating apart on a shared hinge, baring the
        dark mouth line behind them. transform-box:view-box + the per-stage hinge
        origin are set inline on each group (the grid grows as the bug fattens). */
-    /* The jaws stay SHUT while the fly flies around — a fly doesn't chew the
+    /* The mandibles stay SHUT while the fly flies around — a fly doesn't chew the
        air. They only chomp during an actual bite: the eat step adds
-       .bh-bug--biting for that beat, and --jaw scales the gape to the glyph so
+       .bh-bug--biting for that beat, and --mandible scales the gape to the glyph so
        a big headline letter gets a wider bite. Two chomps per bite, then shut. */
-    /* Resting jaws are always normal size; the --jaw gape scale only lives
+    /* Resting mandibles are always normal size; the --mandible gape scale only lives
        inside the bite animation, so the mouth snaps back the instant it's done. */
-    .bh-jaw-top, .bh-jaw-bot { transform: rotate(0deg) scale(1); }
-    .bh-bug--biting .bh-jaw-top { animation: bh-chew-top 0.19s ease-in-out 2; }
-    .bh-bug--biting .bh-jaw-bot { animation: bh-chew-bot 0.19s ease-in-out 2; }
-    @keyframes bh-chew-top { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(-34deg) scale(var(--jaw,1)); } }
-    @keyframes bh-chew-bot { 0%,100% { transform: rotate(0deg) scale(var(--jaw,1)); } 50% { transform: rotate(34deg) scale(var(--jaw,1)); } }
+    .bh-mandible-top, .bh-mandible-bot { transform: rotate(0deg) scale(1); }
+    .bh-bug--biting .bh-mandible-top { animation: bh-chew-top 0.19s ease-in-out 2; }
+    .bh-bug--biting .bh-mandible-bot { animation: bh-chew-bot 0.19s ease-in-out 2; }
+    @keyframes bh-chew-top { 0%,100% { transform: rotate(0deg) scale(var(--mandible,1)); } 50% { transform: rotate(-34deg) scale(var(--mandible,1)); } }
+    @keyframes bh-chew-bot { 0%,100% { transform: rotate(0deg) scale(var(--mandible,1)); } 50% { transform: rotate(34deg) scale(var(--mandible,1)); } }
 
     /* Glyphs the bug spits out when it explodes. */
     .bh-flyletter {
@@ -1418,7 +1418,7 @@ function injectStyles(): void {
     .bh-catcher { position: fixed; inset: 0; z-index: 9990; pointer-events: auto; cursor: none; }
     .bh-weapon-cursor {
       position: fixed; left: 0; top: 0;
-      z-index: 9999; pointer-events: none; transform-origin: 60% 85%;
+      z-index: 9999; pointer-events: none; transform-origin: 60.1% 85%;
       filter: drop-shadow(0 2px 2px rgba(0,0,0,0.4));
     }
     .bh-particle { position: fixed; z-index: 9997; pointer-events: none; border-radius: 1px; }

@@ -4,15 +4,13 @@ import type { WorkItem } from '../../src/lib/data/work';
 
 const EXPECTED_IDS = [
   'anai',
-  'extraction-survivors',
   'imometrics',
-  'sticker-drops',
-  'apptreeking',
-  'bunnygymwear',
-  'todo-automation',
   'poisonflix',
-  'poisonos',
-  'mendez-ai',
+  'sprite-studio',
+  'cajita',
+  'extraction-survivors',
+  'dungeon-triage',
+  'poisonos'
 ] as const;
 
 const REQUIRED_LOCALIZED_FIELDS: Array<keyof WorkItem> = [
@@ -29,8 +27,8 @@ const VALID_STATUS_KEYS = Object.values(WORK_STATUS);
 const HEX_RE = /^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$/;
 
 describe('work[] data model', () => {
-  it('has exactly 10 items', () => {
-    expect(work.length).toBe(10);
+  it('has exactly 8 items', () => {
+    expect(work.length).toBe(8);
   });
 
   it('has items in expected order (most-recent first)', () => {
@@ -65,12 +63,8 @@ describe('work[] data model', () => {
         });
 
         it('has a cover asset (string path in Vitest node env; ImageMetadata at build time)', () => {
-          // In Vitest (node env) Astro image imports resolve to the string path.
-          // At build time (Astro's Vite pipeline) they resolve to ImageMetadata objects.
-          // Either is acceptable here — we just assert the value is truthy and not null.
           expect(item.cover).toBeDefined();
           expect(item.cover).not.toBeNull();
-          // The src field exists on ImageMetadata; the raw string IS the path in node env.
           const src =
             typeof item.cover === 'object' && item.cover !== null
               ? (item.cover as { src: string }).src
@@ -133,12 +127,12 @@ describe('work[] data model', () => {
   describe('pick() helper', () => {
     it('pick(period, en) returns English period for anai', () => {
       const anai = work[0];
-      expect(pick(anai.period, 'en')).toBe('2026 — Present');
+      expect(pick(anai.period, 'en')).toBe('May 2026 – Present');
     });
 
     it('pick(period, es) returns Spanish period for anai', () => {
       const anai = work[0];
-      expect(pick(anai.period, 'es')).toBe('2026 — Hoy');
+      expect(pick(anai.period, 'es')).toBe('may. 2026 – actualidad');
     });
 
     it('pick(desc, en) returns English desc for anai', () => {

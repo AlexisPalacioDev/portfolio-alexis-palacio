@@ -25,9 +25,9 @@ export const I18N = {
     // ── Hero ─────────────────────────────────────────────────────────────
     hero_status: 'AI ENGINEER · HARNESS ENGINEERING',
     hero_h1: 'Hi, I’m Alexis.',
-    hero_h1_accent: 'I lead products from idea to production.',
+    hero_h1_accent: 'Full Stack TypeScript Developer',
     hero_sub:
-      'Lead full-stack developer specializing in AI. I architect and ship web platforms end to end — from the frontend to the AI orchestration underneath — and I make the complex stuff easy to follow, whoever I’m talking to.',
+      'Next.js, React, NestJS, Node.js · Product AI · Testing.',
     hero_cta_hire: 'Hire me',
     hero_cta_cv: 'Download CV',
     hero_scroll: 'Scroll',
@@ -41,7 +41,7 @@ export const I18N = {
     about_p2:
       'This past year I’ve gone deep into AI, but I’m comfortable across the whole stack (React, Next.js, Node, Python). And I’m always up for learning whatever tech a project needs — honestly, that’s the part I enjoy most.',
     about_p3:
-      'Right now I lead development at anai, an AI content-generation product. I care about my team as much as the person on the other side of the screen: I keep the team unblocked, communicate clearly, and sweat the details so the work actually lands.',
+      'Right now I’m a Full Stack Developer at anai, an AI video creation SaaS. I work mainly on the browser video editor and build modules end-to-end with Next.js and NestJS.',
     stat_years: 'Years shipping to production',
     stat_projects: 'Products in production',
 
@@ -123,7 +123,7 @@ export const I18N = {
     contact_cta: 'Get in touch',
 
     // ── Shared / Footer ───────────────────────────────────────────────────
-    available: 'Available for new projects',
+    available: 'Available for remote (and hybrid/onsite in Medellín)',
     cv: 'Download CV',
     footer_rights: 'All rights reserved.',
     footer_built: 'Made with care.',
@@ -140,9 +140,9 @@ export const I18N = {
     // ── Hero ─────────────────────────────────────────────────────────────
     hero_status: 'AI ENGINEER · HARNESS ENGINEERING',
     hero_h1: 'Hola, soy Alexis.',
-    hero_h1_accent: 'Llevo productos de la idea a producción.',
+    hero_h1_accent: 'Desarrollador Full Stack TypeScript',
     hero_sub:
-      'Lead full-stack developer especializado en IA. Diseño y construyo plataformas web de punta a punta — del frontend a la orquestación de IA que va por debajo — y hago que lo complejo se entienda fácil, sea con quien sea que esté hablando.',
+      'Next.js, React, NestJS, Node.js · IA en producto · Testing.',
     hero_cta_hire: 'Contrátame',
     hero_cta_cv: 'Descargar CV',
     hero_scroll: 'Baja',
@@ -156,7 +156,7 @@ export const I18N = {
     about_p2:
       'Este último año me metí a fondo en la IA, pero me muevo cómodo en todo el stack (React, Next.js, Node, Python). Y estoy abierto a aprender cualquier tecnología que el proyecto necesite — la verdad, esa es la parte que más disfruto.',
     about_p3:
-      'Hoy lidero el desarrollo en anai, un producto de generación de contenido con IA. Me importa tanto mi equipo como la persona del otro lado de la pantalla: mantengo al equipo sin bloqueos, comunico con claridad y cuido los detalles para que el trabajo de verdad aterrice.',
+      'Hoy soy Desarrollador Full Stack en anai, un SaaS de creación de video con IA. Trabajo principalmente en el editor de video en el navegador y construyo módulos de punta a punta con Next.js y NestJS.',
     stat_years: 'Años entregando a producción',
     stat_projects: 'Productos en producción',
 
@@ -238,7 +238,7 @@ export const I18N = {
     contact_cta: 'Escríbeme',
 
     // ── Shared / Footer ───────────────────────────────────────────────────
-    available: 'Disponible para nuevos proyectos',
+    available: 'Disponible para remoto (y presencial/híbrido en Medellín)',
     cv: 'Descargar CV',
     footer_rights: 'Todos los derechos reservados.',
     footer_built: 'Hecho con cuidado.',

@@ -174,10 +174,10 @@ test.describe('ProjectDeck lang-switch with non-default active project', () => {
     );
     await page.waitForTimeout(600);
 
-    // Confirm EN detail is showing (role should contain 'Full-Stack Developer')
+    // Confirm EN detail is showing (role should contain 'Developer')
     const detailRole = page.locator('#detail-role');
     const enRole = await detailRole.textContent();
-    expect(enRole).toContain('Full-Stack');
+    expect(enRole).toContain('Developer');
 
     // Toggle to ES
     await page.locator('[data-lang-target="es"]').click();
@@ -187,7 +187,7 @@ test.describe('ProjectDeck lang-switch with non-default active project', () => {
     const esRole = await detailRole.textContent();
     // Spanish translation for Tripi role: 'Desarrollador Full-Stack'
     expect(esRole).toContain('Desarrollador');
-    expect(esRole).not.toContain('Full-Stack Developer');
+    expect(esRole).not.toContain('Developer');
 
     // Also check period — Tripi has same value in both langs ('2022 — 2023') so we
     // check desc instead (which is clearly different)
@@ -195,7 +195,7 @@ test.describe('ProjectDeck lang-switch with non-default active project', () => {
     const esDesc = await detailDesc.textContent();
     expect(esDesc).toBeTruthy();
     // ES desc for AppTreeking (card 3) should be the Spanish copy
-    expect(esDesc).toContain('Marketplace móvil');
+    expect(esDesc).toContain('Generador de hojas');
   });
 
   test('switching back to EN after non-default project restores EN text', async ({ page }) => {

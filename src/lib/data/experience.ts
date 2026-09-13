@@ -5,7 +5,7 @@
  * tile, the bio paragraph — reads from here, so the numbers recompute on every
  * build from ONE constant instead of drifting out of date by hand.
  */
-export const CAREER_START_YEAR = 2020;
+export const CAREER_START_YEAR = 2021;
 
 /** Whole years of experience from the career start to now (min 1). */
 export function yearsOfExperience(now: Date = new Date()): number {
