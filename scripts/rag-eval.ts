@@ -29,7 +29,7 @@ async function evaluate() {
 
   for (let i = 0; i < evalData.cases.length; i++) {
     const c = evalData.cases[i];
-    const topChunks = cosineTopK(vectors[i], index.chunks, 4, 0); // Get top 4 disregarding minScore for evaluation
+    const topChunks = cosineTopK(vectors[i], index.chunks, 4, -Infinity); // Get top 4 disregarding minScore for evaluation
 
     const hitIds = topChunks.map(hit => hit.id);
     const scores = topChunks.map(hit => hit.score);
@@ -88,7 +88,7 @@ async function evaluate() {
   reportMd += `| Question | Expected | Top 3 Hits | Hit |\n`;
   reportMd += `|---|---|---|---|\n`;
   for (const d of details) {
-    reportMd += `| ${d.question} | ${d.expected} | ${d.top3} | ${d.hit} |\n`;
+    reportMd += `| ${d.question.replace(/\|/g, "\\|")} | ${d.expected.replace(/\|/g, "\\|")} | ${d.top3.replace(/\|/g, "\\|")} | ${d.hit} |\n`;
   }
 
   fs.writeFileSync(reportPath, reportMd);
@@ -100,4 +100,4 @@ async function evaluate() {
   }
 }
 
-evaluate().catch(console.error);
+evaluate().catch(e => { console.error(e); process.exit(1); });

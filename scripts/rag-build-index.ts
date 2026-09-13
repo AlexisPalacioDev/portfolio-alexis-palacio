@@ -80,4 +80,4 @@ async function buildIndex() {
   console.log(`Index saved to ${indexPath}`);
 }
 
-buildIndex().catch(console.error);
+buildIndex().catch(e => { console.error(e); process.exit(1); });

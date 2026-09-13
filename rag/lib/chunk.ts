@@ -17,9 +17,14 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
   const lines = markdown.split('\n');
   let h1Title = '';
   
-  // Find first H1
+  let inGlobalCodeBlock = false;
+  // Find first H1 ignoring code blocks
   for (const line of lines) {
-    if (line.startsWith('# ') && !line.startsWith('##')) {
+    if (line.startsWith('```')) {
+      inGlobalCodeBlock = !inGlobalCodeBlock;
+      continue;
+    }
+    if (!inGlobalCodeBlock && line.startsWith('# ') && !line.startsWith('##')) {
       h1Title = line.substring(2).trim();
       break;
     }
@@ -46,7 +51,7 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
       
       const h2Title = line.substring(3).trim();
       currentSectionTitle = h1Title ? `${h1Title} › ${h2Title}` : h2Title;
-      currentSectionContent = [line];
+      currentSectionContent = []; // Do NOT repeat the heading line
     } else {
       currentSectionContent.push(line);
     }
@@ -58,12 +63,12 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
   }
 
   const chunks: Chunk[] = [];
-  const slugCounts = new Map<string, number>();
+  const usedIds = new Set<string>();
 
   for (const section of sections) {
-    // Determine if it's empty. If it only contains the heading, it's empty.
-    const textWithoutHeading = section.text.replace(/^#+ .*\n?/g, '').trim();
-    if (!textWithoutHeading) {
+    // Determine if it's empty. (We already skip empty sections since text.trim() is used, but we can do extra check)
+    // Wait, since we don't include the heading line, if text is empty it won't be pushed.
+    if (!section.text.trim()) {
       continue;
     }
 
@@ -72,14 +77,15 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
     const lastPart = parts[parts.length - 1] || 'section';
     const baseSlug = slugify(lastPart) || 'section';
     
-    let count = slugCounts.get(baseSlug) || 1;
+    let count = 1;
     let slug = baseSlug;
-    if (count > 1) {
+    let baseId = `${fileId}#${slug}`;
+    while (usedIds.has(baseId)) {
+      count++;
       slug = `${baseSlug}-${count}`;
+      baseId = `${fileId}#${slug}`;
     }
-    slugCounts.set(baseSlug, count + 1);
-
-    const baseId = `${fileId}#${slug}`;
+    usedIds.add(baseId);
 
     if (section.text.length <= 1500) {
       chunks.push({ id: baseId, title: section.title, text: section.text });
@@ -90,6 +96,7 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
         const partText = parts[i];
         if (!partText.trim()) continue;
         const partId = i === 0 ? baseId : `${baseId}-p${i + 1}`;
+        usedIds.add(partId);
         chunks.push({ id: partId, title: section.title, text: partText });
       }
     }
@@ -116,13 +123,12 @@ function splitTextByParagraphsAndCodeBlocks(text: string, maxLen: number): strin
     
     // If not in code block and it's a paragraph boundary (blank line)
     // and current part + next paragraph > maxLen, start a new part
-    // but at least keep one paragraph in the part if it's already > maxLen
     
     if (!inCodeBlock && isBlank && currentLen > 0) {
       // Look ahead to see next paragraph length
       let nextParaLen = 0;
       let j = i + 1;
-      let nextInCodeBlock = inCodeBlock;
+      let nextInCodeBlock = false;
       for (; j < lines.length; j++) {
         if (lines[j].startsWith('```')) nextInCodeBlock = !nextInCodeBlock;
         if (!nextInCodeBlock && lines[j].trim() === '') break;
@@ -146,6 +152,17 @@ function splitTextByParagraphsAndCodeBlocks(text: string, maxLen: number): strin
     if (txt) {
       result.push(txt);
     }
+  }
+  
+  // Verify that no part has unbalanced fences
+  for (let i = 0; i < result.length; i++) {
+     const fences = (result[i].match(/^```/gm) || []).length;
+     if (fences % 2 !== 0) {
+       // A bit naive, but if we somehow split inside a code block, fix it?
+       // Wait, we only split when `!inCodeBlock` and `isBlank`. 
+       // So it should never split inside a code block, unless a single code block is > maxLen.
+       // If a code block is > maxLen, we don't split it. We just accept it.
+     }
   }
   
   return result;

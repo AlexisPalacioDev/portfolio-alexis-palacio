@@ -17,27 +17,36 @@ export function createEmbedder(
 
   return {
     model,
-    async embed(texts: string[]): Promise<number[][]> {
+    async embed(texts: string[], timeoutMs: number = 15000): Promise<number[][]> {
       if (!apiKey) {
         throw new MissingKeyError();
       }
 
-      const vectors: number[][] = new Array(texts.length);
+      const vectors: (number[] | undefined)[] = new Array(texts.length);
       const batchSize = 64;
 
       for (let i = 0; i < texts.length; i += batchSize) {
         const batch = texts.slice(i, i + batchSize);
-        const res = await fetchImpl(`${baseUrl}/embeddings`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify({
-            model,
-            input: batch,
-          }),
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+        
+        let res;
+        try {
+          res = await fetchImpl(`${baseUrl}/embeddings`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify({
+              model,
+              input: batch,
+            }),
+            signal: controller.signal
+          });
+        } finally {
+          clearTimeout(timeoutId);
+        }
 
         if (!res.ok) {
           throw new Error(`Embeddings API error: HTTP ${res.status}`);
@@ -47,11 +56,19 @@ export function createEmbedder(
         
         for (const item of data.data) {
           const globalIndex = i + item.index;
-          vectors[globalIndex] = normalize(item.embedding);
+          if (Array.isArray(item.embedding) && typeof item.embedding[0] === 'number') {
+            vectors[globalIndex] = normalize(item.embedding);
+          }
         }
       }
 
-      return vectors;
+      for (let i = 0; i < texts.length; i++) {
+        if (!vectors[i]) {
+          throw new Error(`Missing vector for input index ${i}`);
+        }
+      }
+
+      return vectors as number[][];
     }
   };
 }
