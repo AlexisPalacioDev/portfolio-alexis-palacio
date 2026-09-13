@@ -18,7 +18,6 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
   let h1Title = '';
   
   let inGlobalCodeBlock = false;
-  // Find first H1 ignoring code blocks
   for (const line of lines) {
     if (line.startsWith('```')) {
       inGlobalCodeBlock = !inGlobalCodeBlock;
@@ -43,7 +42,7 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
     }
 
     if (!inCodeBlock && line.startsWith('## ')) {
-      // Save previous section
+      // Save previous section. We don't include H1 or H2 in the text!
       const text = currentSectionContent.join('\n').trim();
       if (text) {
         sections.push({ title: currentSectionTitle, text });
@@ -51,8 +50,9 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
       
       const h2Title = line.substring(3).trim();
       currentSectionTitle = h1Title ? `${h1Title} › ${h2Title}` : h2Title;
-      currentSectionContent = []; // Do NOT repeat the heading line
+      currentSectionContent = [];
     } else {
+      if (!inCodeBlock && line.startsWith("# ") && !line.startsWith("##")) continue;
       currentSectionContent.push(line);
     }
   }
@@ -66,13 +66,8 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
   const usedIds = new Set<string>();
 
   for (const section of sections) {
-    // Determine if it's empty. (We already skip empty sections since text.trim() is used, but we can do extra check)
-    // Wait, since we don't include the heading line, if text is empty it won't be pushed.
-    if (!section.text.trim()) {
-      continue;
-    }
+    if (!section.text.trim()) continue;
 
-    // Determine base slug
     const parts = section.title.split(' › ');
     const lastPart = parts[parts.length - 1] || 'section';
     const baseSlug = slugify(lastPart) || 'section';
@@ -90,10 +85,9 @@ export function chunkMarkdown(fileId: string, markdown: string): Chunk[] {
     if (section.text.length <= 1500) {
       chunks.push({ id: baseId, title: section.title, text: section.text });
     } else {
-      // Need to split
-      const parts = splitTextByParagraphsAndCodeBlocks(section.text, 1500);
-      for (let i = 0; i < parts.length; i++) {
-        const partText = parts[i];
+      const splitParts = splitTextByParagraphsAndCodeBlocks(section.text, 1400);
+      for (let i = 0; i < splitParts.length; i++) {
+        const partText = splitParts[i];
         if (!partText.trim()) continue;
         const partId = i === 0 ? baseId : `${baseId}-p${i + 1}`;
         usedIds.add(partId);
@@ -111,34 +105,39 @@ function splitTextByParagraphsAndCodeBlocks(text: string, maxLen: number): strin
   let currentPart: string[] = [];
   let currentLen = 0;
   let inCodeBlock = false;
+  let lastCodeFence = '';
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     
     if (line.startsWith('```')) {
       inCodeBlock = !inCodeBlock;
+      if (inCodeBlock) lastCodeFence = line;
     }
 
     const isBlank = line.trim() === '';
     
-    // If not in code block and it's a paragraph boundary (blank line)
-    // and current part + next paragraph > maxLen, start a new part
-    
-    if (!inCodeBlock && isBlank && currentLen > 0) {
-      // Look ahead to see next paragraph length
+    if (isBlank && currentLen > 0) {
       let nextParaLen = 0;
       let j = i + 1;
-      let nextInCodeBlock = false;
+      let nextInCodeBlock = inCodeBlock;
       for (; j < lines.length; j++) {
         if (lines[j].startsWith('```')) nextInCodeBlock = !nextInCodeBlock;
-        if (!nextInCodeBlock && lines[j].trim() === '') break;
-        nextParaLen += lines[j].length + 1; // +1 for newline
+        if (lines[j].trim() === '') break;
+        nextParaLen += lines[j].length + 1;
       }
       
       if (currentLen + nextParaLen > maxLen && currentLen > 0) {
+        if (inCodeBlock) {
+          currentPart.push('```');
+        }
         result.push(currentPart.join('\n').trim());
         currentPart = [];
         currentLen = 0;
+        if (inCodeBlock) {
+          currentPart.push(lastCodeFence);
+          currentLen += lastCodeFence.length + 1;
+        }
         continue;
       }
     }
@@ -149,20 +148,7 @@ function splitTextByParagraphsAndCodeBlocks(text: string, maxLen: number): strin
   
   if (currentPart.length > 0) {
     const txt = currentPart.join('\n').trim();
-    if (txt) {
-      result.push(txt);
-    }
-  }
-  
-  // Verify that no part has unbalanced fences
-  for (let i = 0; i < result.length; i++) {
-     const fences = (result[i].match(/^```/gm) || []).length;
-     if (fences % 2 !== 0) {
-       // A bit naive, but if we somehow split inside a code block, fix it?
-       // Wait, we only split when `!inCodeBlock` and `isBlank`. 
-       // So it should never split inside a code block, unless a single code block is > maxLen.
-       // If a code block is > maxLen, we don't split it. We just accept it.
-     }
+    if (txt) result.push(txt);
   }
   
   return result;

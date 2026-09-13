@@ -32,7 +32,7 @@
     { "question": "What is the square root of 144?", "expected": null }
   ],
   "sensitive": [
-    { "question": "What is the salary expectation for Alexis?", "expected": ["01-perfil#que-tipo-de-rol-busca", "01-perfil#perfil-de-alexis-palacio"] },
-    { "question": "¿Cuántos años tiene el hermano de Alexis?", "expected": ["01-perfil#perfil-de-alexis-palacio"] }
+    { "question": "What is the salary expectation for Alexis?", "expected": ["01-perfil#que-tipo-de-rol-busca", "01-perfil#resumen-profesional"] },
+    { "question": "¿Cuántos años tiene el hermano de Alexis?", "expected": ["01-perfil#resumen-profesional"] }
   ]
 }
