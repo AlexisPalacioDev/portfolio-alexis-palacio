@@ -1,6 +1,6 @@
 # Alexis Palacio — Portfolio
 
-Personal portfolio site for Alexis Palacio, AI Engineer & Full-Stack Developer.
+Personal portfolio site for Alexis Palacio, Full Stack TypeScript Developer.
 
 **Live:** [portfolio-alexis-palacio.vercel.app](https://portfolio-alexis-palacio.vercel.app)
 
