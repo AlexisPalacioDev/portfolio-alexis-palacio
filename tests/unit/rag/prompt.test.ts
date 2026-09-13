@@ -12,7 +12,7 @@ describe('prompt building', () => {
     expect(detectLanguage('Tell me about K-gumi')).toBe('en');
     expect(detectLanguage('Háblame de K-gumi')).toBe('es');
     // Accent-only signal, no Spanish marker words.
-    expect(detectLanguage('Kotlin según Alexis')).toBe('es');
+    expect(detectLanguage('Qué hizo con the App Router and Server Actions?')).toBe('es');
     // Regressions found in audit: English with Spanish-looking words.
     expect(detectLanguage('Is he open to remote work, yes or no?')).toBe('en');
     expect(detectLanguage('Does he live in LA?')).toBe('en');
