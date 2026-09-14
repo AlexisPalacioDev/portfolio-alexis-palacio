@@ -68,11 +68,13 @@ export function retrieve(
   }
 
   // Score fusion: cosine plus the BM25 score normalized to [0, 1] and weighted.
-  // Measured hit@1 (RRF k=60 as in commit fd1db3e): on the original 24-case
+  // Measured hit@1 at commit a3cf948 (RRF k=60 as in commit fd1db3e): on the original 24-case
   // set, vector-only 95.8%, RRF 83.3% (it ignores score gaps between close
   // ranks). On the current 28-case set: vector-only 89.3%, RRF 85.7% with the
   // original tokenizer (92.9% with today's stopwords), this fusion with weight
   // 0.05 96.4%. The weight was tuned on that same set, so it may overfit.
+  // After removing internal content (37 chunks, 28 cases): vector-only 85.7%,
+  // this fusion 92.9%.
   const bestLexicalScore = lexicalRanking[0]?.score ?? 0;
   const fused = new Map<string, number>();
   for (const hit of vectorRanking) fused.set(hit.id, hit.score);

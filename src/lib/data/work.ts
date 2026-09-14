@@ -61,21 +61,21 @@ export const work: readonly WorkItem[] = [
     status: { en: 'Current', es: 'Actual' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'One of the top three frontend contributors at anai (anaiapp.ai), an AI video creation SaaS. Working on the browser video editor, user retention, and support modules.',
-      es: 'Uno de los tres principales contribuidores del frontend de anai (anaiapp.ai), SaaS de creación de video con IA. Trabajo en el editor de video en el navegador, retención de usuarios y módulos de soporte.'
+      en: 'Full Stack Developer at anai (anaiapp.ai), an AI video creation SaaS. I work on the browser video editor and ship product features end to end.',
+      es: 'Desarrollador Full Stack en anai (anaiapp.ai), SaaS de creación de video con IA. Trabajo en el editor de video en el navegador y construyo funcionalidades de producto de punta a punta.'
     },
     bullets: {
       en: [
-        'Over 600 commits in the main branch with Next.js 16, React 19, and TypeScript, in a team of 5 developers',
-        'Work on the browser video editor (timeline, subtitles, and export), my main area with over 190 commits; created the editor module in the backend (NestJS)',
-        'Created end-to-end user retention and support modules with escalation to human agents (Next.js, NestJS, MongoDB), and participated in onboarding, AI chat, and character cloning',
-        'Created over 500 automated test files (Vitest, Testing Library, Jest, Supertest) with AI-assisted development (Claude Code)'
+        'Frontend development with Next.js 16, React 19, and TypeScript',
+        'Browser video editor: timeline, subtitles, and export',
+        'End-to-end product features with NestJS and MongoDB, such as user retention flows and support with escalation to human agents',
+        'AI-assisted development (Claude Code) validated with automated tests (Vitest, Testing Library, Jest, Supertest)'
       ],
       es: [
-        'Más de 600 commits en la rama principal con Next.js 16, React 19 y TypeScript, en un equipo de 5 desarrolladores',
-        'Trabajo en el editor de video en el navegador (línea de tiempo, subtítulos y exportación) con más de 190 commits; creé el módulo del editor en el backend (NestJS)',
-        'Creé de punta a punta los módulos de retención de usuarios y de soporte con escalado a asesor humano (Next.js, NestJS, MongoDB), y participé en onboarding, chat con IA y clonación de personajes',
-        'Creé más de 500 archivos de pruebas automatizadas (Vitest, Testing Library, Jest, Supertest) con desarrollo asistido por agentes de IA (Claude Code)'
+        'Desarrollo frontend con Next.js 16, React 19 y TypeScript',
+        'Editor de video en el navegador: línea de tiempo, subtítulos y exportación',
+        'Funcionalidades de punta a punta con NestJS y MongoDB, como flujos de retención de usuarios y soporte con escalado a asesor humano',
+        'Desarrollo asistido por agentes de IA (Claude Code), validado con pruebas automatizadas (Vitest, Testing Library, Jest, Supertest)'
       ]
     },
     tags: ['Next.js 16', 'React 19', 'TypeScript', 'NestJS', 'MongoDB', 'Vitest'],
@@ -117,14 +117,14 @@ export const work: readonly WorkItem[] = [
     name: 'PoisonFlix',
     accent: '#E50914',
     cover: coverPoisonflix,
-    links: { link: null, code: 'https://github.com/AlexisPalacioDev/poisonflix-web' },
+    links: { link: null, code: null },
     period: { en: '2026', es: '2026' },
     role: {
       en: 'Full-Stack Developer',
       es: 'Desarrollador Full-Stack',
     },
     kind: { en: 'Self-Hosted Streaming Platform', es: 'Plataforma de Streaming Autoalojada' },
-    status: { en: 'Open source', es: 'Código abierto' },
+    status: { en: 'Personal project', es: 'Proyecto personal' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
       en: 'Self-hosted streaming platform: PWA web client, Android TV app, and cast bridge.',

@@ -22,9 +22,7 @@
     {
       "question": "Cuéntame sobre el proyecto Poisonflix",
       "expected": [
-        "03-proyectos#poisonflix",
-        "repos/poisonflix-web#poisonflix-web",
-        "repos/poisonflix-cast-bridge#cast-bridge"
+        "03-proyectos#poisonflix"
       ]
     },
     {
@@ -82,9 +80,9 @@
       ]
     },
     {
-      "question": "¿De qué se trata el proyecto Task Pulse?",
+      "question": "¿Qué hacía como Líder de Desarrollo en iMometrics?",
       "expected": [
-        "repos/task-pulse#task-pulse"
+        "02-experiencia#imometrics-control-de-variables-s-a-s-junio-2025-abril-2026"
       ]
     },
     {
@@ -140,15 +138,17 @@
       ]
     },
     {
-      "question": "What is Cajita?",
+      "question": "How does the multiplayer work in Extraction Survivors?",
       "expected": [
-        "03-proyectos#cajita"
+        "03-proyectos#extraction-survivors",
+        "repos/extraction-survivors#extraction-survivors",
+        "repos/extraction-survivors#multiplayer-host-client-over-webrtc"
       ]
     },
     {
       "question": "Did he do support or retention at Anai?",
       "expected": [
-        "02-experiencia#anai-retencion-y-soporte"
+        "02-experiencia#anai-funcionalidades-de-producto"
       ]
     },
     {
@@ -169,8 +169,7 @@
     {
       "question": "¿Trabajó con Supabase?",
       "expected": [
-        "04-habilidades#backend-y-bases-de-datos",
-        "03-proyectos#cajita"
+        "04-habilidades#backend-y-bases-de-datos"
       ]
     },
     {

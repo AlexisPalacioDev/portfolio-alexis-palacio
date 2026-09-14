@@ -43,7 +43,7 @@ export const I18N = {
     about_p3:
       'Right now I’m a Full Stack Developer at anai, an AI video creation SaaS. I work mainly on the browser video editor and build modules end-to-end with Next.js and NestJS.',
     stat_years: 'Years shipping to production',
-    stat_projects: 'Test files written',
+    stat_projects: 'Automated tests in this portfolio',
 
     // ── Harness method ─────────────────────────────────────────────────────
     harness_label: 'THE METHOD',
@@ -176,7 +176,7 @@ export const I18N = {
     about_p3:
       'Hoy soy Desarrollador Full Stack en anai, un SaaS de creación de video con IA. Trabajo principalmente en el editor de video en el navegador y construyo módulos de punta a punta con Next.js y NestJS.',
     stat_years: 'Años entregando a producción',
-    stat_projects: 'Archivos de pruebas creados',
+    stat_projects: 'Pruebas automatizadas en este portafolio',
 
     // ── Harness method ─────────────────────────────────────────────────────
     harness_label: 'EL MÉTODO',
