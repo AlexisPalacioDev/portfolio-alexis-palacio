@@ -34,14 +34,14 @@ import Eyebrow from '../ui/Eyebrow.astro';
     <div class="rev" style="max-width: 640px;">
       <form id="ask-form" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
         <label for="ask-input" class="sr-only" data-i18n="ask_input_label">{t('en', 'ask_input_label')}</label>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
           <input
             id="ask-input"
             type="text"
             maxlength="500"
             required
             class="bg-surface text-ink font-mono"
-            style="flex: 1; border: 1px solid #23252D; padding: 12px 16px; outline: none; border-radius: 0;"
+            style="flex: 1 1 180px; min-width: 0; border: 1px solid #23252D; padding: 12px 16px; outline: none; border-radius: 0;"
             placeholder={t('en', 'ask_input_placeholder')}
             data-i18n-placeholder="ask_input_placeholder"
           />

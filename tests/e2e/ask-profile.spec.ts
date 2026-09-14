@@ -185,4 +185,25 @@ test.describe('Ask Profile', () => {
     await page.locator('#ask-submit').click();
     await expect(page.locator('#ask-answer-text')).toContainText('Demasiadas preguntas');
   });
+
+  // Regression: on a 402px-wide phone (iPhone 16 Pro) the input's intrinsic
+  // min width pushed the "Ask" button 17px past the viewport.
+  test('ask button fits inside a phone-width viewport in both languages', async ({ browser }) => {
+    const context = await browser.newContext({
+      viewport: { width: 402, height: 874 },
+      isMobile: true,
+      hasTouch: true,
+      deviceScaleFactor: 3,
+    });
+    const page = await context.newPage();
+    await page.goto('/');
+    for (const lang of ['en', 'es']) {
+      if (lang === 'es') await page.locator('#lang-btn-es').click();
+      const right = await page.evaluate(
+        () => document.querySelector('#ask-submit')!.getBoundingClientRect().right,
+      );
+      expect(right, `button right edge (${lang})`).toBeLessThanOrEqual(402);
+    }
+    await context.close();
+  });
 });
