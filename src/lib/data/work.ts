@@ -152,7 +152,10 @@ export const work: readonly WorkItem[] = [
     name: 'Extraction Survivors',
     accent: '#FACC15',
     cover: coverExtraction,
-    links: { link: null, code: 'https://github.com/AlexisPalacioDev/extraction-survivors' },
+    links: {
+      link: 'https://extraction-survivors-client.vercel.app',
+      code: 'https://github.com/AlexisPalacioDev/extraction-survivors',
+    },
     period: { en: '2026', es: '2026' },
     role: { en: 'Game Developer', es: 'Desarrollador de Juegos' },
     kind: { en: '2D Multiplayer Game', es: 'Juego Multijugador 2D' },
