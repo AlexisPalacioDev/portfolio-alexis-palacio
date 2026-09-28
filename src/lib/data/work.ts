@@ -54,24 +54,26 @@ export const work: readonly WorkItem[] = [
     links: { link: 'https://anaiapp.ai', code: null },
     period: { en: 'May 2026 – Present', es: 'may. 2026 – actualidad' },
     role: {
-      en: 'Full Stack Developer (frontend focus)',
-      es: 'Desarrollador Full Stack (enfoque frontend)',
+      en: 'Team Lead & Head of Solutions (Full Stack)',
+      es: 'Líder de Equipo y Jefe de Soluciones (Full Stack)',
     },
     kind: { en: 'AI Video Creation SaaS', es: 'SaaS de Creación de Video con IA' },
     status: { en: 'Current', es: 'Actual' },
     statusKey: WORK_STATUS.LIVE,
     desc: {
-      en: 'Full Stack Developer at anai (anaiapp.ai), an AI video creation SaaS. I work on the browser video editor and ship product features end to end.',
-      es: 'Desarrollador Full Stack en anai (anaiapp.ai), SaaS de creación de video con IA. Trabajo en el editor de video en el navegador y construyo funcionalidades de producto de punta a punta.'
+      en: 'Team Lead and Head of Solutions at anai (anaiapp.ai), an AI video creation SaaS. I lead the development team, propose technical and product solutions, and ship features end to end, including the browser video editor.',
+      es: 'Líder de Equipo y Jefe de Soluciones en anai (anaiapp.ai), SaaS de creación de video con IA. Lidero al equipo de desarrollo, propongo soluciones técnicas y de producto, y construyo funcionalidades de punta a punta, incluido el editor de video en el navegador.'
     },
     bullets: {
       en: [
+        'Lead the development team and propose technical and product solutions, from idea to production',
         'Frontend development with Next.js 16, React 19, and TypeScript',
         'Browser video editor: timeline, subtitles, and export',
         'End-to-end product features with NestJS and MongoDB, such as user retention flows and support with escalation to human agents',
         'AI-assisted development (Claude Code) validated with automated tests (Vitest, Testing Library, Jest, Supertest)'
       ],
       es: [
+        'Lidero al equipo de desarrollo y propongo soluciones técnicas y de producto, desde la idea hasta producción',
         'Desarrollo frontend con Next.js 16, React 19 y TypeScript',
         'Editor de video en el navegador: línea de tiempo, subtítulos y exportación',
         'Funcionalidades de punta a punta con NestJS y MongoDB, como flujos de retención de usuarios y soporte con escalado a asesor humano',

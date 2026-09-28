@@ -1,7 +1,7 @@
 # Experiencia profesional
 
 ## anai – One Million Copy (mayo 2026 – actualidad)
-Cargo: Desarrollador Full Stack con enfoque frontend, remoto. anai (anaiapp.ai) es un SaaS de creación de video con IA. Alexis desarrolla el frontend con Next.js 16, React 19 y TypeScript como parte de un equipo de desarrollo.
+Cargo: Líder de Equipo y Jefe de Soluciones (Full Stack), remoto. anai (anaiapp.ai) es un SaaS de creación de video con IA. Alexis lidera al equipo de desarrollo, propone soluciones técnicas y de producto, y desarrolla el frontend con Next.js 16, React 19 y TypeScript.
 
 ## anai – editor de video
 En anai trabaja en el editor de video en el navegador: línea de tiempo, subtítulos y exportación. El editor es un trabajo de equipo en el que participan otros desarrolladores.
